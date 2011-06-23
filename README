@@ -1,0 +1,99 @@
+-------------------------------------------------------------------------------
+---  ANSIFILTER MANUAL - Version 1.6  -------------------------- March 2011 ---
+-------------------------------------------------------------------------------
+
+OSI Certified Open Source Software
+
+-------------------------------------------------------------------------------
+
+Ansifilter handles text files containing ANSI terminal escape codes.
+The command sequences may be stripped or be interpreted to generate formatted
+output (HTML, RTF, TeX, LaTeX, BBCode).
+
+
+CONTENT:
+-------------------------------------------------------------------------------
+
+1. Quick introduction
+2. Platforms
+3. Features
+4. Contact
+
+
+1.  Quick introduction
+-------------------------------------------------------------------------------
+
+Invocation: ansifilter [OPTION]... [FILE]...
+
+ansifilter handles text files containing ANSI terminal escape codes.
+
+File handling:
+  -i, --input=<file>   name of single input file
+  -o, --output=<file>  name of single output file
+  -O, --outdir=<dir>   name of output directory
+  -t, --tail           Continue reading after end-of-file (like tail -f)
+                       Use system tail if available
+
+Output text formats:
+  -T, --text (default) Output text
+  -H, --html           Output HTML
+  -L, --latex          Output LaTeX
+  -P, --tex            Output Plain TeX
+  -R, --rtf            Output RTF
+  -B, --bbcode         Output BBCode
+
+Formatted text options:
+  -d, --doc-title      Set HTML/LaTeX document title
+  -e, --encoding       Set HTML encoding (must match input file encoding)
+  -f, --fragment       Omit HTML header and footer
+  -F, --font=<font>    Set HTML/RTF font face
+  -r, --style-ref=<rf> Set HTML/TeX/LaTeX stylesheet path
+  -s, --font-size=<fs> Set HTML/RTF font size
+  -p, --plain          Ignore ANSI formatting information
+
+Other options:
+  -h, --help           Print help
+  -v, --version        Print version and license info
+
+
+Examples:
+
+ansifilter -i text_with_ansi.txt -o text_without_ansi.txt
+ansifilter -i text_with_ansi.txt -o output.html --html
+ansifilter *.txt
+tail -f server.log | ansifilter
+
+The GUI version (ansifilter-gui) also accepts the first command line argument
+as input file name.
+
+
+2.  Platforms
+-------------------------------------------------------------------------------
+
+Ansifilter is currently available for Linux and Win32 platforms.
+
+
+3.  Features
+-------------------------------------------------------------------------------
+
+Supported control sequences:
+ESC [ * m
+ESC ] * ND
+ESC ] Ps ND string NP
+
+Supported commands:
+Formatting: Bold, Underline, Italic, Blink
+Colors:     Black, Red, Green, Yellow, Blue, Magenta, Cyan, White
+            xterm 256 color modes
+Other:      Conceal/Reveal, Image positive/negative
+
+All commands which issue the listed formatting options are supported.
+Some options like Blink are not supported by all output formats (like RTF).
+
+4.  Contact
+-------------------------------------------------------------------------------
+
+Andre Simon
+andre.simon1@gmx.de
+http://www.andre-simon.de/
+http://wiki.andre-simon.de/

@@ -1,0 +1,23 @@
+Ansifilter installation instructions
+------------------------------------
+
+Ansifilter is a small utility without external dependencies.
+There are no configuration files or libs to take care of.
+
+1. Basic installation
+=====================
+
+ 1. tar xjvf ansifilter-x.x.tar.bz2
+
+ 2. cd ansifilter-x.x
+
+ 3. make help
+
+ 4. make
+    make all-gui         (build the Qt GUI (requires Qt 4.x))
+
+ 5. make install         (install binary and documentation files)
+    make install-gui     (install GUI binary)
+    (depending on your installation destination, you need to be root)
+
+ 6. make clean (optional)

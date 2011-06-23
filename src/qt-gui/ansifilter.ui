@@ -1,0 +1,379 @@
+<ui version="4.0" >
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog" >
+  <property name="windowModality" >
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>765</width>
+    <height>697</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>ANSIFilter</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset/>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" colspan="3" >
+    <widget class="QTextEdit" name="textEdit" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+       <horstretch>1</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font" >
+      <font>
+       <family>Courier New</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="acceptDrops" >
+      <bool>false</bool>
+     </property>
+     <property name="toolTip" >
+      <string/>
+     </property>
+     <property name="readOnly" >
+      <bool>true</bool>
+     </property>
+     <property name="html" >
+      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Courier New'; font-size:10pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;">Please open a file.&lt;/p>&lt;/body>&lt;/html></string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QFrame" name="frame" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape" >
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" >
+      <item>
+       <widget class="QPushButton" name="pbFileOpen" >
+        <property name="toolTip" >
+         <string>Open a text file.</string>
+        </property>
+        <property name="text" >
+         <string>Open File</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbSaveAs" >
+        <property name="toolTip" >
+         <string>Save the opened file as text, HTML, RTF, LaTeX, TeX or BBCode.</string>
+        </property>
+        <property name="text" >
+         <string>Save as</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbClipboard" >
+        <property name="toolTip" >
+         <string>Copy opened file as plain text to clipboard</string>
+        </property>
+        <property name="text" >
+         <string>Copy to clipboard</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line" >
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbAbout" >
+        <property name="toolTip" >
+         <string>Show information about this program.</string>
+        </property>
+        <property name="text" >
+         <string>About</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbExit" >
+        <property name="font" >
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="toolTip" >
+         <string>Quit the program.</string>
+        </property>
+        <property name="text" >
+         <string>Quit</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1" >
+    <widget class="QGroupBox" name="groupBox" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title" >
+      <string>Output options</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <layout class="QGridLayout" >
+      <item row="0" column="0" colspan="2" >
+       <widget class="QCheckBox" name="cbIgnoreSequences" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip" >
+         <string>Show and save files without the ANSI formatting information.</string>
+        </property>
+        <property name="text" >
+         <string>Ignore formatting</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2" >
+       <widget class="QCheckBox" name="cbFragment" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip" >
+         <string>Save HTML without header and footer to paste it into existing documents.</string>
+        </property>
+        <property name="text" >
+         <string>Omit header and footer</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QLabel" name="label_2" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Minimum" hsizetype="Maximum" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text" >
+         <string>Title:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>leTitle</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" >
+       <widget class="QLineEdit" name="leTitle" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip" >
+         <string>Set the output document title.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" >
+       <widget class="QLabel" name="label" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text" >
+         <string>Encoding:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>comboEncoding</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" >
+       <widget class="QComboBox" name="comboEncoding" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip" >
+         <string>Set the encoding (has to match input file encoding).</string>
+        </property>
+        <property name="editable" >
+         <bool>true</bool>
+        </property>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-6</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-7</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-8</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-9</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-10</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-11</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-13</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-14</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>ISO-8859-15</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>UTF-8</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2" >
+       <widget class="QFontComboBox" name="comboFont" >
+        <property name="toolTip" >
+         <string>Set the output font.</string>
+        </property>
+        <property name="currentFont" >
+         <font>
+          <family>Courier New</family>
+         </font>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="2" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>415</width>
+       <height>178</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>pbFileOpen</tabstop>
+  <tabstop>pbSaveAs</tabstop>
+  <tabstop>pbAbout</tabstop>
+  <tabstop>pbExit</tabstop>
+  <tabstop>cbIgnoreSequences</tabstop>
+  <tabstop>cbFragment</tabstop>
+  <tabstop>leTitle</tabstop>
+  <tabstop>comboEncoding</tabstop>
+  <tabstop>comboFont</tabstop>
+  <tabstop>textEdit</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pbExit</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>607</x>
+     <y>531</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>336</x>
+     <y>278</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

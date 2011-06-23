@@ -1,0 +1,82 @@
+[0mAll attributes off[0m
+
+[1;4mBold[0m
+
+[4mUnderline[0m
+
+[3mItalic[0m
+
+[5mBlink[0m
+
+[8mHide[0m
+
+[30mBlack[0m
+
+[31mRed[0m
+
+[32mGreen[0m
+
+[33mYellow[0m
+
+[34mBlue[0m
+
+[35mMagenta[0m
+
+[36mCyan[0m
+
+[37mWhite[0m
+
+[91mRed Bright[0m
+
+[92mGreen Bright[0m
+
+[93mYellow Bright[0m
+
+[94mBlue Bright[0m
+
+[95mMagenta Bright[0m
+
+[96mCyan Bright[0m
+
+[97mWhite Bright[0m
+
+[38mTEST[0m
+
+[39mTEST[0m
+
+[40m[37mBlack Background[0m
+
+[41mRed Background[0m
+
+[101mRed Background Bright[0m
+
+[42mGreen Background[0m
+
+[43mYellow Background[0m
+
+[44mBlue Background[0m
+
+[45mMagenta Background[0m
+
+[46mCyan Background[0m
+
+[47mWhite Background[0m
+
+[48mTEST[0m
+
+[49mTEST[0m
+
+[48;5;1;128mTEST 256 Farben[0m
+
+[48;28;129mTEST 256 Farben[0m
+
+[48;7;132mTEST 256 Farben[0m
+
+[48;131mTEST 256 Farben[0m
+
+[48;130mTEST 256 Farben[0m
+
+[48;32;47mTEST 256 Farben[0m
+
+]0;~
+]0;New Window title
