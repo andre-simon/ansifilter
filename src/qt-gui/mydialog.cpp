@@ -42,6 +42,7 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
 	dlg.cbIgnoreSequences->setChecked(settings.value("ignoreseq").toBool());
 	dlg.comboEncoding->setCurrentIndex(settings.value("encoding").toInt());
 	dlg.comboFont->setCurrentIndex(settings.value("font").toInt());
+    dlg.spinBoxWrap->setValue(settings.value("linewrap").toInt());
 	settings.endGroup();
 	settings.beginGroup("paths");
 	inputFileName = settings.value("infile").toString();
@@ -61,7 +62,9 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
 	settings.setValue("fragment", dlg.cbFragment->isChecked());
 	settings.setValue("ignoreseq", dlg.cbIgnoreSequences->isChecked());
 	settings.setValue("encoding", dlg.comboEncoding->currentIndex());
-	settings.setValue("font", dlg.comboFont->currentIndex());
+    settings.setValue("font", dlg.comboFont->currentIndex());
+    settings.setValue("linewrap", dlg.spinBoxWrap->value());
+
 	settings.endGroup();
 	settings.beginGroup("paths");
 	settings.setValue("infile", inputFileName);
@@ -102,6 +105,7 @@ void MyDialog::on_pbSaveAs_clicked(){
     generator->setFragmentCode(dlg.cbFragment->isChecked());
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
+    generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt");
 
     ansifilter::ParseError result= generator->generateFile( inputFileName.toStdString (), outFileName.toStdString () ) ;
@@ -124,6 +128,7 @@ void MyDialog::on_pbClipboard_clicked(){
 	   return;
     }
     auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::TEXT));
+    generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
 
     QString outString = QString(generator->generateStringFromFile( inputFileName.toStdString ()).c_str() ) ;
 
@@ -150,6 +155,7 @@ void MyDialog::showFile(const QString & inputFileName){
     generator->setFragmentCode(false);
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
+    generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt");
 
     QString htmlString = QString( generator->generateStringFromFile(inputFileName.toStdString ()).c_str() );
@@ -161,8 +167,8 @@ void MyDialog::showFile(const QString & inputFileName){
 
 void MyDialog::on_pbAbout_clicked(){
     QMessageBox::information(this,
-	"ANSIFilter Information", "ANSIFilter GUI Version 1.6\n"
-	"(c) 2007-2011 Andre Simon\n\n"
+    "ANSIFilter Information", "ANSIFilter GUI Version 1.7\n"
+    "(c) 2007-2012 Andre Simon\n\n"
 	"Released under the terms of the GNU GPL license.\n\n"
 	"andre dot simon1 at gmx dot de\n"
         "See www.andre-simon.de for updates."

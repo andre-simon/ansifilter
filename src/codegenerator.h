@@ -35,6 +35,7 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include <wctype.h>
 
 #include "elementstyle.h"
+#include "preformatter.h"
 
 #include "enums.h"
 #include "stringtools.h"
@@ -153,6 +154,8 @@ class CodeGenerator
    bool getPlainOutput() {return ignoreFormatting;}
 
    bool getContinueReading() {return readAfterEOF;}
+   
+   void setPreformatting ( WrapMode lineWrappingStyle,unsigned int lineLength);
 
 protected:
 
@@ -200,6 +203,9 @@ protected:
     bool encodingDefined() {return StringTools::lowerCase(encoding)!="none";}
 
    ElementStyle elementStyle;
+   
+   /** Class for line wrapping and tab replacement*/
+   PreFormatter preFormatter;
 
    static string ColorBlack;
    static string ColorRed;

@@ -101,6 +101,8 @@ class CmdLineOptions
     /** \return List of input file names*/
     const vector <string> & getInputFileNames() const;
 
+    int getWrapLineLength() const;
+    
   private:
     ansifilter::OutputType outputType;
 
@@ -118,6 +120,8 @@ class CmdLineOptions
     string font;
     string fontSize;
     string styleSheetPath;
+    
+    int wrapLineLen;
 
     /** list of all input file names */
     vector <string> inputFileNames;

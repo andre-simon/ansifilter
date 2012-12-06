@@ -39,7 +39,7 @@ void ANSIFilterApp::printVersionInfo()
 {
   cout << "\n ansifilter version "
        << ANSIFILTER_VERSION
-       << "\n Copyright (C) 2007-2011 Andre Simon <andre.simon1 at gmx.de>"
+       << "\n Copyright (C) 2007-2012 Andre Simon <andre.simon1 at gmx.de>"
        << "\n\n Argparser class"
        << "\n Copyright (C) 2006-2008 Antonio Diaz Diaz <ant_diaz at teleline.es>"
        << "\n\n This software is released under the terms of the GNU General "
@@ -65,7 +65,7 @@ void ANSIFilterApp::printHelp()
     cout << "  -P, --tex            Output Plain TeX\n";
     cout << "  -R, --rtf            Output RTF\n";
     cout << "  -B, --bbcode         Output BBCode\n";
-    cout << "\nFormatted text options:\n";
+    cout << "\nFormat options:\n";
     cout << "  -d, --doc-title      Set HTML/LaTeX document title\n";
     cout << "  -e, --encoding       Set HTML encoding (must match input file encoding)\n";
     cout << "  -f, --fragment       Omit HTML header and footer\n";
@@ -73,6 +73,7 @@ void ANSIFilterApp::printHelp()
     cout << "  -r, --style-ref=<rf> Set HTML/TeX/LaTeX stylesheet path\n";
     cout << "  -s, --font-size=<fs> Set HTML/RTF font size\n";
     cout << "  -p, --plain          Ignore ANSI formatting information\n";
+    cout << "  -w, --wrap=<len>     wrap long lines\n";
     cout << "\nOther options:\n";
     cout << "  -h, --help           Print help\n";
     cout << "  -v, --version        Print version and license info\n";
@@ -140,6 +141,7 @@ int ANSIFilterApp::run( const int argc, const char *argv[] ){
      generator->setFont(options.getFont());
      generator->setFontSize(options.getFontSize());
      generator->setStyleSheet(options.getStyleSheetPath());
+     generator->setPreformatting(ansifilter::WRAP_SIMPLE, options.getWrapLineLength());
 
      ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
 

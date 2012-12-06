@@ -3,13 +3,15 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET = ansifilter-gui
 DEPENDPATH += .
 INCLUDEPATH += . ..
 DEFINES += O2
 win32 {
+CONFIG += static
 DEFINES += _WIN32
 RC_FILE = icon.rc
+DESTDIR = ../../
 }
 
 # Input
@@ -17,5 +19,7 @@ HEADERS += mydialog.h
 FORMS += ansifilter.ui
 SOURCES += main.cpp mydialog.cpp 
 SOURCES += ../elementstyle.cpp ../plaintextgenerator.cpp ../codegenerator.cpp 
-SOURCES += ../platform_fs.cpp ../rtfgenerator.cpp ../htmlgenerator.cpp ../latexgenerator.cpp ../texgenerator.cpp ../bbcodegenerator.cpp
-SOURCES += ../stringtools.cpp ../stylecolour.cpp
+SOURCES += ../platform_fs.cpp ../rtfgenerator.cpp ../htmlgenerator.cpp ../texgenerator.cpp ../latexgenerator.cpp ../bbcodegenerator.cpp
+SOURCES += ../stringtools.cpp ../stylecolour.cpp ../preformatter.cpp
+
+win32:QMAKE_POST_LINK = d:/devel/upx/upx.exe --best ../../ansifilter-gui.exe

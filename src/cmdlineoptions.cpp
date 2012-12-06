@@ -43,7 +43,8 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     opt_ignoreEOF(false),
     encodingName("ISO-8859-1"),
     font("Courier New"),
-    fontSize("10pt")
+    fontSize("10pt"),
+    wrapLineLen(0)
 {
 
   const Arg_parser::Option options[] =
@@ -66,6 +67,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     { 's', "font-size", Arg_parser::yes },
     { 't', "tail",      Arg_parser::no  },
     { 'T', "text",      Arg_parser::no  },
+    { 'w', "wrap",      Arg_parser::yes },
     { 'v', "version",   Arg_parser::no  },
     { 'V', "version",   Arg_parser::no  },
     {  0,  0,           Arg_parser::no  } };
@@ -144,6 +146,8 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
       case 'O':
         outDirectory = validateDirPath( arg );
         break;
+      case 'w':
+	wrapLineLen=atoi(arg.c_str())-1;
       default:
         cerr << "ansifilter: option parsing failed" << endl;
       }
@@ -266,3 +270,8 @@ const vector <string> & CmdLineOptions::getInputFileNames() const{
 ansifilter::OutputType CmdLineOptions::getOutputType() const {
     return outputType;
 }
+
+int CmdLineOptions::getWrapLineLength() const {
+    return wrapLineLen;
+}
+    

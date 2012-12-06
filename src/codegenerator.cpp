@@ -153,6 +153,20 @@ namespace ansifilter
       styleSheetPath=path;
     }
 
+    void CodeGenerator::setPreformatting ( WrapMode lineWrappingStyle,
+	                                       unsigned int lineLength
+	                                      )
+    {
+	if ( lineLength>0 )
+	{
+		preFormatter.setWrap ( true );
+		preFormatter.setWrapIndentBraces ( lineWrappingStyle==WRAP_DEFAULT );
+		preFormatter.setWrapLineLength ( lineLength );
+		preFormatter.setReplaceTabs ( false );
+		//preFormatter.setNumberSpaces ( numberSpaces );
+	}
+    }
+    
     ParseError CodeGenerator::generateFile (const string &inFileName,
 					    const string &outFileName)
     {
@@ -583,7 +597,25 @@ namespace ansifilter
 	bool tagOpen=false;
 	while (true)
 	{
-	    if (!getline(*in, line))
+	  
+	    bool eof=false;
+	    if ( preFormatter.isEnabled() )
+	    {
+		    if ( !preFormatter.hasMoreLines() )
+		    {
+			    eof=!getline(*in, line);
+			    preFormatter.setLine ( line );
+		    }
+		    line = preFormatter.getNextLine();
+	    }
+	    else
+	    {
+		    eof=!getline(*in, line);
+	    }
+
+	  
+	  
+	    if (eof)
 	    {
 		// imitate tail bahaviour, continue to read after EOF
 		if (readAfterEOF)

@@ -57,7 +57,7 @@ void PlaintextGenerator::printBody()
 
 string PlaintextGenerator::maskCharacter(unsigned char c)
 {
-       if (c>0x1f ){
+       if (c>0x1f || c=='\t'){
         return string( 1, c );
       } else {
         return "";

@@ -1,5 +1,13 @@
 Ansifilter ChangeLog
 
+04.01.2012
+
+ansifilter 1.7
+
+-added --wrap option to wrap long lines
+-fixed tab output in plain text mode
+
+---
 31.03.2011
 
 ansifilter 1.6

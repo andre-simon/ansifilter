@@ -16,7 +16,7 @@
 
 Name:    ansifilter
 Summary: ANSI terminal escape code converter
-Version: 1.6
+Version: 1.7
 Release: 1
 Group:   Development/Tools
 License: GPLv3

@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ansifilter.ui'
 **
-** Created: Thu Mar 31 10:39:53 2011
-**      by: Qt User Interface Compiler version 4.7.1
+** Created: Wed Jan 4 19:11:18 2012
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -26,6 +26,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
+#include <QtGui/QSpinBox>
 #include <QtGui/QTextEdit>
 #include <QtGui/QVBoxLayout>
 
@@ -34,8 +35,9 @@ QT_BEGIN_NAMESPACE
 class Ui_Dialog
 {
 public:
-    QGridLayout *gridLayout;
+    QGridLayout *gridLayout_2;
     QTextEdit *textEdit;
+    QSpacerItem *spacerItem;
     QFrame *frame;
     QVBoxLayout *vboxLayout;
     QPushButton *pbFileOpen;
@@ -45,29 +47,33 @@ public:
     QPushButton *pbAbout;
     QPushButton *pbExit;
     QGroupBox *groupBox;
-    QGridLayout *gridLayout1;
+    QGridLayout *gridLayout;
     QCheckBox *cbIgnoreSequences;
     QCheckBox *cbFragment;
     QLabel *label_2;
     QLineEdit *leTitle;
     QLabel *label;
     QComboBox *comboEncoding;
+    QLabel *label_3;
+    QSpinBox *spinBoxWrap;
     QFontComboBox *comboFont;
-    QSpacerItem *spacerItem;
 
     void setupUi(QDialog *Dialog)
     {
         if (Dialog->objectName().isEmpty())
             Dialog->setObjectName(QString::fromUtf8("Dialog"));
         Dialog->setWindowModality(Qt::NonModal);
-        Dialog->resize(765, 697);
+        Dialog->resize(765, 658);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(Dialog->sizePolicy().hasHeightForWidth());
         Dialog->setSizePolicy(sizePolicy);
-        gridLayout = new QGridLayout(Dialog);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("ansifilter.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        Dialog->setWindowIcon(icon);
+        gridLayout_2 = new QGridLayout(Dialog);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         textEdit = new QTextEdit(Dialog);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
         QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -82,7 +88,11 @@ public:
         textEdit->setAcceptDrops(false);
         textEdit->setReadOnly(true);
 
-        gridLayout->addWidget(textEdit, 0, 0, 1, 3);
+        gridLayout_2->addWidget(textEdit, 0, 0, 1, 3);
+
+        spacerItem = new QSpacerItem(415, 178, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(spacerItem, 1, 2, 1, 1);
 
         frame = new QFrame(Dialog);
         frame->setObjectName(QString::fromUtf8("frame"));
@@ -132,15 +142,15 @@ public:
         vboxLayout->addWidget(pbExit);
 
 
-        gridLayout->addWidget(frame, 1, 0, 1, 1);
+        gridLayout_2->addWidget(frame, 1, 0, 1, 1);
 
         groupBox = new QGroupBox(Dialog);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
         sizePolicy2.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
         groupBox->setSizePolicy(sizePolicy2);
         groupBox->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
-        gridLayout1 = new QGridLayout(groupBox);
-        gridLayout1->setObjectName(QString::fromUtf8("gridLayout1"));
+        gridLayout = new QGridLayout(groupBox);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         cbIgnoreSequences = new QCheckBox(groupBox);
         cbIgnoreSequences->setObjectName(QString::fromUtf8("cbIgnoreSequences"));
         QSizePolicy sizePolicy3(QSizePolicy::Maximum, QSizePolicy::Fixed);
@@ -149,14 +159,14 @@ public:
         sizePolicy3.setHeightForWidth(cbIgnoreSequences->sizePolicy().hasHeightForWidth());
         cbIgnoreSequences->setSizePolicy(sizePolicy3);
 
-        gridLayout1->addWidget(cbIgnoreSequences, 0, 0, 1, 2);
+        gridLayout->addWidget(cbIgnoreSequences, 0, 0, 1, 2);
 
         cbFragment = new QCheckBox(groupBox);
         cbFragment->setObjectName(QString::fromUtf8("cbFragment"));
         sizePolicy3.setHeightForWidth(cbFragment->sizePolicy().hasHeightForWidth());
         cbFragment->setSizePolicy(sizePolicy3);
 
-        gridLayout1->addWidget(cbFragment, 1, 0, 1, 2);
+        gridLayout->addWidget(cbFragment, 1, 0, 1, 2);
 
         label_2 = new QLabel(groupBox);
         label_2->setObjectName(QString::fromUtf8("label_2"));
@@ -166,7 +176,7 @@ public:
         sizePolicy4.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
         label_2->setSizePolicy(sizePolicy4);
 
-        gridLayout1->addWidget(label_2, 2, 0, 1, 1);
+        gridLayout->addWidget(label_2, 2, 0, 1, 1);
 
         leTitle = new QLineEdit(groupBox);
         leTitle->setObjectName(QString::fromUtf8("leTitle"));
@@ -176,14 +186,14 @@ public:
         sizePolicy5.setHeightForWidth(leTitle->sizePolicy().hasHeightForWidth());
         leTitle->setSizePolicy(sizePolicy5);
 
-        gridLayout1->addWidget(leTitle, 2, 1, 1, 1);
+        gridLayout->addWidget(leTitle, 2, 1, 1, 1);
 
         label = new QLabel(groupBox);
         label->setObjectName(QString::fromUtf8("label"));
         sizePolicy2.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
         label->setSizePolicy(sizePolicy2);
 
-        gridLayout1->addWidget(label, 3, 0, 1, 1);
+        gridLayout->addWidget(label, 3, 0, 1, 1);
 
         comboEncoding = new QComboBox(groupBox);
         comboEncoding->setObjectName(QString::fromUtf8("comboEncoding"));
@@ -191,7 +201,17 @@ public:
         comboEncoding->setSizePolicy(sizePolicy5);
         comboEncoding->setEditable(true);
 
-        gridLayout1->addWidget(comboEncoding, 3, 1, 1, 1);
+        gridLayout->addWidget(comboEncoding, 3, 1, 1, 1);
+
+        label_3 = new QLabel(groupBox);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+
+        gridLayout->addWidget(label_3, 4, 0, 1, 1);
+
+        spinBoxWrap = new QSpinBox(groupBox);
+        spinBoxWrap->setObjectName(QString::fromUtf8("spinBoxWrap"));
+
+        gridLayout->addWidget(spinBoxWrap, 4, 1, 1, 1);
 
         comboFont = new QFontComboBox(groupBox);
         comboFont->setObjectName(QString::fromUtf8("comboFont"));
@@ -199,14 +219,10 @@ public:
         font2.setFamily(QString::fromUtf8("Courier New"));
         comboFont->setCurrentFont(font2);
 
-        gridLayout1->addWidget(comboFont, 4, 0, 1, 2);
+        gridLayout->addWidget(comboFont, 5, 0, 1, 2);
 
 
-        gridLayout->addWidget(groupBox, 1, 1, 1, 1);
-
-        spacerItem = new QSpacerItem(415, 178, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(spacerItem, 1, 2, 1, 1);
+        gridLayout_2->addWidget(groupBox, 1, 1, 1, 1);
 
 #ifndef QT_NO_SHORTCUT
         label_2->setBuddy(leTitle);
@@ -234,16 +250,17 @@ public:
 #ifndef QT_NO_TOOLTIP
         textEdit->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        textEdit->setHtml(QApplication::translate("Dialog", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+        textEdit->setHtml(QApplication::translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Courier New'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;\">Please open a file.</p></body></html>", 0, QApplication::UnicodeUTF8));
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'MS Shell Dlg 2'; font-size:8pt;\">Please open a file.</span></p></body></html>", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         pbFileOpen->setToolTip(QApplication::translate("Dialog", "Open a text file.", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         pbFileOpen->setText(QApplication::translate("Dialog", "Open File", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        pbSaveAs->setToolTip(QApplication::translate("Dialog", "Save the opened file as text, HTML, RTF, LaTeX, TeX or BBCode.", 0, QApplication::UnicodeUTF8));
+        pbSaveAs->setToolTip(QApplication::translate("Dialog", "Save the opened file as text, HTML or RTF.", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         pbSaveAs->setText(QApplication::translate("Dialog", "Save as", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
@@ -292,6 +309,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         comboEncoding->setToolTip(QApplication::translate("Dialog", "Set the encoding (has to match input file encoding).", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
+        label_3->setText(QApplication::translate("Dialog", "Line wrap:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         comboFont->setToolTip(QApplication::translate("Dialog", "Set the output font.", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

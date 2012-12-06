@@ -38,6 +38,14 @@ enum OutputType {
   BBCODE
 };
 
+/** line wrapping modes*/
+enum WrapMode
+{
+  WRAP_DISABLED,
+  WRAP_SIMPLE,
+  WRAP_DEFAULT
+};
+
 }
 
 #endif
