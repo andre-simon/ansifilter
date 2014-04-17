@@ -359,6 +359,7 @@ namespace ansifilter
 	while( itVectorData != codeVector.end())
 	{
 	    StringTools::str2num<int>(ansiCode, *(itVectorData), std::dec);
+	    
 	    elementStyle.setReset(false);
 
 	    switch (ansiCode)
@@ -554,7 +555,6 @@ namespace ansifilter
 		case 107:
 		elementStyle.setBgColour(ColorBrightWhite);
 		break;
-
 	    }
 
 	    // Set RTF color index
@@ -595,6 +595,8 @@ namespace ansifilter
 	string line;
 	size_t i=0;
 	bool tagOpen=false;
+	bool isCharSeq=false;
+	bool isEraseLine=false;
 	while (true)
 	{
 	  
@@ -642,9 +644,15 @@ namespace ansifilter
 		{
 		    if (line[i]==0x1b)
 		    {
+		      //cerr << "line[i+2] "<<line[i+2]<<"\n";
 		      // fix grep --colour .[K (1b 5b 4b) sequences
-		      if (line.length()>i+2 && line[i+2]==0x4b){
+		      isCharSeq = isalpha(line[i+2]);
+		      isEraseLine = line[i+2]=='K' || line[i+2]=='u' || line[i+2]=='s';
+		      
+		      if (line.length()>i+2 && (line[i+2]==0x4b || isCharSeq ) ){
 			  seqEnd=i+2;
+			  
+			  
 		      } else {
 
 			  seqEnd=line.find_first_of('m', i+1);
@@ -671,6 +679,10 @@ namespace ansifilter
 			  }
 			}
 			i= 1+ ((seqEnd!=string::npos)?seqEnd:i);
+			if (isCharSeq ) {
+			  i++;
+			  if (isEraseLine) i   = line.length();
+			}
 		    }
 		    else
 		    {

@@ -1,5 +1,13 @@
 Ansifilter ChangeLog
 
+16.04.2014
+
+ansifilter 1.8
+
+-added support for Erase Line, Save and Restore Cursor sequences
+  (thanks to Kovács Zoltán)
+
+---
 04.01.2012
 
 ansifilter 1.7

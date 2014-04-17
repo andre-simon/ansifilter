@@ -52,6 +52,9 @@ print ( "\033]0;New Window title\007\015")
 
 print ( "tab1\ttab2\t\ttab3\t\t\tend")
 
+print ( "abc1\033[sTEST s - loeschen\n")
+print ( "abc2\033[uTEST u - loeschen\n")
+print ( "abc3\033[KTEST K - loeschen\033[K\033[K\033[K xxx blablabla\n")
 
 print ( "1234567890 12345 67890 1234567890 12345 67890 1234567890123456789012345678901234567890123456789012345678901234567890")
 
