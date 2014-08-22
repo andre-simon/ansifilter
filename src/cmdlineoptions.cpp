@@ -88,6 +88,29 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     if( !code ) break;					// no more options
     switch( code )
       {
+	/* tbd
+	case 'O':
+				{
+				const string tmp = StringTools::change_case ( arg );
+				if ( tmp == "xhtml" )
+					outputType = highlight::XHTML;
+				else if ( tmp == "tex" )
+					outputType = highlight::TEX;
+				else if ( tmp == "latex" )
+					outputType = highlight::LATEX;
+				else if ( tmp == "rtf" )
+					outputType = highlight::RTF;
+				else if ( tmp == "svg" )
+					outputType = highlight::SVG;
+				else if ( tmp == "bbcode" )
+					outputType = highlight::BBCODE;
+				else if ( tmp == "odt" )
+					outputType = highlight::ODTFLAT;
+				else
+					outputType = highlight::HTML;
+				}
+				break;
+	*/
        case 'B':
         outputType = ansifilter::BBCODE;
         break;

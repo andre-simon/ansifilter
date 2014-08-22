@@ -82,6 +82,7 @@ string LaTeXGenerator::getHeader()
     ostringstream os;
     os << "\\documentclass{article}\n";
     os << "\\usepackage{color}\n";
+    os << "\\newcommand{\\ws}[1]{\\textcolor[rgb]{0,0,0}{#1}}\n";
     if (encodingDefined()){
 		os << "%\\usepackage[" << encoding << "]{inputenc}\n";
     }
@@ -112,7 +113,7 @@ string LaTeXGenerator::maskCharacter(unsigned char c)
   switch (c) {
 
     case ' ':
-      return "~";
+      return "\\ws{\\ }";
       break;
   case '<' :
       return "$<$";
