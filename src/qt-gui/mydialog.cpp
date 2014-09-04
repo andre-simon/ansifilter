@@ -85,12 +85,14 @@ void MyDialog::on_pbSaveAs_clicked(){
 
     QString outFileName =
               QFileDialog::getSaveFileName(this, tr("Save File"), outputFileName,
-                           tr("Text (*.txt);;HTML (*.html);;RTF (*.rtf);;LaTeX (*.latex);;TeX (*.tex);;BBCode (*.bbcode)"));
+                           tr("Text (*.txt);;HTML (*.html);;PANGO (*.pango);;RTF (*.rtf);;LaTeX (*.latex);;TeX (*.tex);;BBCode (*.bbcode)"));
 
     ansifilter::OutputType outputType=ansifilter::TEXT;
 
     if (outFileName.endsWith(".html"))
         outputType=ansifilter::HTML;
+    else if (outFileName.endsWith(".pango"))
+	outputType=ansifilter::PANGO;
     else if (outFileName.endsWith(".rtf"))
 	outputType=ansifilter::RTF;
     else if (outFileName.endsWith(".tex"))

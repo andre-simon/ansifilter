@@ -45,11 +45,13 @@ string BBCodeGenerator::getOpenTag()
 {
 	ostringstream s;
 
-	s << "[color=#"
-	   << elementStyle.getFgColour().getRed(HTML)
-	<< elementStyle.getFgColour().getGreen(HTML)
-	<< elementStyle.getFgColour().getBlue(HTML)
-	   << "]";
+	if (elementStyle.isFgColorSet()){
+		s << "[color=#"
+		<< elementStyle.getFgColour().getRed(HTML)
+		<< elementStyle.getFgColour().getGreen(HTML)
+		<< elementStyle.getFgColour().getBlue(HTML)
+		<< "]";
+   }
 
 	if ( elementStyle.isBold() ) s << "[b]";
 	if ( elementStyle.isItalic() ) s << "[i]";

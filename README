@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
----  ANSIFILTER MANUAL - Version 1.6  -------------------------- March 2011 ---
+---  ANSIFILTER MANUAL - Version 1.10  ------------------------ August 2014 ---
 -------------------------------------------------------------------------------
 
 OSI Certified Open Source Software
@@ -37,6 +37,7 @@ File handling:
 Output text formats:
   -T, --text (default) Output text
   -H, --html           Output HTML
+  -M, --pango          Output Pango Markup
   -L, --latex          Output LaTeX
   -P, --tex            Output Plain TeX
   -R, --rtf            Output RTF

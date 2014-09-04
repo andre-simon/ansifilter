@@ -1,10 +1,17 @@
 Ansifilter ChangeLog
 
+01.09.2014
+
+ansifilter 1.10
+
+-added Pango output and fixed minor bugs (patches by Dominik Schmidt)
+
+---
 22.8.2014
 
 ansifilter 1.9
 
--fixed LaTeX code indentation (thanks to Maria )
+-fixed LaTeX code indentation (thanks to Maria)
 
 ---
 16.04.2014

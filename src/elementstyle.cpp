@@ -29,7 +29,7 @@ namespace ansifilter {
 
 ElementStyle::ElementStyle()
     : bold(false), italic(false), underline(false), blink(false),
-      reset(true), isNegativeMode(false), conceal(false), bgColorSet(false),
+      reset(true), isNegativeMode(false), conceal(false), bgColorSet(false), fgColorSet(false),
       fgColID(0),
       bgColID(-1)
 {}
@@ -60,6 +60,9 @@ bool ElementStyle::isConceal() const
 bool ElementStyle::isBgColorSet() const{
   return bgColorSet;
 }
+bool ElementStyle::isFgColorSet() const{
+  return fgColorSet;
+}
 const StyleColour ElementStyle::getFgColour() const
 {
   return fgColour;
@@ -81,11 +84,11 @@ void  ElementStyle::imageMode(bool negative){
 void ElementStyle::setReset(bool b) {
 	reset=b;
 	if (reset){
-		bold= italic= underline= conceal = blink = bgColorSet = false;
 		setFgColour("#000000");
 		//setBgColour("#ffffff");
 		setFgColourID(0);
 		setBgColourID(-1);
+		bold= italic= underline= conceal = blink = bgColorSet = fgColorSet = false;
 	}
    }
 

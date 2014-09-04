@@ -61,6 +61,7 @@ void ANSIFilterApp::printHelp()
     cout << "\nOutput text formats:\n";
     cout << "  -T, --text (default) Output text\n";
     cout << "  -H, --html           Output HTML\n";
+    cout << "  -M, --pango          Output Pango Markup\n";
     cout << "  -L, --latex          Output LaTeX\n";
     cout << "  -P, --tex            Output Plain TeX\n";
     cout << "  -R, --rtf            Output RTF\n";

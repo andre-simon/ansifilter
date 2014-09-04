@@ -31,6 +31,7 @@ enum ParseError{
 enum OutputType {
   TEXT,
   HTML,
+  PANGO,
   XHTML,
   TEX,
   LATEX,

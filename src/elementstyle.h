@@ -62,6 +62,9 @@ class ElementStyle {
       /** \return True if background color should change */
    bool isBgColorSet() const;
 
+      /** \return True if foreground color should change */
+   bool isFgColorSet() const;
+
    /** \param b set blink flag */
     void setBlink(bool b) {blink = b;}
 
@@ -91,7 +94,10 @@ class ElementStyle {
 
    /** Set Foreground colour
        \param col colour of this element */
-   void setFgColour(const StyleColour& col) {fgColour = col;}
+   void setFgColour(const StyleColour& col) {
+     fgColour = col;
+     fgColorSet=true;
+  }
 
    /**   Set Background colour
          \param col colour of this element */
@@ -102,7 +108,10 @@ class ElementStyle {
 
    /** Set Foreground colour
        \param col colour of this element */
-   void setFgColour(const string& rgbVal) {fgColour.setRGB(rgbVal);}
+   void setFgColour(const string& rgbVal) {
+     fgColour.setRGB(rgbVal);
+     fgColorSet=true;
+  }
 
    /**   Set Background colour
          \param col colour of this element */
@@ -139,7 +148,7 @@ class ElementStyle {
     bool bold, italic, underline, blink;
     bool reset;
     bool isNegativeMode, conceal;
-    bool bgColorSet;
+    bool bgColorSet, fgColorSet;
     int fgColID;
     int bgColID;
   };

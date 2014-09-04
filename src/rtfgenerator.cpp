@@ -46,7 +46,9 @@ string RtfGenerator::getAttributes( const StyleColour & col)
 string  RtfGenerator::getOpenTag()
 {
   ostringstream s;
-  s << "{\\cf"<<(elementStyle.getFgColourID()+1);
+  if (elementStyle.getFgColourID()>=0){
+   s << "{\\cf"<<(elementStyle.getFgColourID()+1);
+   }
   if (elementStyle.getBgColourID()>=0){
    s <<  "\\chcbpat"<<(elementStyle.getBgColourID()+1);
    }

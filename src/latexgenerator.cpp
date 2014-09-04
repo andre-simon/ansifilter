@@ -55,11 +55,13 @@ string LaTeXGenerator::getOpenTag()
 		os<< "\\itshape";
 	}
 
-	os << "\\color[rgb]{"
-	   << elementStyle.getFgColour().getRed(LATEX) << ","
-	   << elementStyle.getFgColour().getGreen(LATEX) << ","
-	   << elementStyle.getFgColour().getBlue(LATEX)
-	   << "}";
+	if (elementStyle.isFgColorSet()){
+		os << "\\color[rgb]{"
+		<< elementStyle.getFgColour().getRed(LATEX) << ","
+		<< elementStyle.getFgColour().getGreen(LATEX) << ","
+		<< elementStyle.getFgColour().getBlue(LATEX)
+		<< "}";
+   }
 
 	return os.str();
 }

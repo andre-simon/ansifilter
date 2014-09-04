@@ -2,7 +2,7 @@
 			  codegenerator.cpp  -  description
 			     -------------------
     begin		 :
-    copyright		 : (C) 2007-2011 by Andre Simon
+    copyright		 : (C) 2007-2014 by Andre Simon
     email		 : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -34,6 +34,7 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include <fstream>
 #include "version.h"
 
+#include "pangogenerator.h"
 #include "htmlgenerator.h"
 #include "rtfgenerator.h"
 #include "plaintextgenerator.h"
@@ -74,6 +75,9 @@ namespace ansifilter
 	    break;
 	    case HTML:
 	    generator = new HtmlGenerator();
+	    break;
+	    case PANGO:
+	    generator = new PangoGenerator();
 	    break;
 	    case LATEX:
 	    generator = new LaTeXGenerator();
@@ -649,7 +653,7 @@ namespace ansifilter
 		      isCharSeq = isalpha(line[i+2]);
 		      isEraseLine = line[i+2]=='K' || line[i+2]=='u' || line[i+2]=='s';
 		      
-		      if (line.length()>i+2 && (line[i+2]==0x4b || isCharSeq ) ){
+		      if (line.length()>i+2 && isEraseLine){
 			  seqEnd=i+2;
 			  
 			  
@@ -679,7 +683,7 @@ namespace ansifilter
 			  }
 			}
 			i= 1+ ((seqEnd!=string::npos)?seqEnd:i);
-			if (isCharSeq ) {
+			if (isCharSeq && !elementStyle.isReset()) {
 			  i++;
 			  if (isEraseLine) i   = line.length();
 			}

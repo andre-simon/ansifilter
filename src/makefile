@@ -9,7 +9,7 @@ CFLAGS= -c -Wall -O2
 LDFLAGS=
 
 SOURCES=arg_parser.o stringtools.o cmdlineoptions.o main.o platform_fs.o\
-codegenerator.o htmlgenerator.o texgenerator.o latexgenerator.o rtfgenerator.o\
+codegenerator.o htmlgenerator.o pangogenerator.o texgenerator.o latexgenerator.o rtfgenerator.o\
 plaintextgenerator.o bbcodegenerator.o elementstyle.o stylecolour.o preformatter.o
 
 OBJECTS=$(SOURCES:.cpp=.o)

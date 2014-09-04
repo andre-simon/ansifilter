@@ -55,6 +55,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     { 'F', "font",      Arg_parser::yes },
     { 'h', "help",      Arg_parser::no  },
     { 'H', "html",      Arg_parser::no  },
+    { 'M', "pango",      Arg_parser::no  },
     { 'i', "input",     Arg_parser::yes },
     { 'L', "latex",     Arg_parser::no  },
     { 'P', "tex",       Arg_parser::no  },
@@ -137,6 +138,9 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         break;
       case 'L':
         outputType = ansifilter::LATEX;
+        break;
+      case 'M':
+        outputType = ansifilter::PANGO;
         break;
       case 'P':
         outputType = ansifilter::TEX;
@@ -244,6 +248,7 @@ bool CmdLineOptions::fragmentOutput()const{
 string CmdLineOptions::getOutFileSuffix()const{
     switch (outputType){
       case ansifilter::HTML: return ".html";
+      case ansifilter::PANGO: return ".pango";
       case ansifilter::XHTML: return ".xhtml";
       case ansifilter::RTF:   return ".rtf";
       case ansifilter::TEX:

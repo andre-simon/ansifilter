@@ -48,6 +48,7 @@ SOURCES       = main.cpp \
 		../platform_fs.cpp \
 		../rtfgenerator.cpp \
 		../htmlgenerator.cpp \
+		../pangogenerator.cpp \
 		../stringtools.cpp \
 		../documentstyle.cpp \
 		../stylecolour.cpp release/moc_mydialog.cpp
@@ -59,6 +60,7 @@ OBJECTS       = release/main.o \
 		release/platform_fs.o \
 		release/rtfgenerator.o \
 		release/htmlgenerator.o \
+		release/pangogenerator.o \
 		release/stringtools.o \
 		release/documentstyle.o \
 		release/stylecolour.o \
@@ -104,7 +106,7 @@ dist:
 	$(ZIP) ansifilter-gui.zip $(SOURCES) $(DIST) ansifilter-gui.pro ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/qconfig.pri ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/qt_functions.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/qt_config.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/exclusive_builds.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/default_pre.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/win32/default_pre.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/release.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/debug_and_release.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/default_post.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/build_pass.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/win32/rtti.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/win32/exceptions.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/win32/stl.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/shared.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/warn_on.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/qt.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/win32/thread.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/moc.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/win32/windows.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/resources.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/uic.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/yacc.prf ../../../../qt-win-opensource-src-4.3.1/qt-win-opensource-src-4.3.1/mkspecs/features/lex.prf f:\qt-win-opensource-src-4.3.1\qt-win-opensource-src-4.3.1\lib\qtmain.prl  HEADERS RESOURCES IMAGES SOURCES OBJECTIVE_SOURCES FORMS YACCSOURCES YACCSOURCES LEXSOURCES 
 
 clean: compiler_clean 
-	-$(DEL_FILE) release/main.o release/mydialog.o release/elementstyle.o release/plaintextgenerator.o release/codegenerator.o release/platform_fs.o release/rtfgenerator.o release/htmlgenerator.o release/stringtools.o release/documentstyle.o release/stylecolour.o release/moc_mydialog.o
+	-$(DEL_FILE) release/main.o release/mydialog.o release/elementstyle.o release/plaintextgenerator.o release/codegenerator.o release/platform_fs.o release/rtfgenerator.o release/htmlgenerator.o release/pangogenerator.o release/stringtools.o release/documentstyle.o release/stylecolour.o release/moc_mydialog.o
 	-$(DEL_FILE) release/icon_res.o
 
 distclean: clean
@@ -180,6 +182,7 @@ release/codegenerator.o: ../codegenerator.cpp ../codegenerator.h \
 		../stringtools.h \
 		../version.h \
 		../htmlgenerator.h \
+		../pangogenerator.h \
 		../rtfgenerator.h \
 		../plaintextgenerator.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release/codegenerator.o ../codegenerator.cpp
@@ -209,6 +212,17 @@ release/htmlgenerator.o: ../htmlgenerator.cpp ../htmlgenerator.h \
 		../stringtools.h \
 		../version.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release/htmlgenerator.o ../htmlgenerator.cpp
+
+release/pangogenerator.o: ../pangogenerator.cpp ../pangogenerator.h \
+		../codegenerator.h \
+		../elementstyle.h \
+		../stylecolour.h \
+		../enums.h \
+		../documentstyle.h \
+		../configurationreader.h \
+		../stringtools.h \
+		../version.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release/pangogenerator.o ../pangogenerator.cpp
 
 release/stringtools.o: ../stringtools.cpp ../stringtools.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release/stringtools.o ../stringtools.cpp

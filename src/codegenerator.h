@@ -65,7 +65,7 @@ class CodeGenerator
 
     /**
       Get appropriate Codegenerator instance
-      \param type Output file type (TEXT, HTML, RTF, LATEX, TEX)
+      \param type Output file type (TEXT, PANGO, HTML, RTF, LATEX, TEX)
     */
     static CodeGenerator* getInstance(OutputType type);
 
