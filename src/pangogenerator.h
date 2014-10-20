@@ -40,7 +40,7 @@ namespace ansifilter {
    header and footer), the colour system, white space handling and text
    formatting attributes.
 
-* @author Andre Simon
+* @author Dominik Schmidt
 */
 
 class PangoGenerator  : public ansifilter::CodeGenerator

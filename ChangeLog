@@ -1,5 +1,12 @@
 Ansifilter ChangeLog
 
+20.10.2014
+
+ansifilter 1.11
+
+-fixed bold and italic in LaTeX output (patch by Antonio Dominguez)
+
+---
 01.09.2014
 
 ansifilter 1.10

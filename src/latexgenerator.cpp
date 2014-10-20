@@ -49,10 +49,10 @@ string LaTeXGenerator::getOpenTag()
 	os<< "{";
 
 	if (elementStyle.isBold()) {
-		os<< "\\bfseries";
+		os<< "\\bfseries{}";
 	}
 	if (elementStyle.isItalic()) {
-		os<< "\\itshape";
+		os<< "\\itshape{}";
 	}
 
 	if (elementStyle.isFgColorSet()){
