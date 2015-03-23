@@ -156,7 +156,11 @@ class CodeGenerator
    bool getContinueReading() {return readAfterEOF;}
    
    void setPreformatting ( WrapMode lineWrappingStyle,unsigned int lineLength);
+   
+   void setShowLineNumbers(bool flag);
 
+   void setWrapNoNumbers(bool flag);
+   
 protected:
 
     /** \param type Output type */
@@ -195,10 +199,17 @@ protected:
     string fontSize ;
     
     string styleSheetPath;
+    
+        unsigned int lineNumberWidth;
+    unsigned int lineNumber;
+    bool showLineNumbers, numberWrappedLines, numberCurrentLine ;
+    
 
     /** Processes origin state */
     void processRootState();
 
+    virtual void insertLineNumber ();
+    
     /** \return true id encoding is defined */
     bool encodingDefined() {return StringTools::lowerCase(encoding)!="none";}
 
@@ -259,6 +270,8 @@ private:
 
     bool ignoreFormatting; ///< ignore color and font face information
     bool readAfterEOF;     ///< continue reading after EOF occoured
+    
+
 
     /** convert an xterm color value (0-253) to 3 unsigned chars rgb
         @param color xterm color

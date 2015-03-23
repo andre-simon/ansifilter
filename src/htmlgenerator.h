@@ -58,6 +58,8 @@ class HtmlGenerator  : public ansifilter::CodeGenerator
 
     /** \return Comment with program information */
     string getGeneratorComment();
+    
+    void insertLineNumber ();
 
   private:
 

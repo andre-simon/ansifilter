@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
----  ANSIFILTER MANUAL - Version 1.10  ------------------------ August 2014 ---
+---  ANSIFILTER MANUAL - Version 1.12  ------------------------- March 2015 ---
 -------------------------------------------------------------------------------
 
 OSI Certified Open Source Software
@@ -28,33 +28,37 @@ Invocation: ansifilter [OPTION]... [FILE]...
 ansifilter handles text files containing ANSI terminal escape codes.
 
 File handling:
-  -i, --input=<file>   name of single input file
-  -o, --output=<file>  name of single output file
-  -O, --outdir=<dir>   name of output directory
-  -t, --tail           Continue reading after end-of-file (like tail -f)
-                       Use system tail if available
+  -i, --input=<file>     name of single input file
+  -o, --output=<file>    name of single output file
+  -O, --outdir=<dir>     name of output directory
+  -t, --tail             Continue reading after end-of-file (like tail -f)
+                         Use system tail if available
 
 Output text formats:
-  -T, --text (default) Output text
-  -H, --html           Output HTML
-  -M, --pango          Output Pango Markup
-  -L, --latex          Output LaTeX
-  -P, --tex            Output Plain TeX
-  -R, --rtf            Output RTF
-  -B, --bbcode         Output BBCode
+  -T, --text (default)   Output text
+  -H, --html             Output HTML
+  -M, --pango            Output Pango Markup
+  -L, --latex            Output LaTeX
+  -P, --tex              Output Plain TeX
+  -R, --rtf              Output RTF
+  -B, --bbcode           Output BBCode
 
-Formatted text options:
-  -d, --doc-title      Set HTML/LaTeX document title
-  -e, --encoding       Set HTML encoding (must match input file encoding)
-  -f, --fragment       Omit HTML header and footer
-  -F, --font=<font>    Set HTML/RTF font face
-  -r, --style-ref=<rf> Set HTML/TeX/LaTeX stylesheet path
-  -s, --font-size=<fs> Set HTML/RTF font size
-  -p, --plain          Ignore ANSI formatting information
+Format options:
+  -d, --doc-title        Set HTML/LaTeX document title
+  -e, --encoding         Set HTML encoding (must match input file encoding)
+  -f, --fragment         Omit HTML header and footer
+  -F, --font=<font>      Set HTML/RTF font face
+  -l, --line-numbers     print line numbers in output file
+  -r, --style-ref=<rf>   Set HTML/TeX/LaTeX stylesheet path
+  -s, --font-size=<fs>   Set HTML/RTF font size
+  -p, --plain            Ignore ANSI formatting information
+  -w, --wrap=<len>       wrap long lines
+      --wrap-no-numbers  omit line numbers of wrapped lines (assumes -l)
 
 Other options:
-  -h, --help           Print help
-  -v, --version        Print version and license info
+  -h, --help             Print help
+  -v, --version          Print version and license info
+
 
 
 Examples:

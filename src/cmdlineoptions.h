@@ -92,6 +92,13 @@ class CmdLineOptions
     /** \return True if input files should be raed after EOF occoured */
     bool ignoreInputEOF() const;
 
+    /** \return True if line numbers should be printed */
+
+    bool showLineNumbers() const;
+
+    /** \return True if line numbers should be printed */
+    bool wrapNoNumbers() const;
+    
     /** \return Document title */
      string getDocumentTitle() const ;
      
@@ -111,6 +118,8 @@ class CmdLineOptions
     bool opt_fragment;
     bool opt_plain;
     bool opt_ignoreEOF;
+    bool opt_linenum;
+    bool opt_wrapNoNum;
 
     // name of single output file
     string outFilename;

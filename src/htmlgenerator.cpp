@@ -161,4 +161,37 @@ string HtmlGenerator::maskCharacter(unsigned char c)
     }
 }
 
+
+    void HtmlGenerator::insertLineNumber ()
+    {
+
+      if ( showLineNumbers )
+      {
+	*out<< getCloseTag();
+       
+	ostringstream lnum; 
+        lnum << setw ( 5 /*getLineNumberWidth()*/ ) << right;
+        if( numberCurrentLine )
+        {
+            /*if ( lineNumberFillZeroes )
+            {
+                os.fill ( '0' );
+            }*/
+	    
+	    lnum<<lineNumber;
+	    
+	     *out<< "<a id=\"l_"
+                << lineNumber
+                << "\" style=\"color:gray;\">";
+	   
+            *out<<lnum.str() <<"</a> "/*+lineNumberOffset*/;
+        } else {
+            *out<< lnum.str();
+        }
+
+       *out<< getOpenTag();
+      }
+      
+    }
+
 }

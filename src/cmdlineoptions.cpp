@@ -41,6 +41,8 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     opt_fragment(false),
     opt_plain(false),
     opt_ignoreEOF(false),
+    opt_linenum(false),
+    opt_wrapNoNum(false),
     encodingName("ISO-8859-1"),
     font("Courier New"),
     fontSize("10pt"),
@@ -57,6 +59,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     { 'H', "html",      Arg_parser::no  },
     { 'M', "pango",      Arg_parser::no  },
     { 'i', "input",     Arg_parser::yes },
+    { 'l', "line-numbers",     Arg_parser::no },
     { 'L', "latex",     Arg_parser::no  },
     { 'P', "tex",       Arg_parser::no  },
     { 'B', "bbcode",    Arg_parser::no  },
@@ -71,6 +74,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     { 'w', "wrap",      Arg_parser::yes },
     { 'v', "version",   Arg_parser::no  },
     { 'V', "version",   Arg_parser::no  },
+    { 'W', "wrap-no-numbers",   Arg_parser::no  },
     {  0,  0,           Arg_parser::no  } };
 
   Arg_parser parser( argc, argv, options );
@@ -136,6 +140,10 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
       case 'i':
         inputFileNames.push_back( arg );
         break;
+      case 'l':
+        opt_linenum=true;
+        break;
+	
       case 'L':
         outputType = ansifilter::LATEX;
         break;
@@ -175,6 +183,10 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         break;
       case 'w':
 	wrapLineLen=atoi(arg.c_str())-1;
+	break;
+      case 'W':
+	opt_wrapNoNum=true;
+	break;
       default:
         cerr << "ansifilter: option parsing failed" << endl;
       }
@@ -245,6 +257,10 @@ bool CmdLineOptions::fragmentOutput()const{
     return opt_fragment;
 }
 
+bool CmdLineOptions::showLineNumbers()const{
+    return opt_linenum;
+}
+
 string CmdLineOptions::getOutFileSuffix()const{
     switch (outputType){
       case ansifilter::HTML: return ".html";
@@ -276,6 +292,10 @@ bool CmdLineOptions::plainOutput() const {
 
 bool CmdLineOptions::ignoreInputEOF() const {
   return opt_ignoreEOF;
+}
+
+bool CmdLineOptions::wrapNoNumbers() const {
+  return opt_wrapNoNum;
 }
 
 bool CmdLineOptions::omitEncoding() const{

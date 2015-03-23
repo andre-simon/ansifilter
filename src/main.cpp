@@ -53,31 +53,33 @@ void ANSIFilterApp::printHelp()
     cout << "Invocation: ansifilter [OPTION]... [FILE]...\n\n";
     cout << "ansifilter handles text files containing ANSI terminal escape codes.\n";
     cout << "\nFile handling:\n";
-    cout << "  -i, --input=<file>   name of single input file\n";
-    cout << "  -o, --output=<file>  name of single output file\n";
-    cout << "  -O, --outdir=<dir>   name of output directory\n";
-    cout << "  -t, --tail           Continue reading after end-of-file (like tail -f)\n";
-    cout << "                       Use system tail if available\n";
+    cout << "  -i, --input=<file>     name of single input file\n";
+    cout << "  -o, --output=<file>    name of single output file\n";
+    cout << "  -O, --outdir=<dir>     name of output directory\n";
+    cout << "  -t, --tail             Continue reading after end-of-file (like tail -f)\n";
+    cout << "                         Use system tail if available\n";
     cout << "\nOutput text formats:\n";
-    cout << "  -T, --text (default) Output text\n";
-    cout << "  -H, --html           Output HTML\n";
-    cout << "  -M, --pango          Output Pango Markup\n";
-    cout << "  -L, --latex          Output LaTeX\n";
-    cout << "  -P, --tex            Output Plain TeX\n";
-    cout << "  -R, --rtf            Output RTF\n";
-    cout << "  -B, --bbcode         Output BBCode\n";
+    cout << "  -T, --text (default)   Output text\n";
+    cout << "  -H, --html             Output HTML\n";
+    cout << "  -M, --pango            Output Pango Markup\n";
+    cout << "  -L, --latex            Output LaTeX\n";
+    cout << "  -P, --tex              Output Plain TeX\n";
+    cout << "  -R, --rtf              Output RTF\n";
+    cout << "  -B, --bbcode           Output BBCode\n";
     cout << "\nFormat options:\n";
-    cout << "  -d, --doc-title      Set HTML/LaTeX document title\n";
-    cout << "  -e, --encoding       Set HTML encoding (must match input file encoding)\n";
-    cout << "  -f, --fragment       Omit HTML header and footer\n";
-    cout << "  -F, --font=<font>    Set HTML/RTF font face\n";
-    cout << "  -r, --style-ref=<rf> Set HTML/TeX/LaTeX stylesheet path\n";
-    cout << "  -s, --font-size=<fs> Set HTML/RTF font size\n";
-    cout << "  -p, --plain          Ignore ANSI formatting information\n";
-    cout << "  -w, --wrap=<len>     wrap long lines\n";
+    cout << "  -d, --doc-title        Set HTML/LaTeX document title\n";
+    cout << "  -e, --encoding         Set HTML encoding (must match input file encoding)\n";
+    cout << "  -f, --fragment         Omit HTML header and footer\n";
+    cout << "  -F, --font=<font>      Set HTML/RTF font face\n";
+    cout << "  -l, --line-numbers     print line numbers in output file\n";
+    cout << "  -r, --style-ref=<rf>   Set HTML/TeX/LaTeX stylesheet path\n";
+    cout << "  -s, --font-size=<fs>   Set HTML/RTF font size\n";
+    cout << "  -p, --plain            Ignore ANSI formatting information\n";
+    cout << "  -w, --wrap=<len>       wrap long lines\n";
+    cout << "      --wrap-no-numbers  omit line numbers of wrapped lines (assumes -l)\n";
     cout << "\nOther options:\n";
-    cout << "  -h, --help           Print help\n";
-    cout << "  -v, --version        Print version and license info\n";
+    cout << "  -h, --help             Print help\n";
+    cout << "  -v, --version          Print version and license info\n";
     cout << "\nExamples:\n";
     cout << "ansifilter -i input.ansi -o output.txt\n";
     cout << "ansifilter *.txt\n";
@@ -143,7 +145,9 @@ int ANSIFilterApp::run( const int argc, const char *argv[] ){
      generator->setFontSize(options.getFontSize());
      generator->setStyleSheet(options.getStyleSheetPath());
      generator->setPreformatting(ansifilter::WRAP_SIMPLE, options.getWrapLineLength());
-
+     generator->setShowLineNumbers(options.showLineNumbers());
+     generator->setWrapNoNumbers(!options.wrapNoNumbers());
+     
      ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
 
      if (error==ansifilter::BAD_INPUT){

@@ -107,7 +107,13 @@ namespace ansifilter
 	    fontSize("10pt"),
 	    outputType(type),
 	    ignoreFormatting(false),
-	    readAfterEOF(false)
+	    readAfterEOF(false),
+	    lineNumberWidth ( 5 ),
+	    lineNumber ( 0 ),
+	    showLineNumbers ( false ),
+	    numberWrappedLines ( true ), //TODO add option
+	    numberCurrentLine(false)
+	    
     {
 	elementStyle.setFgColour("#000000");
 	//elementStyle.setBgColour("#ffffff");
@@ -116,10 +122,22 @@ namespace ansifilter
     CodeGenerator::~CodeGenerator()
     {}
 
+    
+    void CodeGenerator::setShowLineNumbers(bool flag)
+    {
+	showLineNumbers=flag;
+    }
+    
     void CodeGenerator::setFragmentCode(bool flag)
     {
 	fragmentOutput=flag;
     }
+    
+    void CodeGenerator::setWrapNoNumbers(bool flag)
+    {
+      numberWrappedLines = flag;
+    }
+
 
     bool CodeGenerator::getFragmentCode()
     {
@@ -579,6 +597,28 @@ namespace ansifilter
 	return true;
     }
 
+    
+    void CodeGenerator::insertLineNumber ()
+    {
+      ostringstream os;
+      if ( showLineNumbers )
+      {
+        os << setw ( 5 /*getLineNumberWidth()*/ ) << right;
+        if( numberCurrentLine )
+        {
+            /*if ( lineNumberFillZeroes )
+            {
+                os.fill ( '0' );
+            }*/
+            os << lineNumber /*+lineNumberOffset*/;
+        } else {
+            os << "";
+        }
+        os<< " ";
+      }
+      *out<< os.str();
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
 
     void CodeGenerator::processRootState()
@@ -611,12 +651,21 @@ namespace ansifilter
 		    {
 			    eof=!getline(*in, line);
 			    preFormatter.setLine ( line );
+			    ++lineNumber;
+			    numberCurrentLine = true;
+		    } else {
+			    if(numberWrappedLines)
+			    ++lineNumber;
+			    numberCurrentLine = numberWrappedLines;
 		    }
+
 		    line = preFormatter.getNextLine();
 	    }
 	    else
 	    {
 		    eof=!getline(*in, line);
+		    ++lineNumber;
+		    numberCurrentLine = true;
 	    }
 
 	  
@@ -642,6 +691,8 @@ namespace ansifilter
 	    }
 	    else
 	    {
+	      
+	      	 insertLineNumber();
 		i=0;
 		size_t seqEnd=string::npos;
 		while (i <line.length() )
@@ -695,6 +746,7 @@ namespace ansifilter
 		    }
 		}
 		*out << newLineTag;
+	
 	    }
 	}
 	if (tagOpen){
