@@ -105,15 +105,16 @@ namespace ansifilter
 	    fragmentOutput(false),
 	    font("Courier New"),
 	    fontSize("10pt"),
-	    outputType(type),
-	    ignoreFormatting(false),
-	    readAfterEOF(false),
+	    
 	    lineNumberWidth ( 5 ),
 	    lineNumber ( 0 ),
 	    showLineNumbers ( false ),
 	    numberWrappedLines ( true ), //TODO add option
-	    numberCurrentLine(false)
+	    numberCurrentLine(false),
+	    outputType(type),
 	    
+	    ignoreFormatting(false),
+	    readAfterEOF(false)
     {
 	elementStyle.setFgColour("#000000");
 	//elementStyle.setBgColour("#ffffff");

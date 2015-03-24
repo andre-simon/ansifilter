@@ -169,8 +169,8 @@ void MyDialog::showFile(const QString & inputFileName){
 
 void MyDialog::on_pbAbout_clicked(){
     QMessageBox::information(this,
-    "ANSIFilter Information", "ANSIFilter GUI Version 1.9\n"
-    "(c) 2007-2014 Andre Simon\n\n"
+    "ANSIFilter Information", "ANSIFilter GUI Version 1.12\n"
+    "(c) 2007-2015 Andre Simon\n\n"
 	"Released under the terms of the GNU GPL license.\n\n"
 	"andre dot simon1 at gmx dot de\n"
         "See www.andre-simon.de for updates."

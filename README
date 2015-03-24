@@ -44,6 +44,7 @@ Output text formats:
   -B, --bbcode           Output BBCode
 
 Format options:
+  -a, --anchors          add HTML line anchors (assumes -l)
   -d, --doc-title        Set HTML/LaTeX document title
   -e, --encoding         Set HTML encoding (must match input file encoding)
   -f, --fragment         Omit HTML header and footer

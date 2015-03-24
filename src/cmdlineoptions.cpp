@@ -43,6 +43,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     opt_ignoreEOF(false),
     opt_linenum(false),
     opt_wrapNoNum(false),
+    opt_anchors(false),
     encodingName("ISO-8859-1"),
     font("Courier New"),
     fontSize("10pt"),
@@ -51,6 +52,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
 
   const Arg_parser::Option options[] =
     {
+    { 'a', "anchors",   Arg_parser::no },
     { 'd', "doc-title", Arg_parser::yes },
     { 'e', "encoding",  Arg_parser::yes },
     { 'f', "fragment",  Arg_parser::no  },
@@ -116,7 +118,10 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
 				}
 				break;
 	*/
-       case 'B':
+      case 'a':
+        opt_anchors = true;
+        break;
+      case 'B':
         outputType = ansifilter::BBCODE;
         break;
       case 'd':
@@ -298,6 +303,9 @@ bool CmdLineOptions::wrapNoNumbers() const {
   return opt_wrapNoNum;
 }
 
+bool CmdLineOptions::addAnchors() const {
+  return opt_anchors;
+}
 bool CmdLineOptions::omitEncoding() const{
     return StringTools::lowerCase(encodingName)=="none";
 }

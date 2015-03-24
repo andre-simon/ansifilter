@@ -67,6 +67,7 @@ void ANSIFilterApp::printHelp()
     cout << "  -R, --rtf              Output RTF\n";
     cout << "  -B, --bbcode           Output BBCode\n";
     cout << "\nFormat options:\n";
+    cout << "  -a, --anchors          add HTML line anchors (assumes -l)\n";
     cout << "  -d, --doc-title        Set HTML/LaTeX document title\n";
     cout << "  -e, --encoding         Set HTML encoding (must match input file encoding)\n";
     cout << "  -f, --fragment         Omit HTML header and footer\n";
@@ -147,6 +148,7 @@ int ANSIFilterApp::run( const int argc, const char *argv[] ){
      generator->setPreformatting(ansifilter::WRAP_SIMPLE, options.getWrapLineLength());
      generator->setShowLineNumbers(options.showLineNumbers());
      generator->setWrapNoNumbers(!options.wrapNoNumbers());
+     generator->setAddAnchors(options.addAnchors());
      
      ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
 

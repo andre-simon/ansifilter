@@ -1,5 +1,13 @@
 Ansifilter ChangeLog
 
+23.03.2015
+
+ansifilter 1.12
+
+-added options --line-numbers, --wrap-no-numbers, --anchors 
+  (suggested by Jens Schleusener)
+
+---
 20.10.2014
 
 ansifilter 1.11

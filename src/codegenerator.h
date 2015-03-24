@@ -1,7 +1,7 @@
 /***************************************************************************
                           codegenerator.h  -  description
                              -------------------
-    copyright            : (C) 2007 by Andre Simon
+    copyright            : (C) 2007-2015 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -149,6 +149,8 @@ class CodeGenerator
 
    void setPlainOutput(bool b) {ignoreFormatting=b;}
 
+    void setAddAnchors(bool b) {addAnchors=b;}
+   
    void setContinueReading(bool b) {readAfterEOF=b;}
 
    bool getPlainOutput() {return ignoreFormatting;}
@@ -198,13 +200,19 @@ protected:
     /** The base font size to use */
     string fontSize ;
     
+    /** Style sheet path */
     string styleSheetPath;
     
-        unsigned int lineNumberWidth;
-    unsigned int lineNumber;
-    bool showLineNumbers, numberWrappedLines, numberCurrentLine ;
+    /** Width of line numbers */
+    unsigned int lineNumberWidth;
     
-
+    /** Current line number */
+    unsigned int lineNumber;
+    bool showLineNumbers,      ///< show line numbers
+	  numberWrappedLines,  ///< also show number of wrapped lines
+	  numberCurrentLine,   ///< output number of current line
+	  addAnchors;          ///< add HTML anchor to line number
+    
     /** Processes origin state */
     void processRootState();
 
@@ -271,8 +279,6 @@ private:
     bool ignoreFormatting; ///< ignore color and font face information
     bool readAfterEOF;     ///< continue reading after EOF occoured
     
-
-
     /** convert an xterm color value (0-253) to 3 unsigned chars rgb
         @param color xterm color
         @param rgb RGB destination string */

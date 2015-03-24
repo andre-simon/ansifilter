@@ -96,6 +96,8 @@ class CmdLineOptions
 
     bool showLineNumbers() const;
 
+    bool addAnchors() const;
+    
     /** \return True if line numbers should be printed */
     bool wrapNoNumbers() const;
     
@@ -120,7 +122,8 @@ class CmdLineOptions
     bool opt_ignoreEOF;
     bool opt_linenum;
     bool opt_wrapNoNum;
-
+    bool opt_anchors;
+    
     // name of single output file
     string outFilename;
     string docTitle;

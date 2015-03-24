@@ -180,11 +180,14 @@ string HtmlGenerator::maskCharacter(unsigned char c)
 	    
 	    lnum<<lineNumber;
 	    
-	     *out<< "<a id=\"l_"
-                << lineNumber
-                << "\" style=\"color:gray;\">";
+	     *out<< "<span ";
+	     
+	     if (addAnchors){
+	      *out<< " id=\"l_" << lineNumber<< "\" ";
+	     }
+             *out<< "style=\"color:gray;\">";
 	   
-            *out<<lnum.str() <<"</a> "/*+lineNumberOffset*/;
+            *out<<lnum.str() <<"</span> "/*+lineNumberOffset*/;
         } else {
             *out<< lnum.str();
         }
