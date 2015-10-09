@@ -1,0 +1,20 @@
+make tcl ;# assumes a Tcl dev environment
+
+On Thursday, October 8, 2015 at 4:54:25 PM UTC+2, heinrichmartin wrote on comp.lang.tcl:
+> Hi,
+> 
+> ansifilter is a nice little tool[1], written by André Simon. It removes or converts ansi escape sequences and has various output formats. I wanted to wrap the C++ code in a Tcl package to provide channel transformers[2].
+> 
+> I started with "Hello World as a C extension"[3] and successfully compiled and used that code with Tcl8.6 and g++. The current status is not even close to a generic package, but my use case was only "ansifilter -fL" - so further effort seems unlikely at the moment: time to share it :-)
+> 
+> The .src.rpm[4] contains the ansifilter 1.12 source and a patch that adds the Tcl-code and make-target. You can use a rpmbuild environment "rpmbuild -ba SPECS/ansifilter.spec" or just extract, patch and "make tcl".
+> 
+> src/tcl/ansifilter.c is really just a start though. At least, it seems not to leak memory (converted random numbers to LaTeX code for 30min with not change in ps -o rss,vsz).
+> 
+> Comments are welcome!
+> Martin
+> 
+> [1] http://andre-simon.de/zip/download.php#ansifilter
+> [2] http://core.tcl.tk/tcllib/doc/trunk/embedded/www/tcllib/files/modules/virtchannel_core/transformcore.html
+> [3] http://wiki.tcl.tk/11153
+> [4] https://app.box.com/s/yxyu45ha19m6bzuyt4yk869675x3nq5v

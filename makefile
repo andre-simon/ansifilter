@@ -34,6 +34,9 @@ all-gui gui:
 	${QMAKE} -makefile -o src/qt-gui/Makefile src/qt-gui/ansifilter-gui.pro
 	${MAKE} -C ./src/qt-gui -f ./Makefile
 
+all-tcl tcl:
+	${MAKE} -C ./src/tcl -f ./makefile
+
 install:
 	@echo "This script will install ansifilter in the following directories:"
 	@echo "Documentation directory: ${DESTDIR}${doc_dir}"
@@ -70,6 +73,7 @@ uninstall:
 
 clean:
 	$(MAKE) -C ./src -f ./makefile clean
+	$(MAKE) -C ./src/tcl -f ./makefile clean
 
 apidocs:
 	doxygen Doxyfile
