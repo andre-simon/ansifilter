@@ -48,8 +48,7 @@ class ReGroup;
 
 /** \brief Base class for escape sequence parsing.
 
-    The virtual class provides source code parsing functionality, based on
-    information stored in language definitions.<br>
+    The virtual class provides escape sequence parsing functionality.<br>
     The derived classes have to define the output format.<br>
     Codegenerator is a singleton class.
 
@@ -147,20 +146,29 @@ class CodeGenerator
     /** \param path style sheet path*/
     void setStyleSheet(const string & path);
 
+    /** \param b set to true if text formatting should be stripped */
    void setPlainOutput(bool b) {ignoreFormatting=b;}
 
+    /** \param b set to true if HTML anchors should be added to line numbers */
     void setAddAnchors(bool b) {addAnchors=b;}
    
+    /** \param b set to true if the input stream is not closed after reaching EOF */
    void setContinueReading(bool b) {readAfterEOF=b;}
 
+   /** \return plain outputting flag */
    bool getPlainOutput() {return ignoreFormatting;}
 
+   /** \return continue reading from input stream flag */
    bool getContinueReading() {return readAfterEOF;}
    
+    /** \param lineWrappingStyle wrapping style
+        \param lineLength maximum length  per wrapped text line */
    void setPreformatting ( WrapMode lineWrappingStyle,unsigned int lineLength);
    
+   /** \param b set to true if line numbers should be added */
    void setShowLineNumbers(bool flag);
 
+   /** \param b set to true if line numbers of wrapped lines should be omitted */
    void setWrapNoNumbers(bool flag);
    
 protected:

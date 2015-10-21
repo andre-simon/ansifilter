@@ -1,5 +1,13 @@
 Ansifilter ChangeLog
 
+21.10.2015
+
+ansifilter 1.13
+
+-fixed TeX output for cweb documents (patch by Ingo Krabbe)
+-added TCL extension in src/tcl (thanks to Martin Heinrich)
+
+---
 23.03.2015
 
 ansifilter 1.12

@@ -2,7 +2,7 @@
                      texgenerator.cpp  -  description
                              -------------------
 
-    copyright            : (C) 2008 by Andre Simon
+    copyright            : (C) 2008-2015 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -121,8 +121,8 @@ string TeXGenerator::maskCharacter(unsigned char c)
       return "{\\bf\\^{}}";
       break;
     case '_':
-      return "\\_{}";
-      break;
+      //return "\\_{}";
+      //break;
     case '&':
     case '$':
     case '#':
@@ -130,6 +130,7 @@ string TeXGenerator::maskCharacter(unsigned char c)
       {
         string m( "\\" );
         m += c;
+        m += "{}";
         return m;
       }
       break;

@@ -4,7 +4,7 @@
 
 CC=g++
 
-CFLAGS= -c -Wall -O2
+CFLAGS= -c -Wall -O2 -DNDEBUG
 
 LDFLAGS=
 

@@ -42,16 +42,16 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
 	dlg.cbIgnoreSequences->setChecked(settings.value("ignoreseq").toBool());
 	dlg.comboEncoding->setCurrentIndex(settings.value("encoding").toInt());
 	dlg.comboFont->setCurrentIndex(settings.value("font").toInt());
-    dlg.spinBoxWrap->setValue(settings.value("linewrap").toInt());
+        dlg.spinBoxWrap->setValue(settings.value("linewrap").toInt());
 	settings.endGroup();
 	settings.beginGroup("paths");
 	inputFileName = settings.value("infile").toString();
 	outputFileName = settings.value("outfile").toString();
 	settings.endGroup();
 	settings.beginGroup("window");
-    resize(settings.value("size", QSize(400, 400)).toSize());
-    move(settings.value("pos", QPoint(200, 200)).toPoint());
-    settings.endGroup();
+        resize(settings.value("size", QSize(400, 400)).toSize());
+        move(settings.value("pos", QPoint(200, 200)).toPoint());
+        settings.endGroup();
 }
 
  void MyDialog::closeEvent(QCloseEvent *event)
@@ -112,11 +112,11 @@ void MyDialog::on_pbSaveAs_clicked(){
 
     ansifilter::ParseError result= generator->generateFile( inputFileName.toStdString (), outFileName.toStdString () ) ;
     if (result==ansifilter::BAD_OUTPUT){
-      QMessageBox::warning(this, "IO Error", "Could not write output file");
+        QMessageBox::warning(this, "IO Error", "Could not write output file");
     } else if (result==ansifilter::BAD_INPUT){
-       QMessageBox::warning(this, "IO Error", "Could not read input file");
+        QMessageBox::warning(this, "IO Error", "Could not read input file");
     } else {
-       outputFileName = outFileName;
+        outputFileName = outFileName;
     }
 }
 
@@ -169,7 +169,7 @@ void MyDialog::showFile(const QString & inputFileName){
 
 void MyDialog::on_pbAbout_clicked(){
     QMessageBox::information(this,
-    "ANSIFilter Information", "ANSIFilter GUI Version 1.12\n"
+    "ANSIFilter Information", "ANSIFilter GUI Version 1.13\n"
     "(c) 2007-2015 Andre Simon\n\n"
 	"Released under the terms of the GNU GPL license.\n\n"
 	"andre dot simon1 at gmx dot de\n"
