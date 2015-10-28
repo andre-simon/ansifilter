@@ -2,7 +2,7 @@
                      htmlgenerator.cpp  -  description
                              -------------------
 
-    copyright            : (C) 2007-2011 by Andre Simon
+    copyright            : (C) 2007-2015 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -99,21 +99,29 @@ string HtmlGenerator::getGeneratorComment(){
 string HtmlGenerator::getHeader()
 {
   ostringstream os;
-  os << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">"
+  os << "<!DOCTYPE html>"
      << "\n<html>\n<head>\n";
   if (encodingDefined()){
-     os << "<meta http-equiv=\"content-type\" content=\"text/html; charset="
+     os << "<meta charset=\""
         << encoding
         << "\">\n";
   }
   if (!styleSheetPath.empty()){
-   os <<  "<link rel=\"stylesheet\" type=\"text/css\" href=\""<<styleSheetPath<<"\">\n";
+   os << "<link rel=\"stylesheet\" type=\"text/css\" href=\""
+      << styleSheetPath << "\">\n";
   }
   os << "<title>" << docTitle << "</title>\n";
-  os << "</head>\n<body>\n<pre style=\"";
-  os << "font-family:"<<font << ";";
-  os << "font-size:"<<fontSize << ";";
-  os << "\">";
+  os << "</head>\n<body>\n";
+  
+  if (!styleSheetPath.empty()){
+    os << "<pre>";
+  } else {
+    os << "<pre style=\"";
+    os << "font-family:"<< font << ";";
+    os << "font-size:"<< fontSize << ";";
+    os << "\">";
+  }
+  
   return os.str();
 }
 
@@ -167,32 +175,25 @@ string HtmlGenerator::maskCharacter(unsigned char c)
 
       if ( showLineNumbers )
       {
-	*out<< getCloseTag();
+	//*out << getCloseTag();
        
 	ostringstream lnum; 
-        lnum << setw ( 5 /*getLineNumberWidth()*/ ) << right;
+        lnum << setw ( 5 ) << right;
         if( numberCurrentLine )
-        {
-            /*if ( lineNumberFillZeroes )
-            {
-                os.fill ( '0' );
-            }*/
-	    
-	    lnum<<lineNumber;
-	    
-	     *out<< "<span ";
+        {    
+	     lnum << lineNumber;   
+	     *out << "<span";
 	     
 	     if (addAnchors){
-	      *out<< " id=\"l_" << lineNumber<< "\" ";
+	      *out << " id=\"l_" << lineNumber<< "\" ";
 	     }
-             *out<< "style=\"color:gray;\">";
+             *out << " style=\"color:gray;font-weight:normal;\">";
 	   
-            *out<<lnum.str() <<"</span> "/*+lineNumberOffset*/;
+             *out <<lnum.str() <<"</span> ";
         } else {
-            *out<< lnum.str();
+             *out << lnum.str();
         }
-
-       *out<< getOpenTag();
+       // *out << getOpenTag();
       }
       
     }
