@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 print ( "\033[0mAll attributes off\033[0m\n")
-print ( "\033[1;4mBold\033[0m\n")
+print ( "\033[1;4mBold\nBold\nBold\033[0m\n")
 print ( "\033[4mUnderline\033[0m\n")
 print ( "\033[3mItalic\033[0m\n")
 print ( "\033[5mBlink\033[0m\n")

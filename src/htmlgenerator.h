@@ -65,6 +65,8 @@ class HtmlGenerator  : public ansifilter::CodeGenerator
 
     string getOpenTag();
     string getCloseTag();
+    
+    bool tagIsOpen;
 
     /** Print document header
     */

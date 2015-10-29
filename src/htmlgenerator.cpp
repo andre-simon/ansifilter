@@ -36,7 +36,8 @@ namespace ansifilter {
 
 HtmlGenerator::HtmlGenerator ():
   CodeGenerator(HTML),
-  fileSuffix(".html")
+  fileSuffix(".html"),
+  tagIsOpen(false)
 {
   newLineTag="\n";
   styleCommentOpen="/*";
@@ -45,47 +46,54 @@ HtmlGenerator::HtmlGenerator ():
 
 string HtmlGenerator::getOpenTag() 
 {
-	ostringstream os;
-	os<< "<span style=\"";
-
+	ostringstream fmtStream;
+	
 	if (elementStyle.isBold()) {
-		os<< "font-weight:bold;";
+		fmtStream<< "font-weight:bold;";
 	}
 	if (elementStyle.isItalic()) {
-		os<< "font-style:italic;";
+		fmtStream<< "font-style:italic;";
 	}
 	if (elementStyle.isBlink()) {
-		os<< "text-decoration:blink;";
+		fmtStream<< "text-decoration:blink;";
 	}
 	if (elementStyle.isUnderline()) {
-		os<< "text-decoration:underline;";
+		fmtStream<< "text-decoration:underline;";
 	}
 	if (elementStyle.isConceal()) {
-		os<< "display:none;";
+		fmtStream<< "display:none;";
 	}
 
 	if (elementStyle.isFgColorSet()){
-		os << "color:#"
-		<< elementStyle.getFgColour().getRed(HTML)
-		<< elementStyle.getFgColour().getGreen(HTML)
-		<< elementStyle.getFgColour().getBlue(HTML)
-		<< ";";
+		fmtStream << "color:#"
+			  << elementStyle.getFgColour().getRed(HTML)
+			  << elementStyle.getFgColour().getGreen(HTML)
+			  << elementStyle.getFgColour().getBlue(HTML)
+			  << ";";
 	}
 	
 	if (elementStyle.isBgColorSet()){
-	    os <<"background-color:#"
-	    << elementStyle.getBgColour().getRed(HTML) 
-	    << elementStyle.getBgColour().getGreen(HTML)
-	    << elementStyle.getBgColour().getBlue(HTML)
-	    <<";";
+	    fmtStream <<"background-color:#"
+		      << elementStyle.getBgColour().getRed(HTML) 
+		      << elementStyle.getBgColour().getGreen(HTML)
+		      << elementStyle.getBgColour().getBlue(HTML)
+		      <<";";
 	}
 
-	os<<"\">";
-	return os.str();
+	string fmt  = fmtStream.str();
+	tagIsOpen = fmt.size()>0;
+	if (tagIsOpen){
+	  ostringstream spanTag;
+	  spanTag<< "<span style=\""<<fmt<<"\">";
+	  return spanTag.str();
+	}
+	return "";
 }
 
 string HtmlGenerator::getCloseTag()  {
-  return "</span>";
+  string retVal = tagIsOpen ? "</span>"  : "";
+  tagIsOpen = false;
+  return retVal;
 }
 
 string HtmlGenerator::getGeneratorComment(){
@@ -128,6 +136,7 @@ string HtmlGenerator::getHeader()
 string HtmlGenerator::getFooter()
 {
   string footer;
+  footer += getCloseTag();
   footer += "</pre>" + getGeneratorComment();
   return footer;
 }
@@ -175,7 +184,7 @@ string HtmlGenerator::maskCharacter(unsigned char c)
 
       if ( showLineNumbers )
       {
-	//*out << getCloseTag();
+	*out << getCloseTag();
        
 	ostringstream lnum; 
         lnum << setw ( 5 ) << right;
@@ -187,13 +196,13 @@ string HtmlGenerator::maskCharacter(unsigned char c)
 	     if (addAnchors){
 	      *out << " id=\"l_" << lineNumber<< "\" ";
 	     }
-             *out << " style=\"color:gray;font-weight:normal;\">";
+             *out << " style=\"color:gray;\">";
 	   
              *out <<lnum.str() <<"</span> ";
         } else {
              *out << lnum.str();
         }
-       // *out << getOpenTag();
+        *out << getOpenTag();
       }
       
     }
