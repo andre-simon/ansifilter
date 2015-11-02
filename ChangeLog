@@ -7,7 +7,7 @@ ansifilter 1.13
 
 -fixed missing close tags in HTML output
 -fixed TeX output for cweb documents (patch by Ingo Krabbe)
--HTML output size reduced 
+-HTML and LaTeX output size reduced 
 -HTML output adjusted to HTML5 doctype
 -added TCL extension in src/tcl (thanks to Martin Heinrich)
 

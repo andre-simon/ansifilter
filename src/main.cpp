@@ -37,15 +37,15 @@ using namespace std;
 
 void ANSIFilterApp::printVersionInfo()
 {
-  cout << "\n ansifilter version "
-       << ANSIFILTER_VERSION
-       << "\n Copyright (C) 2007-2015 Andre Simon <andre.simon1 at gmx.de>"
-       << "\n\n Argparser class"
-       << "\n Copyright (C) 2006-2008 Antonio Diaz Diaz <ant_diaz at teleline.es>"
-       << "\n\n This software is released under the terms of the GNU General "
-       << "Public License."
-       << "\n For more information about these matters, see the file named "
-       << "COPYING.\n";
+    cout << "\n ansifilter version "
+         << ANSIFILTER_VERSION
+         << "\n Copyright (C) 2007-2015 Andre Simon <andre.simon1 at gmx.de>"
+         << "\n\n Argparser class"
+         << "\n Copyright (C) 2006-2008 Antonio Diaz Diaz <ant_diaz at teleline.es>"
+         << "\n\n This software is released under the terms of the GNU General "
+         << "Public License."
+         << "\n For more information about these matters, see the file named "
+         << "COPYING.\n";
 }
 
 void ANSIFilterApp::printHelp()
@@ -89,83 +89,85 @@ void ANSIFilterApp::printHelp()
     cout << "For updates see " ANSIFILTER_URL "\n";
 }
 
-int ANSIFilterApp::run( const int argc, const char *argv[] ){
+int ANSIFilterApp::run( const int argc, const char *argv[] )
+{
 
-  CmdLineOptions options(argc, argv);
+    CmdLineOptions options(argc, argv);
 
-  if (options.printVersion()) {
-    printVersionInfo();
-    return EXIT_SUCCESS;
-  }
+    if (options.printVersion()) {
+        printVersionInfo();
+        return EXIT_SUCCESS;
+    }
 
-  if  (options.printHelp())  {
-    printHelp();
-    return EXIT_SUCCESS;
-  }
+    if  (options.printHelp())  {
+        printHelp();
+        return EXIT_SUCCESS;
+    }
 
-   const  vector <string> inFileList=options.getInputFileNames();
-   auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(options.getOutputType()));
+    const  vector <string> inFileList=options.getInputFileNames();
+    auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(options.getOutputType()));
 
-  string outDirectory = options.getOutDirectory();
-/*
-  if (!outDirectory.empty() && !options.quietMode() && !dirstr::directory_exists(outDirectory) ){
-     cerr << "highlight: Output directory \""
-          << outDirectory
-	  << "\" does not exist.\n";
-    // highlight::CodeGenerator::deleteInstance();
-     return EXIT_FAILURE;
-  }
-*/
-  unsigned int fileCount=inFileList.size(), i=0;
-  string::size_type pos=0;
-  string inFileName, outFilePath;
-  bool failure=false;
+    string outDirectory = options.getOutDirectory();
+    /*
+      if (!outDirectory.empty() && !options.quietMode() && !dirstr::directory_exists(outDirectory) ){
+         cerr << "highlight: Output directory \""
+              << outDirectory
+    	  << "\" does not exist.\n";
+        // highlight::CodeGenerator::deleteInstance();
+         return EXIT_FAILURE;
+      }
+    */
+    unsigned int fileCount=inFileList.size(), i=0;
+    string::size_type pos=0;
+    string inFileName, outFilePath;
+    bool failure=false;
 
-  while (i < fileCount && !failure) {
+    while (i < fileCount && !failure) {
 
-    pos=(inFileList[i]).find_last_of(Platform::pathSeparator);
-    inFileName = inFileList[i].substr(pos+1);
+        pos=(inFileList[i]).find_last_of(Platform::pathSeparator);
+        inFileName = inFileList[i].substr(pos+1);
 
-    if (fileCount>1){
+        if (fileCount>1) {
 
-      outFilePath = outDirectory;
-      outFilePath += inFileName;
-      outFilePath += options.getOutFileSuffix();
-     } else {
-        outFilePath = options.getSingleOutFilename();
-     }
+            outFilePath = outDirectory;
+            outFilePath += inFileName;
+            outFilePath += options.getOutFileSuffix();
+        } else {
+            outFilePath = options.getSingleOutFilename();
+        }
 
-     generator->setTitle(options.getDocumentTitle().empty()?
-                    inFileList[i]:options.getDocumentTitle());
+        generator->setTitle(options.getDocumentTitle().empty()?
+                            inFileList[i]:options.getDocumentTitle());
 
-     generator->setEncoding(options.getEncoding());
-     generator->setFragmentCode(options.fragmentOutput());
-     generator->setPlainOutput(options.plainOutput());
-     generator->setContinueReading(options.ignoreInputEOF());
-     generator->setFont(options.getFont());
-     generator->setFontSize(options.getFontSize());
-     generator->setStyleSheet(options.getStyleSheetPath());
-     generator->setPreformatting(ansifilter::WRAP_SIMPLE, options.getWrapLineLength());
-     generator->setShowLineNumbers(options.showLineNumbers());
-     generator->setWrapNoNumbers(!options.wrapNoNumbers());
-     generator->setAddAnchors(options.addAnchors());
-     
-     ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
+        generator->setEncoding(options.getEncoding());
+        generator->setFragmentCode(options.fragmentOutput());
+        generator->setPlainOutput(options.plainOutput());
+        generator->setContinueReading(options.ignoreInputEOF());
+        generator->setFont(options.getFont());
+        generator->setFontSize(options.getFontSize());
+        generator->setStyleSheet(options.getStyleSheetPath());
+        generator->setPreformatting(ansifilter::WRAP_SIMPLE, options.getWrapLineLength());
+        generator->setShowLineNumbers(options.showLineNumbers());
+        generator->setWrapNoNumbers(!options.wrapNoNumbers());
+        generator->setAddAnchors(options.addAnchors());
 
-     if (error==ansifilter::BAD_INPUT){
-       std::cerr <<"could not read input: "<<inFileList[i]<<"\n";
-        failure=true;
-     } else if (error==ansifilter::BAD_OUTPUT){
-       std::cerr <<"could not write output: "<< outFilePath <<"\n";
-       failure=true;
-     }
-     ++i;
-   }
-   return (failure)?EXIT_FAILURE:EXIT_SUCCESS;
+        ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
+
+        if (error==ansifilter::BAD_INPUT) {
+            std::cerr <<"could not read input: "<<inFileList[i]<<"\n";
+            failure=true;
+        } else if (error==ansifilter::BAD_OUTPUT) {
+            std::cerr <<"could not write output: "<< outFilePath <<"\n";
+            failure=true;
+        }
+        ++i;
+    }
+    return (failure)?EXIT_FAILURE:EXIT_SUCCESS;
 }
 
-int main( const int argc, const char *argv[] ) {
+int main( const int argc, const char *argv[] )
+{
 
-  ANSIFilterApp app;
-  return app.run(argc, argv);
+    ANSIFilterApp app;
+    return app.run(argc, argv);
 }

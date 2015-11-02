@@ -31,7 +31,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "codegenerator.h"
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 /**
    \brief This class generates TeX.
@@ -44,21 +45,21 @@ namespace ansifilter {
 */
 
 class TeXGenerator  : public ansifilter::CodeGenerator
-  {
-  public:
+{
+public:
 
     TeXGenerator();
 
     virtual ~TeXGenerator() {};
 
-  protected:
+protected:
 
     string fileSuffix;   ///< filename extension
 
     /** \return Comment with program information */
     string getGeneratorComment();
 
-  private:
+private:
 
     string getOpenTag();
     string getCloseTag();
@@ -75,7 +76,7 @@ class TeXGenerator  : public ansifilter::CodeGenerator
 
     /** \return escaped character*/
     virtual string maskCharacter(unsigned char );
-  };
+};
 
 }
 

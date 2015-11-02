@@ -33,21 +33,22 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 /**\brief Stores colours and returns red, green and blue values in different formats
 * @author Andre Simon
  */
 
 struct RGBVal {
-  int iRed,    ///< Red value
-      iGreen,  ///< Green value
-      iBlue;   ///< Blue value
+    int iRed,    ///< Red value
+        iGreen,  ///< Green value
+        iBlue;   ///< Blue value
 };
 
 class StyleColour
-  {
-  public:
+{
+public:
     /** Constructor
         \param red Red value in hex notation
         \param green Blue value in hex notation
@@ -61,12 +62,12 @@ class StyleColour
     StyleColour(const string & styleColourString);
 
     StyleColour();
-    ~StyleColour(){};
+    ~StyleColour() {};
 
-   /** Sets red, green and blue values
-     \param styleColourString String containing colour attributes
-   */
-   void setRGB(const string & styleColourString);
+    /** Sets red, green and blue values
+      \param styleColourString String containing colour attributes
+    */
+    void setRGB(const string & styleColourString);
 
 
     /** Sets red value
@@ -91,11 +92,11 @@ class StyleColour
          @return Blue value in color representation according to output type */
     const string getBlue(OutputType type) const;
 
-  private:
+private:
     RGBVal rgb;
     string int2str(int, std::ios_base& (*f)(std::ios_base&) ) const;
     string float2str(double) const;
-  };
+};
 
 }
 

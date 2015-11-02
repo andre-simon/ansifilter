@@ -18,33 +18,33 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef ENUMS_H
 #define ENUMS_H
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 /** Parser return values*/
-enum ParseError{
-   PARSE_OK,
-   BAD_INPUT=1,
-   BAD_OUTPUT=2
+enum ParseError {
+    PARSE_OK,
+    BAD_INPUT=1,
+    BAD_OUTPUT=2
 };
 
 /** output formats */
 enum OutputType {
-  TEXT,
-  HTML,
-  PANGO,
-  XHTML,
-  TEX,
-  LATEX,
-  RTF,
-  BBCODE
+    TEXT,
+    HTML,
+    PANGO,
+    XHTML,
+    TEX,
+    LATEX,
+    RTF,
+    BBCODE
 };
 
 /** line wrapping modes*/
-enum WrapMode
-{
-  WRAP_DISABLED,
-  WRAP_SIMPLE,
-  WRAP_DEFAULT
+enum WrapMode {
+    WRAP_DISABLED,
+    WRAP_SIMPLE,
+    WRAP_DEFAULT
 };
 
 }

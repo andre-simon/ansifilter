@@ -28,40 +28,41 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 PlaintextGenerator::PlaintextGenerator ():
-  CodeGenerator(TEXT),
-  fileSuffix(".txt")
+    CodeGenerator(TEXT),
+    fileSuffix(".txt")
 {
-  newLineTag="\n";
-  styleCommentOpen="";
-  styleCommentClose="";
+    newLineTag="\n";
+    styleCommentOpen="";
+    styleCommentClose="";
 }
 
 
 string PlaintextGenerator::getHeader()
 {
-  return "";
+    return "";
 }
 
 string PlaintextGenerator::getFooter()
 {
-  return "";
+    return "";
 }
 
 void PlaintextGenerator::printBody()
 {
-  processRootState();
+    processRootState();
 }
 
 string PlaintextGenerator::maskCharacter(unsigned char c)
 {
-       if (c>0x1f || c=='\t'){
+    if (c>0x1f || c=='\t') {
         return string( 1, c );
-      } else {
+    } else {
         return "";
-     }
+    }
 }
 
 }

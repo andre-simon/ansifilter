@@ -24,7 +24,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "elementstyle.h"
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 
 ElementStyle::ElementStyle()
@@ -39,57 +40,61 @@ ElementStyle::~ElementStyle()
 
 bool ElementStyle::isItalic() const
 {
-  return italic;
+    return italic;
 }
 bool ElementStyle::isBlink() const
 {
-  return blink;
+    return blink;
 }
 bool ElementStyle::isBold() const
 {
-  return bold;
+    return bold;
 }
 bool ElementStyle::isUnderline() const
 {
-  return underline;
+    return underline;
 }
 bool ElementStyle::isConceal() const
 {
-  return conceal;
+    return conceal;
 }
-bool ElementStyle::isBgColorSet() const{
-  return bgColorSet;
+bool ElementStyle::isBgColorSet() const
+{
+    return bgColorSet;
 }
-bool ElementStyle::isFgColorSet() const{
-  return fgColorSet;
+bool ElementStyle::isFgColorSet() const
+{
+    return fgColorSet;
 }
 const StyleColour ElementStyle::getFgColour() const
 {
-  return fgColour;
+    return fgColour;
 }
 const StyleColour ElementStyle::getBgColour() const
 {
-  return bgColour;
+    return bgColour;
 }
 
-void  ElementStyle::imageMode(bool negative){
-  if (negative !=isNegativeMode){
-     	StyleColour swapCol=getFgColour();
-	setFgColour(getBgColour());
-	setBgColour(swapCol);
-	isNegativeMode=!isNegativeMode;
-  }
+void  ElementStyle::imageMode(bool negative)
+{
+    if (negative !=isNegativeMode) {
+        StyleColour swapCol=getFgColour();
+        setFgColour(getBgColour());
+        setBgColour(swapCol);
+        isNegativeMode=!isNegativeMode;
+    }
 }
 
-void ElementStyle::setReset(bool b) {
-	reset=b;
-	if (reset){
-		setFgColour("#000000");
-		//setBgColour("#ffffff");
-		setFgColourID(0);
-		setBgColourID(-1);
-		bold= italic= underline= conceal = blink = bgColorSet = fgColorSet = false;
-	}
-   }
+void ElementStyle::setReset(bool b)
+{
+    reset=b;
+    if (reset) {
+        setFgColour("#000000");
+        //setBgColour("#ffffff");
+        setFgColourID(0);
+        setBgColourID(-1);
+        bold= italic= underline= conceal = blink = bgColorSet = fgColorSet = false;
+    }
+}
 
 }

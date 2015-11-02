@@ -31,7 +31,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "codegenerator.h"
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 /**
    \brief This class generates HTML.
@@ -44,18 +45,18 @@ namespace ansifilter {
 */
 
 class BBCodeGenerator  : public ansifilter::CodeGenerator
-  {
-  public:
+{
+public:
 
     BBCodeGenerator();
 
     virtual ~BBCodeGenerator() {};
 
-  protected:
+protected:
 
     string fileSuffix;   ///< filename extension
 
-  private:
+private:
 
     string getOpenTag();
     string getCloseTag();
@@ -72,7 +73,7 @@ class BBCodeGenerator  : public ansifilter::CodeGenerator
 
     /** \return escaped character*/
     virtual string maskCharacter(unsigned char );
-  };
+};
 
 }
 

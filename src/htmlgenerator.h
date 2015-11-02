@@ -31,7 +31,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "codegenerator.h"
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 /**
    \brief This class generates HTML.
@@ -44,29 +45,27 @@ namespace ansifilter {
 */
 
 class HtmlGenerator  : public ansifilter::CodeGenerator
-  {
-  public:
+{
+public:
 
     HtmlGenerator();
 
     /** Destructor, virtual as it is base for xhtmlgenerator*/
     virtual ~HtmlGenerator() {};
 
-  protected:
+protected:
 
     string fileSuffix;   ///< filename extension
 
     /** \return Comment with program information */
     string getGeneratorComment();
-    
+
     void insertLineNumber ();
 
-  private:
+private:
 
     string getOpenTag();
     string getCloseTag();
-    
-    bool tagIsOpen;
 
     /** Print document header
     */
@@ -80,7 +79,7 @@ class HtmlGenerator  : public ansifilter::CodeGenerator
 
     /** \return escaped character*/
     virtual string maskCharacter(unsigned char );
-  };
+};
 
 }
 

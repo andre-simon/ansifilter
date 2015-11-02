@@ -31,7 +31,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "codegenerator.h"
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 /**
    \brief This class generates Pango Markup.
@@ -44,18 +45,18 @@ namespace ansifilter {
 */
 
 class PangoGenerator  : public ansifilter::CodeGenerator
-  {
-  public:
+{
+public:
 
     PangoGenerator();
 
     virtual ~PangoGenerator() {};
 
-  protected:
+protected:
 
     string fileSuffix;   ///< filename extension
 
-  private:
+private:
 
     string getOpenTag();
     string getCloseTag();
@@ -72,7 +73,7 @@ class PangoGenerator  : public ansifilter::CodeGenerator
 
     /** \return escaped character*/
     virtual string maskCharacter(unsigned char );
-  };
+};
 
 }
 

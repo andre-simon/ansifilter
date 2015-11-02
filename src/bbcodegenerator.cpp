@@ -32,78 +32,80 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 BBCodeGenerator::BBCodeGenerator ():
-  CodeGenerator(BBCODE),
-  fileSuffix(".bbcode")
+    CodeGenerator(BBCODE),
+    fileSuffix(".bbcode")
 {
-  newLineTag="\n";
+    newLineTag="\n";
 }
 
-string BBCodeGenerator::getOpenTag() 
+string BBCodeGenerator::getOpenTag()
 {
-	ostringstream s;
+    ostringstream s;
 
-	if (elementStyle.isFgColorSet()){
-		s << "[color=#"
-		<< elementStyle.getFgColour().getRed(HTML)
-		<< elementStyle.getFgColour().getGreen(HTML)
-		<< elementStyle.getFgColour().getBlue(HTML)
-		<< "]";
-   }
+    if (elementStyle.isFgColorSet()) {
+        s << "[color=#"
+          << elementStyle.getFgColour().getRed(HTML)
+          << elementStyle.getFgColour().getGreen(HTML)
+          << elementStyle.getFgColour().getBlue(HTML)
+          << "]";
+    }
 
-	if ( elementStyle.isBold() ) s << "[b]";
-	if ( elementStyle.isItalic() ) s << "[i]";
-	if ( elementStyle.isUnderline() ) s << "[u]";
-	
-	return s.str();
+    if ( elementStyle.isBold() ) s << "[b]";
+    if ( elementStyle.isItalic() ) s << "[i]";
+    if ( elementStyle.isUnderline() ) s << "[u]";
+
+    return s.str();
 }
 
-string BBCodeGenerator::getCloseTag()  {
-  	ostringstream s;
+string BBCodeGenerator::getCloseTag()
+{
+    ostringstream s;
 
-	if ( elementStyle.isUnderline() ) s << "[/u]";
-	if ( elementStyle.isItalic() ) s << "[/i]";
-	if ( elementStyle.isBold() ) s << "[/b]";
-	s << "[/color]";
-	return  s.str();
+    if ( elementStyle.isUnderline() ) s << "[/u]";
+    if ( elementStyle.isItalic() ) s << "[/i]";
+    if ( elementStyle.isBold() ) s << "[/b]";
+    s << "[/color]";
+    return  s.str();
 }
 
 
 string BBCodeGenerator::getHeader()
 {
-  return "";
+    return "";
 }
 
 string BBCodeGenerator::getFooter()
 {
 
-  return "";
+    return "";
 }
 
 void BBCodeGenerator::printBody()
 {
-  processRootState();
+    processRootState();
 }
 
 string BBCodeGenerator::maskCharacter(unsigned char c)
 {
-  
+
     switch (c) {
 
     case '\t' : // see deletion of nonprintable chars below
-      return "\t";
-      break;
+        return "\t";
+        break;
     default :
-      if (c>0x1f ){ // printable?
-	return string( 1, c );
-      } else {
-	return "";
-      }
+        if (c>0x1f ) { // printable?
+            return string( 1, c );
+        } else {
+            return "";
+        }
     }
-      
-    return ""; 
+
+    return "";
 }
 
 }

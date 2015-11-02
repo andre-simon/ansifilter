@@ -31,7 +31,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "codegenerator.h"
 
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 /**
    \brief This class generates RTF.
@@ -45,38 +46,40 @@ namespace ansifilter {
 
 
 struct PageSize {
-  /// RTF page width
-  int width;
-  /// RTF page height
-  int height;
-  PageSize(){
-  }
-  /** Constructor to define page dimensions
-      @param w width
-      @param h height*/
-  PageSize(int w, int h){
-    width=w;
-    height = h;
-  }
+    /// RTF page width
+    int width;
+    /// RTF page height
+    int height;
+    PageSize()
+    {
+    }
+    /** Constructor to define page dimensions
+        @param w width
+        @param h height*/
+    PageSize(int w, int h)
+    {
+        width=w;
+        height = h;
+    }
 };
 
 /** mapping of page size names and dimensions */
 typedef  map<string, struct PageSize> PagesizeMap;
 
 class RtfGenerator : public ansifilter::CodeGenerator
-  {
-  public:
+{
+public:
 
     RtfGenerator();
     ~RtfGenerator();
 
-   /** \param page size*/
-   void setPageSize(const string & ps);
+    /** \param page size*/
+    void setPageSize(const string & ps);
 
-  private:
+private:
 
-   /** prints document header
-    */
+    /** prints document header
+     */
     string getHeader();
 
     /** Prints document footer*/
@@ -105,7 +108,7 @@ class RtfGenerator : public ansifilter::CodeGenerator
     /** @param elem associated element style
         @return RTF formatting sequnce to close element formatting */
     string getCloseTag();
-  };
+};
 
 }
 #endif

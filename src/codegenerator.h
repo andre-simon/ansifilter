@@ -42,7 +42,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 /// The ansifilter namespace contains all classes and data structures needed for parsing input data.
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 class ReGroup;
 
@@ -56,9 +57,9 @@ class ReGroup;
 */
 
 class CodeGenerator
-  {
+{
 
-  public:
+public:
 
     virtual ~CodeGenerator();
 
@@ -73,7 +74,10 @@ class CodeGenerator
       in normal C++ code the result should be saved in an auto_ptr)
       \param CodeGenerator* CodeGenerator instance
     */
-    static void deleteInstance(CodeGenerator* inst) {if (inst) delete inst;}
+    static void deleteInstance(CodeGenerator* inst)
+    {
+        if (inst) delete inst;
+    }
 
     /**
      Generates output file
@@ -142,35 +146,50 @@ class CodeGenerator
 
     /** \return Document title */
     string getTitle();
-    
+
     /** \param path style sheet path*/
     void setStyleSheet(const string & path);
 
     /** \param b set to true if text formatting should be stripped */
-   void setPlainOutput(bool b) {ignoreFormatting=b;}
+    void setPlainOutput(bool b)
+    {
+        ignoreFormatting=b;
+    }
 
     /** \param b set to true if HTML anchors should be added to line numbers */
-    void setAddAnchors(bool b) {addAnchors=b;}
-   
+    void setAddAnchors(bool b)
+    {
+        addAnchors=b;
+    }
+
     /** \param b set to true if the input stream is not closed after reaching EOF */
-   void setContinueReading(bool b) {readAfterEOF=b;}
+    void setContinueReading(bool b)
+    {
+        readAfterEOF=b;
+    }
 
-   /** \return plain outputting flag */
-   bool getPlainOutput() {return ignoreFormatting;}
+    /** \return plain outputting flag */
+    bool getPlainOutput()
+    {
+        return ignoreFormatting;
+    }
 
-   /** \return continue reading from input stream flag */
-   bool getContinueReading() {return readAfterEOF;}
-   
+    /** \return continue reading from input stream flag */
+    bool getContinueReading()
+    {
+        return readAfterEOF;
+    }
+
     /** \param lineWrappingStyle wrapping style
         \param lineLength maximum length  per wrapped text line */
-   void setPreformatting ( WrapMode lineWrappingStyle,unsigned int lineLength);
-   
-   /** \param b set to true if line numbers should be added */
-   void setShowLineNumbers(bool flag);
+    void setPreformatting ( WrapMode lineWrappingStyle,unsigned int lineLength);
 
-   /** \param b set to true if line numbers of wrapped lines should be omitted */
-   void setWrapNoNumbers(bool flag);
-   
+    /** \param b set to true if line numbers should be added */
+    void setShowLineNumbers(bool flag);
+
+    /** \param b set to true if line numbers of wrapped lines should be omitted */
+    void setWrapNoNumbers(bool flag);
+
 protected:
 
     /** \param type Output type */
@@ -190,6 +209,8 @@ protected:
     /** file output*/
     ostream *out;
 
+    bool tagIsOpen;
+
     string styleCommentOpen,  ///< open comment delimiter
            styleCommentClose; ///< close comment delimiter
 
@@ -207,54 +228,60 @@ protected:
 
     /** The base font size to use */
     string fontSize ;
-    
+
     /** Style sheet path */
     string styleSheetPath;
-    
+
     /** Width of line numbers */
     unsigned int lineNumberWidth;
-    
+
     /** Current line number */
     unsigned int lineNumber;
     bool showLineNumbers,      ///< show line numbers
-	  numberWrappedLines,  ///< also show number of wrapped lines
-	  numberCurrentLine,   ///< output number of current line
-	  addAnchors;          ///< add HTML anchor to line number
-    
+         numberWrappedLines,  ///< also show number of wrapped lines
+         numberCurrentLine,   ///< output number of current line
+         addAnchors;          ///< add HTML anchor to line number
+
     /** Processes origin state */
     void processRootState();
 
     virtual void insertLineNumber ();
-    
+
     /** \return true id encoding is defined */
-    bool encodingDefined() {return StringTools::lowerCase(encoding)!="none";}
+    bool encodingDefined()
+    {
+        return StringTools::lowerCase(encoding)!="none";
+    }
 
-   ElementStyle elementStyle;
-   
-   /** Class for line wrapping and tab replacement*/
-   PreFormatter preFormatter;
+    ElementStyle elementStyle;
 
-   static string ColorBlack;
-   static string ColorRed;
-   static string ColorGreen;
-   static string ColorYellow;
-   static string ColorBlue;
-   static string ColorMagenta;
-   static string ColorCyan;
-   static string ColorWhite;
-   static string ColorBrightRed;
-   static string ColorBrightGreen;
-   static string ColorBrightYellow;
-   static string ColorBrightBlue;
-   static string ColorBrightMagenta;
-   static string ColorBrightCyan;
-   static string ColorBrightWhite;
+    /** Class for line wrapping and tab replacement*/
+    PreFormatter preFormatter;
+
+    static string ColorBlack;
+    static string ColorRed;
+    static string ColorGreen;
+    static string ColorYellow;
+    static string ColorBlue;
+    static string ColorMagenta;
+    static string ColorCyan;
+    static string ColorWhite;
+    static string ColorBrightRed;
+    static string ColorBrightGreen;
+    static string ColorBrightYellow;
+    static string ColorBrightBlue;
+    static string ColorBrightMagenta;
+    static string ColorBrightCyan;
+    static string ColorBrightWhite;
 
 private:
 
-    CodeGenerator(const CodeGenerator&){}
+    CodeGenerator(const CodeGenerator&) {}
 
-    CodeGenerator& operator=(CodeGenerator&){ return *this;}
+    CodeGenerator& operator=(CodeGenerator&)
+    {
+        return *this;
+    }
 
     /** parses string to extract sequence information
         @param line text line
@@ -286,7 +313,7 @@ private:
 
     bool ignoreFormatting; ///< ignore color and font face information
     bool readAfterEOF;     ///< continue reading after EOF occoured
-    
+
     /** convert an xterm color value (0-253) to 3 unsigned chars rgb
         @param color xterm color
         @param rgb RGB destination string */
@@ -298,7 +325,7 @@ private:
     /// 16 basic colors
     static const unsigned char basic16[16][3];
 
-  };
+};
 
 }
 

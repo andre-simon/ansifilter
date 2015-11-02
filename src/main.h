@@ -34,25 +34,26 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 /// Main application class of the command line interface
 
-class ANSIFilterApp {
+class ANSIFilterApp
+{
 
 public:
 
-   ANSIFilterApp(){};
-   ~ANSIFilterApp(){};
+    ANSIFilterApp() {};
+    ~ANSIFilterApp() {};
 
-   /** Start application
-     \param argc Number of command line arguments
-     \param argv values of command line arguments
-     \return EXIT_SUCCESS or EXIT_FAILURE
-   */
-   int run( const int argc, const char *argv[] );
+    /** Start application
+      \param argc Number of command line arguments
+      \param argv values of command line arguments
+      \return EXIT_SUCCESS or EXIT_FAILURE
+    */
+    int run( const int argc, const char *argv[] );
 
 private:
 
-  /** print version info*/
-  void printVersionInfo();
-  void printHelp();
+    /** print version info*/
+    void printVersionInfo();
+    void printHelp();
 
 };
 

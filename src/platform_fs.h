@@ -22,9 +22,9 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Platform
 {
-	extern const char pathSeparator;
-	//extern const std::string pathSeparatorStr;
+extern const char pathSeparator;
+//extern const std::string pathSeparatorStr;
 
-	std::string getAppPath();
+std::string getAppPath();
 }
 #endif

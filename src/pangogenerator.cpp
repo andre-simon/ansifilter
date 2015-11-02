@@ -32,98 +32,100 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-namespace ansifilter {
+namespace ansifilter
+{
 
 PangoGenerator::PangoGenerator ():
-  CodeGenerator(PANGO),
-  fileSuffix(".pango")
+    CodeGenerator(PANGO),
+    fileSuffix(".pango")
 {
-  newLineTag="\n";
-  styleCommentOpen="";
-  styleCommentClose="";
+    newLineTag="\n";
+    styleCommentOpen="";
+    styleCommentClose="";
 }
 
-string PangoGenerator::getOpenTag() 
+string PangoGenerator::getOpenTag()
 {
-	ostringstream os;
-	os<< "<span";
+    ostringstream os;
+    os<< "<span";
 
-	if (elementStyle.isBold()) {
-		os<< " font-weight=\"bold\"";
-	}
-	if (elementStyle.isItalic()) {
-		os<< " font-style=\"italic\"";
-	}
-	if (elementStyle.isUnderline()) {
-		os<< " underline=\"single\"";
-	}
+    if (elementStyle.isBold()) {
+        os<< " font-weight=\"bold\"";
+    }
+    if (elementStyle.isItalic()) {
+        os<< " font-style=\"italic\"";
+    }
+    if (elementStyle.isUnderline()) {
+        os<< " underline=\"single\"";
+    }
 
-	if (elementStyle.isFgColorSet()){
-		os << " fgcolor=\"#"
-		<< elementStyle.getFgColour().getRed(HTML)
-		<< elementStyle.getFgColour().getGreen(HTML)
-		<< elementStyle.getFgColour().getBlue(HTML)
-		<< "\"";
-	}
-	if (elementStyle.isBgColorSet()){
-	    os <<" bgcolor=\"#"
-	    << elementStyle.getBgColour().getRed(HTML) 
-	    << elementStyle.getBgColour().getGreen(HTML)
-	    << elementStyle.getBgColour().getBlue(HTML)
-	    <<"\"";
-	}
+    if (elementStyle.isFgColorSet()) {
+        os << " fgcolor=\"#"
+           << elementStyle.getFgColour().getRed(HTML)
+           << elementStyle.getFgColour().getGreen(HTML)
+           << elementStyle.getFgColour().getBlue(HTML)
+           << "\"";
+    }
+    if (elementStyle.isBgColorSet()) {
+        os <<" bgcolor=\"#"
+           << elementStyle.getBgColour().getRed(HTML)
+           << elementStyle.getBgColour().getGreen(HTML)
+           << elementStyle.getBgColour().getBlue(HTML)
+           <<"\"";
+    }
 
-	os<<">";
-	return os.str();
+    os<<">";
+    return os.str();
 }
 
-string PangoGenerator::getCloseTag()  {
-  return "</span>";
+string PangoGenerator::getCloseTag()
+{
+    return "</span>";
 }
 
 string PangoGenerator::getHeader()
 {
 
-  int fontSizePango=0;
-  StringTools::str2num<int>(fontSizePango, fontSize, std::dec);
-  
-  ostringstream os;
-  os << "<span";
-  os << " font_family=\""<<font << "\"";
-  os << " font_size=\""<<((fontSizePango)? fontSizePango*1024: 1024*10) << "\"";
-  os << ">";
-  return os.str();
+    int fontSizePango=0;
+    StringTools::str2num<int>(fontSizePango, fontSize, std::dec);
+
+    ostringstream os;
+    os << "<span";
+    os << " font_family=\""<<font << "\"";
+    os << " font_size=\""<<((fontSizePango)? fontSizePango*1024: 1024*10) << "\"";
+    os << ">";
+    return os.str();
 }
 
 string PangoGenerator::getFooter()
 {
-  return "</span>";
+    return "</span>";
 }
 
 void PangoGenerator::printBody()
 {
-  processRootState();
+    processRootState();
 }
 
 string PangoGenerator::maskCharacter(unsigned char c)
 {
-  switch (c) {
+    switch (c) {
     case '<' :
-      return "&lt;";
-      break;
+        return "&lt;";
+        break;
     case '>' :
-      return "&gt;";
-      break;
+        return "&gt;";
+        break;
     case '&' :
-      return "&amp;";
-      break;
-	  
+        return "&amp;";
+        break;
+
     default :
-       if (c>0x1f ){ // printable?
-        return string( 1, c );
-      } else {
-        return "";
-     }
+        if (c>0x1f ) { // printable?
+            return string( 1, c );
+        } else {
+            return "";
+        }
     }
 }
 }

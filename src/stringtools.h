@@ -35,43 +35,43 @@ using namespace std;
 /// Contains methods for string manipulation
 
 namespace StringTools
-  {
+{
 
-  /** convert string to lowercase
-      \param s String
-      \returns lowercase string  */
-  string lowerCase(const string &s);
+/** convert string to lowercase
+    \param s String
+    \returns lowercase string  */
+string lowerCase(const string &s);
 
-  /** convert string to uppercase
-      \param s String
-      \returns uppercase string  */
-  string upperCase(const string &s);
+/** convert string to uppercase
+    \param s String
+    \returns uppercase string  */
+string upperCase(const string &s);
 
 
-  /** \param value String
-     \return string trimmed on the left side
-  */
-  string trimRight(const string &value);
+/** \param value String
+   \return string trimmed on the left side
+*/
+string trimRight(const string &value);
 
-  /** \param s String, containing a opening and a closing paranthesis
-       \return value between "(", ")" */
-  string getParantheseVal(const string &s);
+/** \param s String, containing a opening and a closing paranthesis
+     \return value between "(", ")" */
+string getParantheseVal(const string &s);
 
-  /** \param s string containing tokens
-      \param delim Token delimiter
-      \return vector containing found tokens */
-  vector <string> splitString(const string& s, unsigned char delim);
+/** \param s string containing tokens
+    \param delim Token delimiter
+    \return vector containing found tokens */
+vector <string> splitString(const string& s, unsigned char delim);
 
-  /** \param val variable of specified type which will contain the numeric value
-      \param s string containing a number
-      \param f format specifier function (IO manipulator)
-      \return true if successfull */
-  template <class T>
-  bool str2num(T &val, const std::string& s, std::ios_base& (*f)(std::ios_base&))
-  {
+/** \param val variable of specified type which will contain the numeric value
+    \param s string containing a number
+    \param f format specifier function (IO manipulator)
+    \return true if successfull */
+template <class T>
+bool str2num(T &val, const std::string& s, std::ios_base& (*f)(std::ios_base&))
+{
     std::istringstream iss(s);
     return !(iss >> f >> val).fail();
-  }
+}
 
 }
 

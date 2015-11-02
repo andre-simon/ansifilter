@@ -50,284 +50,304 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     wrapLineLen(0)
 {
 
-  const Arg_parser::Option options[] =
-    {
-    { 'a', "anchors",   Arg_parser::no },
-    { 'd', "doc-title", Arg_parser::yes },
-    { 'e', "encoding",  Arg_parser::yes },
-    { 'f', "fragment",  Arg_parser::no  },
-    { 'F', "font",      Arg_parser::yes },
-    { 'h', "help",      Arg_parser::no  },
-    { 'H', "html",      Arg_parser::no  },
-    { 'M', "pango",      Arg_parser::no  },
-    { 'i', "input",     Arg_parser::yes },
-    { 'l', "line-numbers",     Arg_parser::no },
-    { 'L', "latex",     Arg_parser::no  },
-    { 'P', "tex",       Arg_parser::no  },
-    { 'B', "bbcode",    Arg_parser::no  },
-    { 'o', "output",    Arg_parser::yes },
-    { 'O', "outdir",    Arg_parser::yes },
-    { 'p', "plain",     Arg_parser::no  },
-    { 'r', "style-ref", Arg_parser::yes },
-    { 'R', "rtf",       Arg_parser::no  },
-    { 's', "font-size", Arg_parser::yes },
-    { 't', "tail",      Arg_parser::no  },
-    { 'T', "text",      Arg_parser::no  },
-    { 'w', "wrap",      Arg_parser::yes },
-    { 'v', "version",   Arg_parser::no  },
-    { 'V', "version",   Arg_parser::no  },
-    { 'W', "wrap-no-numbers",   Arg_parser::no  },
-    {  0,  0,           Arg_parser::no  } };
+    const Arg_parser::Option options[] = {
+        { 'a', "anchors",   Arg_parser::no },
+        { 'd', "doc-title", Arg_parser::yes },
+        { 'e', "encoding",  Arg_parser::yes },
+        { 'f', "fragment",  Arg_parser::no  },
+        { 'F', "font",      Arg_parser::yes },
+        { 'h', "help",      Arg_parser::no  },
+        { 'H', "html",      Arg_parser::no  },
+        { 'M', "pango",      Arg_parser::no  },
+        { 'i', "input",     Arg_parser::yes },
+        { 'l', "line-numbers",     Arg_parser::no },
+        { 'L', "latex",     Arg_parser::no  },
+        { 'P', "tex",       Arg_parser::no  },
+        { 'B', "bbcode",    Arg_parser::no  },
+        { 'o', "output",    Arg_parser::yes },
+        { 'O', "outdir",    Arg_parser::yes },
+        { 'p', "plain",     Arg_parser::no  },
+        { 'r', "style-ref", Arg_parser::yes },
+        { 'R', "rtf",       Arg_parser::no  },
+        { 's', "font-size", Arg_parser::yes },
+        { 't', "tail",      Arg_parser::no  },
+        { 'T', "text",      Arg_parser::no  },
+        { 'w', "wrap",      Arg_parser::yes },
+        { 'v', "version",   Arg_parser::no  },
+        { 'V', "version",   Arg_parser::no  },
+        { 'W', "wrap-no-numbers",   Arg_parser::no  },
+        {  0,  0,           Arg_parser::no  }
+    };
 
-  Arg_parser parser( argc, argv, options );
-  if( parser.error().size() )				// bad option
-    {
-    cerr << "ansifilter: "<< parser.error()<<"\n";
-    cerr << "Try 'ansifilter --help' for more information.\n";
-    exit( 1 );
+    Arg_parser parser( argc, argv, options );
+    if( parser.error().size() ) {			// bad option
+        cerr << "ansifilter: "<< parser.error()<<"\n";
+        cerr << "Try 'ansifilter --help' for more information.\n";
+        exit( 1 );
     }
 
-  int argind = 0;
-  for( ; argind < parser.arguments(); ++argind )
-    {
-    const int code = parser.code( argind );
-    const std::string & arg = parser.argument( argind );
-    if( !code ) break;					// no more options
-    switch( code )
-      {
-	/* tbd
-	case 'O':
-				{
-				const string tmp = StringTools::change_case ( arg );
-				if ( tmp == "xhtml" )
-					outputType = highlight::XHTML;
-				else if ( tmp == "tex" )
-					outputType = highlight::TEX;
-				else if ( tmp == "latex" )
-					outputType = highlight::LATEX;
-				else if ( tmp == "rtf" )
-					outputType = highlight::RTF;
-				else if ( tmp == "svg" )
-					outputType = highlight::SVG;
-				else if ( tmp == "bbcode" )
-					outputType = highlight::BBCODE;
-				else if ( tmp == "odt" )
-					outputType = highlight::ODTFLAT;
-				else
-					outputType = highlight::HTML;
-				}
-				break;
-	*/
-      case 'a':
-        opt_anchors = true;
-        break;
-      case 'B':
-        outputType = ansifilter::BBCODE;
-        break;
-      case 'd':
-        docTitle = arg;
-        break;
-      case 'e':
-        encodingName = arg;
-        break;
-      case 'f':
-        opt_fragment = true;
-        break;
-      case 'F':
-        font = arg;
-        break;
-      case 'h':
-        opt_help = true;
-        break;
-      case 'H':
-        outputType = ansifilter::HTML;
-        break;
-      case 'i':
-        inputFileNames.push_back( arg );
-        break;
-      case 'l':
-        opt_linenum=true;
-        break;
-	
-      case 'L':
-        outputType = ansifilter::LATEX;
-        break;
-      case 'M':
-        outputType = ansifilter::PANGO;
-        break;
-      case 'P':
-        outputType = ansifilter::TEX;
-        break;
-      case 'o':
-        outFilename = arg;
-        break;
-      case 'p':
-	opt_plain = true;
-        break;
-      case 'r':
-        styleSheetPath = arg;
-        break;
-      case 'R':
-        outputType = ansifilter::RTF;
-        break;
-      case 's':
-        fontSize = arg;
-        break;
-      case 't':
-	opt_ignoreEOF = true;
-        break;
-      case 'T':
-        outputType = ansifilter::TEXT;
-        break;
-      case 'v':
-      case 'V':
-        opt_version = true;
-        break;
-      case 'O':
-        outDirectory = validateDirPath( arg );
-        break;
-      case 'w':
-	wrapLineLen=atoi(arg.c_str())-1;
-	break;
-      case 'W':
-	opt_wrapNoNum=true;
-	break;
-      default:
-        cerr << "ansifilter: option parsing failed" << endl;
-      }
+    int argind = 0;
+    for( ; argind < parser.arguments(); ++argind ) {
+        const int code = parser.code( argind );
+        const std::string & arg = parser.argument( argind );
+        if( !code ) break;					// no more options
+        switch( code ) {
+        /* tbd
+        case 'O':
+        			{
+        			const string tmp = StringTools::change_case ( arg );
+        			if ( tmp == "xhtml" )
+        				outputType = highlight::XHTML;
+        			else if ( tmp == "tex" )
+        				outputType = highlight::TEX;
+        			else if ( tmp == "latex" )
+        				outputType = highlight::LATEX;
+        			else if ( tmp == "rtf" )
+        				outputType = highlight::RTF;
+        			else if ( tmp == "svg" )
+        				outputType = highlight::SVG;
+        			else if ( tmp == "bbcode" )
+        				outputType = highlight::BBCODE;
+        			else if ( tmp == "odt" )
+        				outputType = highlight::ODTFLAT;
+        			else
+        				outputType = highlight::HTML;
+        			}
+        			break;
+        */
+        case 'a':
+            opt_anchors = true;
+            break;
+        case 'B':
+            outputType = ansifilter::BBCODE;
+            break;
+        case 'd':
+            docTitle = arg;
+            break;
+        case 'e':
+            encodingName = arg;
+            break;
+        case 'f':
+            opt_fragment = true;
+            break;
+        case 'F':
+            font = arg;
+            break;
+        case 'h':
+            opt_help = true;
+            break;
+        case 'H':
+            outputType = ansifilter::HTML;
+            break;
+        case 'i':
+            inputFileNames.push_back( arg );
+            break;
+        case 'l':
+            opt_linenum=true;
+            break;
+
+        case 'L':
+            outputType = ansifilter::LATEX;
+            break;
+        case 'M':
+            outputType = ansifilter::PANGO;
+            break;
+        case 'P':
+            outputType = ansifilter::TEX;
+            break;
+        case 'o':
+            outFilename = arg;
+            break;
+        case 'p':
+            opt_plain = true;
+            break;
+        case 'r':
+            styleSheetPath = arg;
+            break;
+        case 'R':
+            outputType = ansifilter::RTF;
+            break;
+        case 's':
+            fontSize = arg;
+            break;
+        case 't':
+            opt_ignoreEOF = true;
+            break;
+        case 'T':
+            outputType = ansifilter::TEXT;
+            break;
+        case 'v':
+        case 'V':
+            opt_version = true;
+            break;
+        case 'O':
+            outDirectory = validateDirPath( arg );
+            break;
+        case 'w':
+            wrapLineLen=atoi(arg.c_str())-1;
+            break;
+        case 'W':
+            opt_wrapNoNum=true;
+            break;
+        default:
+            cerr << "ansifilter: option parsing failed" << endl;
+        }
     }
 
-  if (argind < parser.arguments())   //still args left
-    {
-      if  (inputFileNames.empty()) {
-        while (argind < parser.arguments()){
-          inputFileNames.push_back( parser.argument( argind++ ) );
-         }
-      }
+    if (argind < parser.arguments()) { //still args left
+        if  (inputFileNames.empty()) {
+            while (argind < parser.arguments()) {
+                inputFileNames.push_back( parser.argument( argind++ ) );
+            }
+        }
     } else if (inputFileNames.empty()) {
-       inputFileNames.push_back("");
+        inputFileNames.push_back("");
     }
 }
 
-CmdLineOptions::~CmdLineOptions(){}
+CmdLineOptions::~CmdLineOptions() {}
 
 
-string CmdLineOptions::validateDirPath(const string & path){
-   return (path[path.length()-1] !=Platform::pathSeparator)?
-              path+Platform::pathSeparator : path;
+string CmdLineOptions::validateDirPath(const string & path)
+{
+    return (path[path.length()-1] !=Platform::pathSeparator)?
+           path+Platform::pathSeparator : path;
 }
 
 string CmdLineOptions::getSingleOutFilename()
-  {
-   if (!inputFileNames.empty() && !outDirectory.empty()) {
-      if (outFilename.empty()) {
-        outFilename = outDirectory;
-        int delim = getSingleInFilename().find_last_of(Platform::pathSeparator)+1;
-        outFilename += getSingleInFilename().substr((delim>-1)?delim:0)
-                       + getOutFileSuffix();
-      }
-   }
-   return outFilename;
-  }
+{
+    if (!inputFileNames.empty() && !outDirectory.empty()) {
+        if (outFilename.empty()) {
+            outFilename = outDirectory;
+            int delim = getSingleInFilename().find_last_of(Platform::pathSeparator)+1;
+            outFilename += getSingleInFilename().substr((delim>-1)?delim:0)
+                           + getOutFileSuffix();
+        }
+    }
+    return outFilename;
+}
 
 string CmdLineOptions::getSingleInFilename()  const
-  {
-  return inputFileNames[0];
-  }
+{
+    return inputFileNames[0];
+}
 
 string CmdLineOptions::getOutDirectory()
-  {
-    if (!outFilename.empty() && !inputFileNames.size()){
-      outDirectory=getDirName(outFilename);
+{
+    if (!outFilename.empty() && !inputFileNames.size()) {
+        outDirectory=getDirName(outFilename);
     }
     return outDirectory;
-  }
+}
 
-string CmdLineOptions::getDirName(const string & path) {
-  size_t dirNameLength=path.rfind(Platform::pathSeparator);
-  return (dirNameLength==string::npos)?string():path.substr(0, dirNameLength+1);
+string CmdLineOptions::getDirName(const string & path)
+{
+    size_t dirNameLength=path.rfind(Platform::pathSeparator);
+    return (dirNameLength==string::npos)?string():path.substr(0, dirNameLength+1);
 }
 
 bool CmdLineOptions::printVersion()const
-  {
+{
     return opt_version;
-  }
+}
 
 bool CmdLineOptions::printHelp()const
-  {
+{
     return opt_help;
-  }
+}
 
-bool CmdLineOptions::fragmentOutput()const{
+bool CmdLineOptions::fragmentOutput()const
+{
     return opt_fragment;
 }
 
-bool CmdLineOptions::showLineNumbers()const{
+bool CmdLineOptions::showLineNumbers()const
+{
     return opt_linenum;
 }
 
-string CmdLineOptions::getOutFileSuffix()const{
-    switch (outputType){
-      case ansifilter::HTML: return ".html";
-      case ansifilter::PANGO: return ".pango";
-      case ansifilter::XHTML: return ".xhtml";
-      case ansifilter::RTF:   return ".rtf";
-      case ansifilter::TEX:
-      case ansifilter::LATEX: return ".tex";
-      case ansifilter::BBCODE: return ".bbcode";
-      default:    return ".txt";
+string CmdLineOptions::getOutFileSuffix()const
+{
+    switch (outputType) {
+    case ansifilter::HTML:
+        return ".html";
+    case ansifilter::PANGO:
+        return ".pango";
+    case ansifilter::XHTML:
+        return ".xhtml";
+    case ansifilter::RTF:
+        return ".rtf";
+    case ansifilter::TEX:
+    case ansifilter::LATEX:
+        return ".tex";
+    case ansifilter::BBCODE:
+        return ".bbcode";
+    default:
+        return ".txt";
     }
 }
 
-string CmdLineOptions::getEncoding() const{
+string CmdLineOptions::getEncoding() const
+{
     return encodingName;
 }
 
-string CmdLineOptions::getFont() const {
+string CmdLineOptions::getFont() const
+{
     return font;
 }
 
-string CmdLineOptions::getFontSize() const{
+string CmdLineOptions::getFontSize() const
+{
     return fontSize;
 }
 
-bool CmdLineOptions::plainOutput() const {
-  return opt_plain;
+bool CmdLineOptions::plainOutput() const
+{
+    return opt_plain;
 }
 
-bool CmdLineOptions::ignoreInputEOF() const {
-  return opt_ignoreEOF;
+bool CmdLineOptions::ignoreInputEOF() const
+{
+    return opt_ignoreEOF;
 }
 
-bool CmdLineOptions::wrapNoNumbers() const {
-  return opt_wrapNoNum;
+bool CmdLineOptions::wrapNoNumbers() const
+{
+    return opt_wrapNoNum;
 }
 
-bool CmdLineOptions::addAnchors() const {
-  return opt_anchors;
+bool CmdLineOptions::addAnchors() const
+{
+    return opt_anchors;
 }
-bool CmdLineOptions::omitEncoding() const{
+bool CmdLineOptions::omitEncoding() const
+{
     return StringTools::lowerCase(encodingName)=="none";
 }
 
-string CmdLineOptions::getDocumentTitle() const {
-   return docTitle;
+string CmdLineOptions::getDocumentTitle() const
+{
+    return docTitle;
 }
 
 string CmdLineOptions::getStyleSheetPath() const
 {
-  return styleSheetPath;
+    return styleSheetPath;
 }
 
-const vector <string> & CmdLineOptions::getInputFileNames() const{
-  return inputFileNames;
+const vector <string> & CmdLineOptions::getInputFileNames() const
+{
+    return inputFileNames;
 }
 
-ansifilter::OutputType CmdLineOptions::getOutputType() const {
+ansifilter::OutputType CmdLineOptions::getOutputType() const
+{
     return outputType;
 }
 
-int CmdLineOptions::getWrapLineLength() const {
+int CmdLineOptions::getWrapLineLength() const
+{
     return wrapLineLen;
 }
-    
+

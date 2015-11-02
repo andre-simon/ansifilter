@@ -21,30 +21,31 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-namespace Platform {
+namespace Platform
+{
 
 #ifdef _WIN32
-	#include <windows.h>
+#include <windows.h>
 
-	const char pathSeparator = '\\';
-	//const std::string pathSeparatorStr = "\\";
+const char pathSeparator = '\\';
+//const std::string pathSeparatorStr = "\\";
 
-	std::string getAppPath()
-	{
-		char pathAndName[MAX_PATH], path[MAX_PATH], drive[3];
-		GetModuleFileName(NULL, pathAndName, MAX_PATH);
-		_splitpath(pathAndName, drive, path, 0, 0);
-		return std::string(drive)+path;
-	}
+std::string getAppPath()
+{
+    char pathAndName[MAX_PATH], path[MAX_PATH], drive[3];
+    GetModuleFileName(NULL, pathAndName, MAX_PATH);
+    _splitpath(pathAndName, drive, path, 0, 0);
+    return std::string(drive)+path;
+}
 
 #else
-       const char pathSeparator = '/';
-      // const std::string pathSeparatorStr = "/";
+const char pathSeparator = '/';
+// const std::string pathSeparatorStr = "/";
 
-	std::string getAppPath()
-	{
-		return "";
-	}
+std::string getAppPath()
+{
+    return "";
+}
 
 #endif
 

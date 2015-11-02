@@ -40,8 +40,8 @@ using namespace std;
 /// handle command line options
 
 class CmdLineOptions
-  {
-  public:
+{
+public:
 
     /**Constructor
      \param argc Argument count
@@ -51,27 +51,27 @@ class CmdLineOptions
     ~CmdLineOptions();
 
     /** \return Single output file name*/
-     string getSingleOutFilename();
+    string getSingleOutFilename();
 
     /** \return Single input file name*/
-     string getSingleInFilename() const;
+    string getSingleInFilename() const;
 
     /** \return Output directory*/
-     string getOutDirectory() ;
+    string getOutDirectory() ;
 
     /** \return Char set*/
-     string getEncoding() const;
+    string getEncoding() const;
 
     /** \return Char set*/
-     string getFont() const;
+    string getFont() const;
 
     /** \return Char set*/
-     string getFontSize() const;
+    string getFontSize() const;
 
     /** \return True if version information should be printed*/
     bool printVersion() const;
 
-   /** \return True if help information should be printed*/
+    /** \return True if help information should be printed*/
     bool printHelp() const;
 
     /** \return True if output shluld be fragmented*/
@@ -97,22 +97,22 @@ class CmdLineOptions
     bool showLineNumbers() const;
 
     bool addAnchors() const;
-    
+
     /** \return True if line numbers should be printed */
     bool wrapNoNumbers() const;
-    
+
     /** \return Document title */
-     string getDocumentTitle() const ;
-     
-         /** \return Document title */
-     string getStyleSheetPath() const ;
+    string getDocumentTitle() const ;
+
+    /** \return Document title */
+    string getStyleSheetPath() const ;
 
     /** \return List of input file names*/
     const vector <string> & getInputFileNames() const;
 
     int getWrapLineLength() const;
-    
-  private:
+
+private:
     ansifilter::OutputType outputType;
 
     bool opt_help;
@@ -123,7 +123,7 @@ class CmdLineOptions
     bool opt_linenum;
     bool opt_wrapNoNum;
     bool opt_anchors;
-    
+
     // name of single output file
     string outFilename;
     string docTitle;
@@ -132,7 +132,7 @@ class CmdLineOptions
     string font;
     string fontSize;
     string styleSheetPath;
-    
+
     int wrapLineLen;
 
     /** list of all input file names */
@@ -143,6 +143,6 @@ class CmdLineOptions
 
     /** \return directory name of path */
     string getDirName( const string & path);
-  };
+};
 
 #endif
