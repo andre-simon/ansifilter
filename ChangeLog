@@ -1,6 +1,13 @@
 Ansifilter ChangeLog
 
 
+27.11.2015
+
+ansifilter 1.14
+
+-fixed parsing of grep escape sequences (thanks to Manfred Hokamp)
+
+---
 26.10.2015
 
 ansifilter 1.13

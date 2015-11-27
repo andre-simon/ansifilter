@@ -2,7 +2,7 @@
 			  codegenerator.cpp  -  description
 			     -------------------
     begin		 :
-    copyright		 : (C) 2007-2014 by Andre Simon
+    copyright		 : (C) 2007-2015 by Andre Simon
     email		 : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -291,11 +291,6 @@ string CodeGenerator::generateStringFromFile(const string &inFileName)
     return result;
 }
 
-/** for Notepad++ Plugin
-TODO if Plugin gets updated more often, change generate methods
-     to call a private mwthod which handles writing from/ to files or strings
-     as needed
-*/
 ParseError CodeGenerator::generateFileFromString (const string &sourceStr,
         const string &outFileName,
         const string &title)
@@ -340,6 +335,7 @@ ParseError CodeGenerator::generateFileFromString (const string &sourceStr,
 
 bool CodeGenerator::parseSequence(const string& line, size_t begin, size_t end)
 {
+
     if (end-begin>2 && line[begin]!=0x1b && line[begin+1]!=0x5b) {
         return false;
     }
@@ -349,6 +345,7 @@ bool CodeGenerator::parseSequence(const string& line, size_t begin, size_t end)
     char colorString[10]= {0};
 
     string codes=line.substr(begin+2, end-begin-2);
+
     vector<string> codeVector = StringTools::splitString(codes, ';');
     if (codes.empty()) { // fix empty grep --color ending sequence
         elementStyle.setReset(true);
@@ -615,6 +612,7 @@ void CodeGenerator::processRootState()
     bool tagOpen=false;
     bool isCharSeq=false;
     bool isEraseLine=false;
+    bool isGrepOutput=false;
     while (true) {
 
         bool eof=false;
@@ -660,12 +658,19 @@ void CodeGenerator::processRootState()
             size_t seqEnd=string::npos;
             while (i <line.length() ) {
                 if (line[i]==0x1b) {
-                    //cerr << "line[i+2] "<<line[i+2]<<"\n";
+
                     // fix grep --colour .[K (1b 5b 4b) sequences
-                    isCharSeq = isalpha(line[i+2]);
                     isEraseLine = line[i+2]=='K' || line[i+2]=='u' || line[i+2]=='s';
 
-                    if (line.length()>i+2 && isEraseLine) {
+                    // workaround for grep color=always output which contains [K after m delimiter
+                    isGrepOutput  = line[i+2]=='K' && line[i-1] == 'm';
+
+
+                    isCharSeq = isalpha(line[i+2]) && !isGrepOutput;
+
+
+
+                    if (line.length()>i+2 && (isEraseLine || isGrepOutput)) {
                         seqEnd=i+2;
 
 
@@ -674,12 +679,16 @@ void CodeGenerator::processRootState()
                         seqEnd=line.find_first_of('m', i+1);
 
                         //TODO vor ; das hier abfangen xterm: ^[]0;~^G^M^M
-                        // http://www.mit.edu/afs/athena/system/x11r4/src/mit/clients/xterm/ctlseq2.txt
+                        // xterm -> ctlseq2.txt
+                        // http://sourceforge.net/p/libutk/wiki/ANSI%20Escape%20Sequences/
                         if (seqEnd==string::npos) {
                             if (line[i+1]==']') seqEnd=line.find(0x07, i+1);
                         }
                         if (seqEnd==string::npos) seqEnd=line.find(';', i+1);
                         if (seqEnd==string::npos) seqEnd=line.find('h', i+1);
+
+                        if (seqEnd==string::npos) {
+                        }
 
                         if (!ignoreFormatting && seqEnd!=string::npos) {
                             if (!elementStyle.isReset()) {
@@ -693,11 +702,13 @@ void CodeGenerator::processRootState()
                             }
                         }
                     }
+
                     i= 1+ ((seqEnd!=string::npos)?seqEnd:i);
-                    if (isCharSeq && !elementStyle.isReset()) {
-                        i++;
+                    if (isCharSeq /*&& !elementStyle.isReset()*/ && !isGrepOutput) {
+                        //    i++;
                         if (isEraseLine) i   = line.length();
                     }
+
                 } else {
                     *out << maskCharacter(line[i]);
                     ++i;
