@@ -26,8 +26,8 @@
    <string>ANSIFilter</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>ansifilter.ico</normaloff>ansifilter.ico</iconset>
+   <iconset resource="ansifilter.qrc">
+    <normaloff>:/ansifilter.xpm</normaloff>:/ansifilter.xpm</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>

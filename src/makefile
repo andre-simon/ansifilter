@@ -26,5 +26,6 @@ $(EXECUTABLE): $(OBJECTS)
 clean:
 	@rm -f *.o
 	@rm -f ./ansifilter
-	@rm -f ./ansifilter_gui
+	@rm -f ./qt-gui/*.o
+	@rm -f ./qt-gui/ansifilter-gui
 	@rm -f ./.deps/*

@@ -86,7 +86,7 @@ public:
         Dialog->setSizePolicy(sizePolicy);
         Dialog->setAcceptDrops(true);
         QIcon icon;
-        icon.addFile(QString::fromUtf8("ansifilter.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/ansifilter.xpm"), QSize(), QIcon::Normal, QIcon::Off);
         Dialog->setWindowIcon(icon);
         horizontalLayout = new QHBoxLayout(Dialog);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));

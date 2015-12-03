@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>Actions-drop-icon.png</file>
+        <file>ansifilter.xpm</file>
     </qresource>
 </RCC>
