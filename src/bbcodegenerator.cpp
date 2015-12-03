@@ -40,37 +40,50 @@ BBCodeGenerator::BBCodeGenerator ():
     fileSuffix(".bbcode")
 {
     newLineTag="\n";
+    spacer=" ";
 }
 
 string BBCodeGenerator::getOpenTag()
 {
-    ostringstream s;
+    ostringstream fmtStream;
 
     if (elementStyle.isFgColorSet()) {
-        s << "[color=#"
+        fmtStream << "[color=#"
           << elementStyle.getFgColour().getRed(HTML)
           << elementStyle.getFgColour().getGreen(HTML)
           << elementStyle.getFgColour().getBlue(HTML)
           << "]";
     }
 
-    if ( elementStyle.isBold() ) s << "[b]";
-    if ( elementStyle.isItalic() ) s << "[i]";
-    if ( elementStyle.isUnderline() ) s << "[u]";
+    if ( elementStyle.isBold() ) fmtStream << "[b]";
+    if ( elementStyle.isItalic() ) fmtStream << "[i]";
+    if ( elementStyle.isUnderline() ) fmtStream << "[u]";
 
-    return s.str();
+
+    string fmt  = fmtStream.str();
+    tagIsOpen = fmt.size()>0;
+    if (tagIsOpen) {
+        ostringstream spanTag;
+        spanTag<< "<span style=\""<<fmt<<"\">";
+        return spanTag.str();
+    }
+    return "";
 }
 
 string BBCodeGenerator::getCloseTag()
 {
     ostringstream s;
 
-    if ( elementStyle.isUnderline() ) s << "[/u]";
-    if ( elementStyle.isItalic() ) s << "[/i]";
-    if ( elementStyle.isBold() ) s << "[/b]";
-    s << "[/color]";
+    if (tagIsOpen){
+        if ( elementStyle.isUnderline() ) s << "[/u]";
+        if ( elementStyle.isItalic() ) s << "[/i]";
+        if ( elementStyle.isBold() ) s << "[/b]";
+        s << "[/color]";
+    }
+    tagIsOpen = false;
     return  s.str();
 }
+
 
 
 string BBCodeGenerator::getHeader()

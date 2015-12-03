@@ -42,6 +42,7 @@ LaTeXGenerator::LaTeXGenerator ():
     newLineTag="\\hspace*{\\fill}\\\\\n"; //avoid errors with empty input lines
     styleCommentOpen="/*";
     styleCommentClose="*/";
+    spacer="\\ws{\\ }";
 }
 
 string LaTeXGenerator::getOpenTag()
@@ -127,7 +128,7 @@ string LaTeXGenerator::maskCharacter(unsigned char c)
     switch (c) {
 
     case ' ':
-        return "\\ws{\\ }";
+        return spacer;
         break;
     case '<' :
         return "$<$";
@@ -189,6 +190,23 @@ string LaTeXGenerator::maskCharacter(unsigned char c)
         }
     }
 
+}
+
+void LaTeXGenerator::insertLineNumber ()
+{
+    if ( showLineNumbers ) {
+
+        ostringstream lnum;
+        lnum << setw ( 5 ) << right;
+        if( numberCurrentLine ) {
+            *out << getCloseTag();
+            lnum << lineNumber;
+            *out <<"{\\color[rgb]{0,0,0} "<<lnum.str()<<"}"<<spacer;
+            *out << getOpenTag();
+        } else {
+            *out << lnum.str(); //for indentation
+        }
+    }
 }
 
 }

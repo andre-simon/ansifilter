@@ -42,6 +42,7 @@ HtmlGenerator::HtmlGenerator ():
     newLineTag="\n";
     styleCommentOpen="/*";
     styleCommentClose="*/";
+    spacer=" ";
 }
 
 string HtmlGenerator::getOpenTag()
@@ -183,13 +184,12 @@ string HtmlGenerator::maskCharacter(unsigned char c)
 
 void HtmlGenerator::insertLineNumber ()
 {
-
     if ( showLineNumbers ) {
-        *out << getCloseTag();
 
         ostringstream lnum;
         lnum << setw ( 5 ) << right;
         if( numberCurrentLine ) {
+            *out << getCloseTag();
             lnum << lineNumber;
             *out << "<span";
 
@@ -199,10 +199,10 @@ void HtmlGenerator::insertLineNumber ()
             *out << " style=\"color:gray;\">";
 
             *out <<lnum.str() <<"</span> ";
+            *out << getOpenTag();
         } else {
-            *out << lnum.str();
+            *out << lnum.str(); //for indentation
         }
-        *out << getOpenTag();
     }
 
 }

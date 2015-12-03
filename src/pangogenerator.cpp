@@ -42,47 +42,52 @@ PangoGenerator::PangoGenerator ():
     newLineTag="\n";
     styleCommentOpen="";
     styleCommentClose="";
+    spacer=" ";
 }
 
 string PangoGenerator::getOpenTag()
 {
-    ostringstream os;
-    os<< "<span";
+    ostringstream fmtStream;
+
 
     if (elementStyle.isBold()) {
-        os<< " font-weight=\"bold\"";
+        fmtStream<< " font-weight=bold";
     }
     if (elementStyle.isItalic()) {
-        os<< " font-style=\"italic\"";
+        fmtStream<< " font-style=italic";
     }
     if (elementStyle.isUnderline()) {
-        os<< " underline=\"single\"";
+        fmtStream<< " underline=single";
     }
 
     if (elementStyle.isFgColorSet()) {
-        os << " fgcolor=\"#"
+        fmtStream << " fgcolor=#"
            << elementStyle.getFgColour().getRed(HTML)
            << elementStyle.getFgColour().getGreen(HTML)
-           << elementStyle.getFgColour().getBlue(HTML)
-           << "\"";
+           << elementStyle.getFgColour().getBlue(HTML);
     }
     if (elementStyle.isBgColorSet()) {
-        os <<" bgcolor=\"#"
+        fmtStream <<" bgcolor=#"
            << elementStyle.getBgColour().getRed(HTML)
            << elementStyle.getBgColour().getGreen(HTML)
-           << elementStyle.getBgColour().getBlue(HTML)
-           <<"\"";
+           << elementStyle.getBgColour().getBlue(HTML);
+    }  
+    string fmt  = fmtStream.str();
+    tagIsOpen = fmt.size()>0;
+    if (tagIsOpen) {
+        ostringstream spanTag;
+        spanTag<< "<span style=\""<<fmt<<"\">";
+        return spanTag.str();
     }
-
-    os<<">";
-    return os.str();
+    return "";
 }
 
 string PangoGenerator::getCloseTag()
 {
-    return "</span>";
+    string retVal = tagIsOpen ? "</span>"  : "";
+    tagIsOpen = false;
+    return retVal;
 }
-
 string PangoGenerator::getHeader()
 {
 

@@ -108,6 +108,9 @@ private:
     /** @param elem associated element style
         @return RTF formatting sequnce to close element formatting */
     string getCloseTag();
+
+
+    void insertLineNumber ();
 };
 
 }

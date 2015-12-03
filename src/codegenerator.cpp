@@ -573,21 +573,19 @@ bool CodeGenerator::parseSequence(const string& line, size_t begin, size_t end)
 
 void CodeGenerator::insertLineNumber ()
 {
-    ostringstream os;
     if ( showLineNumbers ) {
-        os << setw ( 5 /*getLineNumberWidth()*/ ) << right;
+
+        ostringstream lnum;
+        lnum << setw ( 5 ) << right;
         if( numberCurrentLine ) {
-            /*if ( lineNumberFillZeroes )
-            {
-                os.fill ( '0' );
-            }*/
-            os << lineNumber /*+lineNumberOffset*/;
+            *out << getCloseTag();
+            lnum << lineNumber;
+            *out <<lnum.str()<<spacer;
+            *out << getOpenTag();
         } else {
-            os << "";
+            *out << lnum.str(); //for indentation
         }
-        os<< " ";
     }
-    *out<< os.str();
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -635,8 +633,6 @@ void CodeGenerator::processRootState()
             numberCurrentLine = true;
         }
 
-
-
         if (eof) {
             // imitate tail bahaviour, continue to read after EOF
             if (readAfterEOF) {
@@ -648,7 +644,6 @@ void CodeGenerator::processRootState()
                 sleep(1);
 #endif
             } else {
-                //todo hier position merken, in der gui periodisch den dateizeiger auf diesen wert setzen und den neuen code einlesen
                 break;
             }
         } else {
@@ -663,17 +658,12 @@ void CodeGenerator::processRootState()
                     isEraseLine = line[i+2]=='K' || line[i+2]=='u' || line[i+2]=='s';
 
                     // workaround for grep color=always output which contains [K after m delimiter
-                    isGrepOutput  = line[i+2]=='K' && line[i-1] == 'm';
-
+                    isGrepOutput  = i>0 && line[i+2]=='K' && line[i-1] == 'm';
 
                     isCharSeq = isalpha(line[i+2]) && !isGrepOutput;
 
-
-
                     if (line.length()>i+2 && (isEraseLine || isGrepOutput)) {
                         seqEnd=i+2;
-
-
                     } else {
 
                         seqEnd=line.find_first_of('m', i+1);
@@ -715,7 +705,6 @@ void CodeGenerator::processRootState()
                 }
             }
             *out << newLineTag;
-
         }
     }
     if (tagOpen) {

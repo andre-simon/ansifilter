@@ -38,6 +38,7 @@ PlaintextGenerator::PlaintextGenerator ():
     newLineTag="\n";
     styleCommentOpen="";
     styleCommentClose="";
+    spacer=" ";
 }
 
 

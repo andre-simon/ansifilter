@@ -220,6 +220,8 @@ protected:
     /** Encoding name */
     string docTitle;
 
+    string spacer;
+
     /** Test if header and footer should be omitted */
     bool fragmentOutput;
 

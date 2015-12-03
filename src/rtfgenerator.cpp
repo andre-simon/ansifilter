@@ -75,6 +75,7 @@ RtfGenerator::RtfGenerator()
       pageSize("a4") // Default: DIN A4
 {
     newLineTag = "\\line\n";
+    spacer=" ";
 
     // Page dimensions
     psMap["a3"] = PageSize(16837,23811);
@@ -264,6 +265,24 @@ string RtfGenerator::maskCharacter(unsigned char c)
 void RtfGenerator::setPageSize(const string & ps)
 {
     if (psMap.count(ps)) pageSize = ps;
+}
+
+
+void RtfGenerator::insertLineNumber ()
+{
+    if ( showLineNumbers ) {
+
+        ostringstream lnum;
+        lnum << setw ( 5 ) << right;
+        if( numberCurrentLine ) {
+         //   *out << getCloseTag();
+            lnum << lineNumber;
+            *out <<lnum.str()<<spacer;
+          //  *out << getOpenTag();
+        } else {
+            *out << lnum.str(); //for indentation
+        }
+    }
 }
 
 }

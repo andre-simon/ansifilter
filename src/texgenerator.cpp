@@ -45,6 +45,7 @@ TeXGenerator::TeXGenerator ():
     mode, it switches it to horizontal mode).*/
     newLineTag="\\leavevmode\\par\n";
     styleCommentOpen="%";
+    spacer  = "\\ ";
 }
 
 string TeXGenerator::getOpenTag()
@@ -58,13 +59,11 @@ string TeXGenerator::getOpenTag()
         fmtStream<< "\\it";
     }
 
-    //if (elementStyle.isFgColorSet()) {
     fmtStream << "\\textColor{"
               << elementStyle.getFgColour().getRed(TEX) << " "
               << elementStyle.getFgColour().getGreen(TEX) << " "
               << elementStyle.getFgColour().getBlue(TEX)
               << " 0}";
-    //}
 
     string fmt  = fmtStream.str();
     tagIsOpen = fmt.size()>0;
@@ -131,8 +130,6 @@ string TeXGenerator::maskCharacter(unsigned char c)
         return "{\\bf\\^{}}";
         break;
     case '_':
-    //return "\\_{}";
-    //break;
     case '&':
     case '$':
     case '#':
@@ -147,7 +144,7 @@ string TeXGenerator::maskCharacter(unsigned char c)
         return "$\\backslash$";
         break;
     case ' ':
-        return "\\ ";;
+        return spacer;
         break;
     case '+':
     case '-':
@@ -243,5 +240,21 @@ string TeXGenerator::maskCharacter(unsigned char c)
     }
 }
 
+void TeXGenerator::insertLineNumber ()
+{
+    if ( showLineNumbers ) {
+
+        ostringstream lnum;
+        lnum << setw ( 5 ) << right;
+        if( numberCurrentLine ) {
+            *out << getCloseTag();
+            lnum << lineNumber;
+            *out <<"{\\textColor{1 1 1 0} "<<lnum.str()<<spacer<<"}";
+            *out << getOpenTag();
+        } else {
+            *out << lnum.str(); //for indentation
+        }
+    }
+}
 
 }

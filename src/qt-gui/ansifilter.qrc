@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Actions-drop-icon.png</file>
+    </qresource>
+</RCC>

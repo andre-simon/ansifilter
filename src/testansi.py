@@ -38,12 +38,12 @@ print ( "\033[47mWhite Background\033[0m\n")
 print ( "\033[48mTEST\033[0m\n")
 print ( "\033[49mTEST\033[0m\n")
 
-print ( "\033[48;5;1;128mTEST 256 Farben\033[0m\n")
-print ( "\033[48;28;129mTEST 256 Farben\033[0m\n")
-print ( "\033[48;7;132mTEST 256 Farben\033[0m\n")
-print ( "\033[48;131mTEST 256 Farben\033[0m\n")
-print ( "\033[48;130mTEST 256 Farben\033[0m\n")
-print ( "\033[48;32;47mTEST 256 Farben\033[0m\n")
+print ( "\033[48;5;1;128mTEST 256 Colours\033[0m\n")
+print ( "\033[48;28;129mTEST 256 Colours\033[0m\n")
+print ( "\033[48;7;132mTEST 256 Colours\033[0m\n")
+print ( "\033[48;131mTEST 256 Colours\033[0m\n")
+print ( "\033[48;130mTEST 256 Colours\033[0m\n")
+print ( "\033[48;32;47mTEST 256 Colours\033[0m\n")
 
 # xterm sequences)
 #^[]0;~^G^M^M)
@@ -52,9 +52,13 @@ print ( "\033]0;New Window title\007\015")
 
 print ( "tab1\ttab2\t\ttab3\t\t\tend")
 
-print ( "abc1\033[sTEST s - loeschen\n")
-print ( "abc2\033[uTEST u - loeschen\n")
-print ( "abc3\033[KTEST K - loeschen\033[K\033[K\033[K xxx blablabla\n")
+# delete until EOL
+print ( "abc1\033[sTEST s - DELETED\n")
+print ( "abc2\033[uTEST u - DELETED\n")
+print ( "abc3\033[KTEST K - DELETED\033[K\033[K\033[K xxx blablabla\n")
+
+# but not with grep --color
+print ( "\033[01;31m\033[KGREP COLOR SEQUENCE\033[m\033[K 0;\n")
 
 print ( "1234567890 12345 67890 1234567890 12345 67890 1234567890123456789012345678901234567890123456789012345678901234567890")
 

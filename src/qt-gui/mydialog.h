@@ -26,7 +26,10 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #define MYDIALOG
 
 #include <QCloseEvent>
+#include <QFileSystemWatcher>
 #include "ui_ansifilter.h"
+#include "codegenerator.h"
+
 
 class MyDialog : public QDialog
 {
@@ -38,9 +41,10 @@ public:
 
 				void setInputFileName(const char* fName) {
 				   inputFileName=QString(fName);
-				   showFile(inputFileName);
+                   showFile();
 				}
-				virtual ~MyDialog() {};
+
+                virtual ~MyDialog() {}
 				
 protected:
 				void closeEvent(QCloseEvent *event);
@@ -49,7 +53,15 @@ private:
 				QString inputFileName;
 				QString outputFileName;
 
-				void showFile(const QString & inputFileName);
+                QFileSystemWatcher fileWatcher;
+
+                QString getOutFileSuffix();
+                ansifilter::OutputType getOutputType();
+                void showFile();
+
+                void dropEvent(QDropEvent* event);
+                void dragEnterEvent(QDragEnterEvent *event);
+                void dragLeaveEvent(QDragLeaveEvent* event);
 
 public slots:
                 //This is a slot like the ones we used in our last tutorial
@@ -61,8 +73,13 @@ public slots:
 				void on_pbClipboard_clicked();
 				
 				void on_cbIgnoreSequences_stateChanged();
+               // void on_cbLineNumbers_stateChanged();
+                void on_cbWatchFile_stateChanged();
 				void on_comboFont_textChanged();
 				void on_comboEncoding_textChanged();
+
+                void onFileChanged(const QString & path);
+                void plausibility();
 
 };
 

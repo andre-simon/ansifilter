@@ -29,7 +29,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileDialog>
 #include <QClipboard>
 #include <QSettings>
-#include "codegenerator.h"
+#include <QUrl>
+#include <QScrollBar>
 
 MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
 {
@@ -52,6 +53,16 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
         resize(settings.value("size", QSize(400, 400)).toSize());
         move(settings.value("pos", QPoint(200, 200)).toPoint());
         settings.endGroup();
+
+         this->setAcceptDrops(true);
+        QObject::connect(&fileWatcher, SIGNAL(fileChanged(const QString &)), this, SLOT(onFileChanged(const QString &)));
+        QObject::connect(dlg.comboFormat, SIGNAL(currentIndexChanged(int)), this, SLOT(plausibility()));
+
+        if (!inputFileName.isEmpty()){
+            showFile();
+            dlg.cbWatchFile->setEnabled(true);
+        }
+        plausibility();
 }
 
  void MyDialog::closeEvent(QCloseEvent *event)
@@ -76,39 +87,124 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
         settings.endGroup();
  }
 
+ void MyDialog::dragEnterEvent(QDragEnterEvent *event)
+ {
+     if ( event->mimeData()->hasFormat("text/uri-list")
+             && event->mimeData()->urls().count()==1
+             ){
+         event->acceptProposedAction();
+         dlg.lblDrop->setEnabled(true);
+      }
+ }
+
+ void MyDialog::dragLeaveEvent(QDragLeaveEvent* event)
+ {
+       dlg.lblDrop->setEnabled(false);
+ }
+
+ void MyDialog::dropEvent(QDropEvent* event)
+ {
+
+     dlg.lblDrop->setEnabled(false);
+
+     QList<QUrl> urls = event->mimeData()->urls();
+     if (urls.isEmpty())
+        return;
+
+     QString fileName = urls.first().toLocalFile();
+     if (!fileName.isEmpty()){
+        inputFileName=fileName;
+        dlg.cbWatchFile->setEnabled(true);
+        dlg.cbWatchFile->setChecked(false);
+        showFile();
+     }
+}
+
+
+ void MyDialog::onFileChanged(const QString & path){
+     inputFileName  = path;
+     showFile();
+     QScrollBar *sb = dlg.textEdit->verticalScrollBar();
+     sb->setValue(sb->maximum());
+ }
+
+ void MyDialog::plausibility()
+ {
+     int selIdx = dlg.comboFormat->currentIndex();
+     dlg.cbIgnoreSequences->setEnabled(selIdx!=0);
+     dlg.cbFragment->setEnabled(selIdx==1 || selIdx==3 || selIdx==4|| selIdx==6);
+
+     dlg.label->setEnabled(selIdx==1||selIdx==3);
+     dlg.comboEncoding->setEnabled(selIdx==1||selIdx==3);
+
+     dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
+
+     dlg.comboFont->setEnabled(selIdx==1||selIdx==2||selIdx==6);
+ }
+
+
+ansifilter::OutputType MyDialog::getOutputType()
+{
+
+    switch (dlg.comboFormat->currentIndex()) {
+
+    case 1:
+        return ansifilter::HTML;
+    case 2:
+        return ansifilter::RTF;
+    case 3:
+        return ansifilter::LATEX;
+    case 4:
+        return ansifilter::TEX;
+    case 5:
+        return ansifilter::BBCODE;
+    case 6:
+        return ansifilter::PANGO;
+    }
+    return ansifilter::TEXT;
+}
+
+QString MyDialog::getOutFileSuffix()
+{
+    switch (dlg.comboFormat->currentIndex()) {
+    case 1:
+        return ".html";
+    case 2:
+        return ".rtf";
+    case 3:
+        return ".latex";
+    case 4:
+        return ".tex";
+    case 5:
+        return ".bbcode";
+    case 6:
+        return ".pango";
+    }
+    return ".txt";
+}
+
+
 void MyDialog::on_pbSaveAs_clicked(){
 
     if (inputFileName.isEmpty()){
         QMessageBox::information(this, "Note", "Please select an input file.");
-	return;
+        return;
     }
 
-    QString outFileName =
-              QFileDialog::getSaveFileName(this, tr("Save File"), outputFileName,
-                           tr("Text (*.txt);;HTML (*.html);;PANGO (*.pango);;RTF (*.rtf);;LaTeX (*.latex);;TeX (*.tex);;BBCode (*.bbcode)"));
+    QString outFileSuffix = getOutFileSuffix();
 
-    ansifilter::OutputType outputType=ansifilter::TEXT;
+    QString outFileName =QFileDialog::getSaveFileName(this, tr("Save File"), outputFileName,
+                                 outFileSuffix.mid(1).toUpper() + " (*" + outFileSuffix+")" );
 
-    if (outFileName.endsWith(".html"))
-        outputType=ansifilter::HTML;
-    else if (outFileName.endsWith(".pango"))
-	outputType=ansifilter::PANGO;
-    else if (outFileName.endsWith(".rtf"))
-	outputType=ansifilter::RTF;
-    else if (outFileName.endsWith(".tex"))
-	outputType=ansifilter::TEX;
-    else if (outFileName.endsWith(".latex"))
-	outputType=ansifilter::LATEX;
-    else if (outFileName.endsWith(".bbcode"))
-	outputType=ansifilter::BBCODE;
-    auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(outputType));
-    generator->setTitle( (dlg.leTitle->text().isEmpty()? outFileName : dlg.leTitle->text()).toStdString());
+    auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(getOutputType()));
+    generator->setTitle( (dlg.leTitle->text().isEmpty()? QFileInfo(outFileName).fileName() : dlg.leTitle->text()).toStdString());
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(dlg.cbFragment->isChecked());
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
-    generator->setFontSize("10pt");
+    generator->setFontSize("10pt"); //TODO TeX?
+   // generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
 
     ansifilter::ParseError result= generator->generateFile( inputFileName.toStdString (), outFileName.toStdString () ) ;
     if (result==ansifilter::BAD_OUTPUT){
@@ -131,7 +227,7 @@ void MyDialog::on_pbClipboard_clicked(){
     }
     auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::TEXT));
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
-
+    //generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
     QString outString = QString(generator->generateStringFromFile( inputFileName.toStdString ()).c_str() ) ;
 
     if(!outString.isEmpty()){
@@ -145,12 +241,16 @@ void MyDialog::on_pbFileOpen_clicked(){
 	QString openFile = QFileDialog::getOpenFileName(this, tr("Open File"), inputFileName, tr("Text files (*.*)"));
 	if (!openFile.isEmpty()) {
 		inputFileName = openFile;
-		showFile(inputFileName);
+        dlg.cbWatchFile->setEnabled(true);
+        dlg.cbWatchFile->setChecked(false);
+        showFile();
 	}
 }
 
-void MyDialog::showFile(const QString & inputFileName){
+void MyDialog::showFile(){
    if (inputFileName.isEmpty()) return;
+
+   dlg.lblInFilePath->setText(inputFileName);
 
     auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::HTML));
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
@@ -159,6 +259,7 @@ void MyDialog::showFile(const QString & inputFileName){
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt");
+  //      generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
 
     QString htmlString = QString( generator->generateStringFromFile(inputFileName.toStdString ()).c_str() );
     if (!htmlString.isEmpty()) {
@@ -169,7 +270,7 @@ void MyDialog::showFile(const QString & inputFileName){
 
 void MyDialog::on_pbAbout_clicked(){
     QMessageBox::information(this,
-    "ANSIFilter Information", "ANSIFilter GUI Version 1.13\n"
+    "ANSIFilter Information", "ANSIFilter GUI Version 1.14\n"
     "(c) 2007-2015 Andre Simon\n\n"
 	"Released under the terms of the GNU GPL license.\n\n"
 	"andre dot simon1 at gmx dot de\n"
@@ -178,12 +279,20 @@ void MyDialog::on_pbAbout_clicked(){
 }
 
 void MyDialog::on_cbIgnoreSequences_stateChanged(){
-	showFile(inputFileName);
+    showFile();
 }
+
 void MyDialog::on_comboFont_textChanged(){
-	showFile(inputFileName);
+    showFile();
 }
 void MyDialog::on_comboEncoding_textChanged(){
-	showFile(inputFileName);
+    showFile();
+}
+
+void MyDialog::on_cbWatchFile_stateChanged(){
+    if (dlg.cbWatchFile->isChecked() && !inputFileName.isEmpty())
+        fileWatcher.addPath(inputFileName);
+    else
+        fileWatcher.removePath(inputFileName);
 }
 

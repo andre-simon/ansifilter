@@ -23,3 +23,6 @@ SOURCES += ../platform_fs.cpp ../rtfgenerator.cpp ../htmlgenerator.cpp ../pangog
 SOURCES += ../stringtools.cpp ../stylecolour.cpp ../preformatter.cpp
 
 win32:QMAKE_POST_LINK = d:/devel/upx/upx.exe --best ../../ansifilter-gui.exe
+
+RESOURCES += \
+    ansifilter.qrc

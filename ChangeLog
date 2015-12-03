@@ -1,11 +1,13 @@
 Ansifilter ChangeLog
 
 
-27.11.2015
+03.12.2015
 
 ansifilter 1.14
 
 -fixed parsing of grep escape sequences (thanks to Manfred Hokamp)
+-GUI: added drag and drop (suggested to Manfred Hokamp)
+-GUI: added format selection and watch file checkbox
 
 ---
 26.10.2015

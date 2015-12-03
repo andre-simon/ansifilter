@@ -76,6 +76,8 @@ private:
 
     /** \return escaped character*/
     virtual string maskCharacter(unsigned char );
+
+    void insertLineNumber ();
 };
 
 }
