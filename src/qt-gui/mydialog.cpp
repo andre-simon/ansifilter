@@ -24,34 +24,46 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "mydialog.h"
 
-#include <memory>
+#include <QtGlobal>
+
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QScrollBar>
+#else
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QScrollBar>
+#endif
+
+#include <memory>
 #include <QClipboard>
 #include <QSettings>
 #include <QUrl>
-#include <QScrollBar>
+#include <QMimeData>
+
+
 
 MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
 {
-	dlg.setupUi(this);
-	QSettings settings("andre-simon.de", "ansifilter-gui");
+    dlg.setupUi(this);
+    QSettings settings("andre-simon.de", "ansifilter-gui");
 
-	settings.beginGroup("format");
-	dlg.leTitle->setText(settings.value("title").toString());
+    settings.beginGroup("format");
+    dlg.leTitle->setText(settings.value("title").toString());
     dlg.leColorMapPath->setText(settings.value("map").toString());
-	dlg.cbFragment->setChecked(settings.value("fragment").toBool());
-	dlg.cbIgnoreSequences->setChecked(settings.value("ignoreseq").toBool());
-	dlg.comboEncoding->setCurrentIndex(settings.value("encoding").toInt());
-	dlg.comboFont->setCurrentIndex(settings.value("font").toInt());
+    dlg.cbFragment->setChecked(settings.value("fragment").toBool());
+    dlg.cbIgnoreSequences->setChecked(settings.value("ignoreseq").toBool());
+    dlg.comboEncoding->setCurrentIndex(settings.value("encoding").toInt());
+    dlg.comboFont->setCurrentIndex(settings.value("font").toInt());
     dlg.comboFormat->setCurrentIndex(settings.value("format").toInt());
     dlg.spinBoxWrap->setValue(settings.value("linewrap").toInt());
-	settings.endGroup();
-	settings.beginGroup("paths");
-	inputFileName = settings.value("infile").toString();
-	outputFileName = settings.value("outfile").toString();
-	settings.endGroup();
-	settings.beginGroup("window");
+    settings.endGroup();
+    settings.beginGroup("paths");
+    inputFileName = settings.value("infile").toString();
+    outputFileName = settings.value("outfile").toString();
+    settings.endGroup();
+    settings.beginGroup("window");
     resize(settings.value("size", QSize(400, 400)).toSize());
     move(settings.value("pos", QPoint(200, 200)).toPoint());
     settings.endGroup();
@@ -60,88 +72,89 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
     QObject::connect(&fileWatcher, SIGNAL(fileChanged(const QString &)), this, SLOT(onFileChanged(const QString &)));
     QObject::connect(dlg.comboFormat, SIGNAL(currentIndexChanged(int)), this, SLOT(plausibility()));
 
-    if (!inputFileName.isEmpty()){
-       showFile();
-       dlg.cbWatchFile->setEnabled(true);
+    if (!inputFileName.isEmpty()) {
+        showFile();
+        dlg.cbWatchFile->setEnabled(true);
     }
     plausibility();
 }
 
- void MyDialog::closeEvent(QCloseEvent *event)
- {
-	QSettings settings("andre-simon.de", "ansifilter-gui");
-	settings.beginGroup("format");
-	settings.setValue("title", dlg.leTitle->text());
+void MyDialog::closeEvent(QCloseEvent *event)
+{
+    QSettings settings("andre-simon.de", "ansifilter-gui");
+    settings.beginGroup("format");
+    settings.setValue("title", dlg.leTitle->text());
     settings.setValue("map", dlg.leColorMapPath->text());
-	settings.setValue("fragment", dlg.cbFragment->isChecked());
-	settings.setValue("ignoreseq", dlg.cbIgnoreSequences->isChecked());
-	settings.setValue("encoding", dlg.comboEncoding->currentIndex());
+    settings.setValue("fragment", dlg.cbFragment->isChecked());
+    settings.setValue("ignoreseq", dlg.cbIgnoreSequences->isChecked());
+    settings.setValue("encoding", dlg.comboEncoding->currentIndex());
     settings.setValue("format", dlg.comboFormat->currentIndex());
     settings.setValue("font", dlg.comboFont->currentIndex());
     settings.setValue("linewrap", dlg.spinBoxWrap->value());
 
-	settings.endGroup();
-	settings.beginGroup("paths");
-	settings.setValue("infile", inputFileName);
-	settings.setValue("outfile", outputFileName);
-	settings.endGroup();
-	settings.beginGroup("window");
+    settings.endGroup();
+    settings.beginGroup("paths");
+    settings.setValue("infile", inputFileName);
+    settings.setValue("outfile", outputFileName);
+    settings.endGroup();
+    settings.beginGroup("window");
     settings.setValue("size", size());
     settings.setValue("pos", pos());
     settings.endGroup();
- }
+}
 
- void MyDialog::dragEnterEvent(QDragEnterEvent *event)
- {
-     if ( event->mimeData()->hasFormat("text/uri-list")
-          && event->mimeData()->urls().count()==1
-         ){
-       event->acceptProposedAction();
-       dlg.lblDrop->setEnabled(true);
+void MyDialog::dragEnterEvent(QDragEnterEvent *event)
+{
+    if ( event->mimeData()->hasFormat("text/uri-list")
+            && event->mimeData()->urls().count()==1
+       ) {
+        event->acceptProposedAction();
+        dlg.lblDrop->setEnabled(true);
     }
- }
+}
 
- void MyDialog::dragLeaveEvent(QDragLeaveEvent* event)
- {
-       dlg.lblDrop->setEnabled(false);
- }
+void MyDialog::dragLeaveEvent(QDragLeaveEvent* event)
+{
+    dlg.lblDrop->setEnabled(false);
+}
 
- void MyDialog::dropEvent(QDropEvent* event)
- {
+void MyDialog::dropEvent(QDropEvent* event)
+{
 
-     dlg.lblDrop->setEnabled(false);
+    dlg.lblDrop->setEnabled(false);
 
-     QList<QUrl> urls = event->mimeData()->urls();
-     if (urls.isEmpty())
+    QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.isEmpty())
         return;
 
-     QString fileName = urls.first().toLocalFile();
-     if (!fileName.isEmpty()){
+    QString fileName = urls.first().toLocalFile();
+    if (!fileName.isEmpty()) {
         inputFileName=fileName;
         dlg.cbWatchFile->setEnabled(true);
         dlg.cbWatchFile->setChecked(false);
         showFile();
-     }
+    }
 }
 
 
- void MyDialog::onFileChanged(const QString & path){
-     inputFileName  = path;
-     showFile();
-     QScrollBar *sb = dlg.textEdit->verticalScrollBar();
-     sb->setValue(sb->maximum());
- }
+void MyDialog::onFileChanged(const QString & path)
+{
+    inputFileName  = path;
+    showFile();
+    QScrollBar *sb = dlg.textEdit->verticalScrollBar();
+    sb->setValue(sb->maximum());
+}
 
- void MyDialog::plausibility()
- {
-     int selIdx = dlg.comboFormat->currentIndex();
-     dlg.cbIgnoreSequences->setEnabled(selIdx!=0);
-     dlg.cbFragment->setEnabled(selIdx==1 || selIdx==3 || selIdx==4|| selIdx==6);
-     dlg.label->setEnabled(selIdx==1||selIdx==3);
-     dlg.comboEncoding->setEnabled(selIdx==1||selIdx==3);
-     dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
-     dlg.comboFont->setEnabled(selIdx==1||selIdx==2||selIdx==6);
- }
+void MyDialog::plausibility()
+{
+    int selIdx = dlg.comboFormat->currentIndex();
+    dlg.cbIgnoreSequences->setEnabled(selIdx!=0);
+    dlg.cbFragment->setEnabled(selIdx==1 || selIdx==3 || selIdx==4|| selIdx==6);
+    dlg.label->setEnabled(selIdx==1||selIdx==3);
+    dlg.comboEncoding->setEnabled(selIdx==1||selIdx==3);
+    dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
+    dlg.comboFont->setEnabled(selIdx==1||selIdx==2||selIdx==6);
+}
 
 
 ansifilter::OutputType MyDialog::getOutputType()
@@ -184,9 +197,10 @@ QString MyDialog::getOutFileSuffix()
 }
 
 
-void MyDialog::on_pbSaveAs_clicked(){
+void MyDialog::on_pbSaveAs_clicked()
+{
 
-    if (inputFileName.isEmpty()){
+    if (inputFileName.isEmpty()) {
         QMessageBox::information(this, "Note", "Please select an input file.");
         return;
     }
@@ -194,7 +208,7 @@ void MyDialog::on_pbSaveAs_clicked(){
     QString outFileSuffix = getOutFileSuffix();
 
     QString outFileName =QFileDialog::getSaveFileName(this, tr("Save File"), outputFileName,
-                                 outFileSuffix.mid(1).toUpper() + " (*" + outFileSuffix+")" );
+                         outFileSuffix.mid(1).toUpper() + " (*" + outFileSuffix+")" );
 
     auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(getOutputType()));
     generator->setTitle( (dlg.leTitle->text().isEmpty()? QFileInfo(outFileName).fileName() : dlg.leTitle->text()).toStdString());
@@ -204,17 +218,17 @@ void MyDialog::on_pbSaveAs_clicked(){
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt"); //TODO TeX?
-   // generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
+    // generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
 
     if (!dlg.leColorMapPath->text().isEmpty()) {
         if (!generator->setColorMap(dlg.leColorMapPath->text().toStdString()))
             QMessageBox::warning(this, "Color Mapping Error", "Could not read color map");
-            return;
+        return;
     }
     ansifilter::ParseError result= generator->generateFile( inputFileName.toStdString (), outFileName.toStdString () ) ;
-    if (result==ansifilter::BAD_OUTPUT){
+    if (result==ansifilter::BAD_OUTPUT) {
         QMessageBox::warning(this, "IO Error", "Could not write output file");
-    } else if (result==ansifilter::BAD_INPUT){
+    } else if (result==ansifilter::BAD_INPUT) {
         QMessageBox::warning(this, "IO Error", "Could not read input file");
     } else {
         outputFileName = outFileName;
@@ -222,26 +236,28 @@ void MyDialog::on_pbSaveAs_clicked(){
 }
 
 
-void MyDialog::on_pbClipboard_clicked(){
+void MyDialog::on_pbClipboard_clicked()
+{
 
-    if (inputFileName.isEmpty()){
+    if (inputFileName.isEmpty()) {
         QMessageBox::information(this, "Note",
-      	"Please select an input file."
-	   );
-	   return;
+                                 "Please select an input file."
+                                );
+        return;
     }
     auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::TEXT));
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     //generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
     QString outString = QString(generator->generateStringFromFile( inputFileName.toStdString ()).c_str() ) ;
 
-    if(!outString.isEmpty()){
-		QClipboard *clipboard = QApplication::clipboard();
-		clipboard->setText(outString);
-	}
+    if(!outString.isEmpty()) {
+        QClipboard *clipboard = QApplication::clipboard();
+        clipboard->setText(outString);
+    }
 }
 
-void MyDialog::on_pbSelectMapFile_clicked(){
+void MyDialog::on_pbSelectMapFile_clicked()
+{
 
     QString openFile = QFileDialog::getOpenFileName(this, tr("Open Map File"), inputFileName, tr("Text files (*.*)"));
     if (!openFile.isEmpty()) {
@@ -250,21 +266,23 @@ void MyDialog::on_pbSelectMapFile_clicked(){
     }
 }
 
-void MyDialog::on_pbFileOpen_clicked(){
+void MyDialog::on_pbFileOpen_clicked()
+{
 
-	QString openFile = QFileDialog::getOpenFileName(this, tr("Open File"), inputFileName, tr("Text files (*.*)"));
-	if (!openFile.isEmpty()) {
-		inputFileName = openFile;
+    QString openFile = QFileDialog::getOpenFileName(this, tr("Open File"), inputFileName, tr("Text files (*.*)"));
+    if (!openFile.isEmpty()) {
+        inputFileName = openFile;
         dlg.cbWatchFile->setEnabled(true);
         dlg.cbWatchFile->setChecked(false);
         showFile();
-	}
+    }
 }
 
-void MyDialog::showFile(){
-   if (inputFileName.isEmpty()) return;
+void MyDialog::showFile()
+{
+    if (inputFileName.isEmpty()) return;
 
-   dlg.lblInFilePath->setText(inputFileName);
+    dlg.lblInFilePath->setText(inputFileName);
 
     auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::HTML));
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
@@ -276,37 +294,42 @@ void MyDialog::showFile(){
     if (!dlg.leColorMapPath->text().isEmpty())
         generator->setColorMap(dlg.leColorMapPath->text().toStdString());
 
-  //      generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
+    //      generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
 
     QString htmlString = QString( generator->generateStringFromFile(inputFileName.toStdString ()).c_str() );
     if (!htmlString.isEmpty()) {
-       dlg.textEdit->setText(htmlString);
-       this->setWindowTitle("ANSIFilter - " + inputFileName);
+        dlg.textEdit->setText(htmlString);
+        this->setWindowTitle("ANSIFilter - " + inputFileName);
     }
 }
 
-void MyDialog::on_pbAbout_clicked(){
+void MyDialog::on_pbAbout_clicked()
+{
     QMessageBox::about(this,
-    "ANSIFilter Information", "ANSIFilter GUI Version 1.15\n"
-    "(c) 2007-2016 Andre Simon\n\n"
-	"Released under the terms of the GNU GPL license.\n\n"
-	"andre dot simon1 at gmx dot de\n"
-    "See www.andre-simon.de for updates."
-	);
+                       "ANSIFilter Information", "ANSIFilter GUI Version 1.15\n"
+                       "(c) 2007-2016 Andre Simon\n\n"
+                       "Released under the terms of the GNU GPL license.\n\n"
+                       "andre dot simon1 at gmx dot de\n"
+                       "See www.andre-simon.de for updates."
+                      );
 }
 
-void MyDialog::on_cbIgnoreSequences_stateChanged(){
+void MyDialog::on_cbIgnoreSequences_stateChanged()
+{
     showFile();
 }
 
-void MyDialog::on_comboFont_textChanged(){
+void MyDialog::on_comboFont_currentIndexChanged(int idx)
+{
     showFile();
 }
-void MyDialog::on_comboEncoding_textChanged(){
+void MyDialog::on_comboEncoding_currentIndexChanged(int idx)
+{
     showFile();
 }
 
-void MyDialog::on_cbWatchFile_stateChanged(){
+void MyDialog::on_cbWatchFile_stateChanged()
+{
     if (dlg.cbWatchFile->isChecked() && !inputFileName.isEmpty())
         fileWatcher.addPath(inputFileName);
     else

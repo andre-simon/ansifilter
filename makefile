@@ -20,7 +20,7 @@ doc_dir = ${PREFIX}/share/doc/ansifilter/
 
 # Commands:
 #QMAKE=qmake
-QMAKE=qmake-qt4
+QMAKE=qmake-qt5
 
 INSTALL_DATA=install -m644
 INSTALL_PROGRAM=install -m755

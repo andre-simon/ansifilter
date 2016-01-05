@@ -76,8 +76,8 @@ public slots:
 				void on_cbIgnoreSequences_stateChanged();
                // void on_cbLineNumbers_stateChanged();
                 void on_cbWatchFile_stateChanged();
-				void on_comboFont_textChanged();
-				void on_comboEncoding_textChanged();
+                void on_comboFont_currentIndexChanged(int idx);
+                void on_comboEncoding_currentIndexChanged(int idx);
 
                 void onFileChanged(const QString & path);
                 void plausibility();

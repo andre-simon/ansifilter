@@ -112,7 +112,7 @@ Bright: DarkGray (8), Red (9), Green (10), Yellow (11), Blue (12), Magenta (13),
 
 File format:
 
-<idx 0..15> = <HTML color code>
+<0..15> = <HTML color code>
 
 Example file content:
 

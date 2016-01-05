@@ -21,15 +21,25 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+#include <QtGlobal>
+
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
 #include <QApplication>
 #include <QDialog>
+#else
+
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QApplication>
+#endif
+
 #include "mydialog.h"
 
 int main(int argc, char *argv[])
 {
-     QApplication app(argc, argv);
-     MyDialog d(0,  Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
-	 if (argc>1) d.setInputFileName(argv[1]);
-     d.show();
-     return app.exec();
+    QApplication app(argc, argv);
+    MyDialog d(0,  Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
+    if (argc>1) d.setInputFileName(argv[1]);
+    d.show();
+    return app.exec();
 }
