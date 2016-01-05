@@ -30,8 +30,6 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "pangogenerator.h"
 #include "version.h"
 
-using namespace std;
-
 namespace ansifilter
 {
 
@@ -109,7 +107,7 @@ string PangoGenerator::getFooter()
 
 void PangoGenerator::printBody()
 {
-    processRootState();
+    processInput();
 }
 
 string PangoGenerator::maskCharacter(unsigned char c)

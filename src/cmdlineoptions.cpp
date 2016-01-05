@@ -76,6 +76,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         { 'v', "version",   Arg_parser::no  },
         { 'V', "version",   Arg_parser::no  },
         { 'W', "wrap-no-numbers",   Arg_parser::no  },
+	{ 'm', "map",       Arg_parser::yes },
         {  0,  0,           Arg_parser::no  }
     };
 
@@ -149,6 +150,10 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         case 'L':
             outputType = ansifilter::LATEX;
             break;
+	    
+	case 'm':
+	    colorMapPath = arg;
+	    break;
         case 'M':
             outputType = ansifilter::PANGO;
             break;
@@ -300,6 +305,11 @@ string CmdLineOptions::getFont() const
 string CmdLineOptions::getFontSize() const
 {
     return fontSize;
+}
+
+string CmdLineOptions::getMapPath() const
+{
+  return colorMapPath;
 }
 
 bool CmdLineOptions::plainOutput() const

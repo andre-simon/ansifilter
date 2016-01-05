@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
----  ANSIFILTER MANUAL - Version 1.13  ----------------------- October 2015 ---
+---  ANSIFILTER MANUAL - Version 1.15  ----------------------- January 2016 ---
 -------------------------------------------------------------------------------
 
 OSI Certified Open Source Software
@@ -17,7 +17,8 @@ CONTENT:
 1. Quick introduction
 2. Platforms
 3. Features
-4. Contact
+4. Color mapping
+5. Contact
 
 
 1.  Quick introduction
@@ -50,6 +51,7 @@ Format options:
   -f, --fragment         Omit HTML header and footer
   -F, --font=<font>      Set HTML/RTF font face
   -l, --line-numbers     print line numbers in output file
+  -m, --map=<path>       read color mapping file (see README)
   -r, --style-ref=<rf>   Set HTML/TeX/LaTeX stylesheet path
   -s, --font-size=<fs>   Set HTML/RTF font size
   -p, --plain            Ignore ANSI formatting information
@@ -96,7 +98,29 @@ Other:      Conceal/Reveal, Image positive/negative
 All commands which issue the listed formatting options are supported.
 Some options like Blink are not supported by all output formats (like RTF).
 
-4.  Contact
+
+4.  Color mapping
+-------------------------------------------------------------------------------
+
+The basic ANSI color set can be adjusted with a color map file (--map option). 
+This text configuration overrides these color codes:
+
+Normal: Black (0), Red (1), Green (2), Yellow (3), Blue (4), Magenta (5), 
+        Cyan (6), Gray (7)
+Bright: DarkGray (8), Red (9), Green (10), Yellow (11), Blue (12), Magenta (13),
+        Cyan (14), White (15)
+
+File format:
+
+<idx 0..15> = <HTML color code>
+
+Example file content:
+
+0 = #0000dd -- set black value to dark blue
+1 = #ffff00 -- set red value to yellow
+
+
+5.  Contact
 -------------------------------------------------------------------------------
 
 Andre Simon

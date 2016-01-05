@@ -29,8 +29,6 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "rtfgenerator.h"
 #include "stylecolour.h"
 
-using namespace std;
-
 namespace ansifilter
 {
 
@@ -107,23 +105,9 @@ void RtfGenerator::printBody()
     *out << ";}}"
          << "{\\colortbl;";
 
-    *out << getAttributes(StyleColour(ColorBlack));
-    *out << getAttributes(StyleColour(ColorRed));
-    *out << getAttributes(StyleColour(ColorGreen));
-    *out << getAttributes(StyleColour(ColorYellow));
-    *out << getAttributes(StyleColour(ColorBlue));
-    *out << getAttributes(StyleColour(ColorMagenta));
-    *out << getAttributes(StyleColour(ColorCyan));
-    *out << getAttributes(StyleColour(ColorWhite));
-
-    *out << getAttributes(StyleColour(ColorBlack));
-    *out << getAttributes(StyleColour(ColorBrightRed));
-    *out << getAttributes(StyleColour(ColorBrightGreen));
-    *out << getAttributes(StyleColour(ColorBrightYellow));
-    *out << getAttributes(StyleColour(ColorBrightBlue));
-    *out << getAttributes(StyleColour(ColorBrightMagenta));
-    *out << getAttributes(StyleColour(ColorBrightCyan));
-    *out << getAttributes(StyleColour(ColorBrightWhite));
+    for (int i=0;i<16;i++){
+      *out << getAttributes(StyleColour(rgb2html(basic16[i])));
+    }
 
     *out << "}\n";
 
@@ -135,7 +119,7 @@ void RtfGenerator::printBody()
     *out << ((fontSizeRTF)? fontSizeRTF*2: 20);  // RTF needs double amount
     *out << "\n\\pard ";
 
-    processRootState();
+    processInput();
 
     *out << "}"<<endl;
 }

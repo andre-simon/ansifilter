@@ -22,7 +22,7 @@ static const uint qt_meta_data_MyDialog[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,11 +35,12 @@ static const uint qt_meta_data_MyDialog[] = {
       56,    9,    9,    9, 0x0a,
       77,    9,    9,    9, 0x0a,
      102,    9,    9,    9, 0x0a,
-     138,    9,    9,    9, 0x0a,
-     168,    9,    9,    9, 0x0a,
-     195,    9,    9,    9, 0x0a,
-     231,  226,    9,    9, 0x0a,
-     254,    9,    9,    9, 0x0a,
+     131,    9,    9,    9, 0x0a,
+     167,    9,    9,    9, 0x0a,
+     197,    9,    9,    9, 0x0a,
+     224,    9,    9,    9, 0x0a,
+     260,  255,    9,    9, 0x0a,
+     283,    9,    9,    9, 0x0a,
 
        0        // eod
 };
@@ -48,6 +49,7 @@ static const char qt_meta_stringdata_MyDialog[] = {
     "MyDialog\0\0on_pbSaveAs_clicked()\0"
     "on_pbFileOpen_clicked()\0on_pbAbout_clicked()\0"
     "on_pbClipboard_clicked()\0"
+    "on_pbSelectMapFile_clicked()\0"
     "on_cbIgnoreSequences_stateChanged()\0"
     "on_cbWatchFile_stateChanged()\0"
     "on_comboFont_textChanged()\0"
@@ -65,12 +67,13 @@ void MyDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 1: _t->on_pbFileOpen_clicked(); break;
         case 2: _t->on_pbAbout_clicked(); break;
         case 3: _t->on_pbClipboard_clicked(); break;
-        case 4: _t->on_cbIgnoreSequences_stateChanged(); break;
-        case 5: _t->on_cbWatchFile_stateChanged(); break;
-        case 6: _t->on_comboFont_textChanged(); break;
-        case 7: _t->on_comboEncoding_textChanged(); break;
-        case 8: _t->onFileChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 9: _t->plausibility(); break;
+        case 4: _t->on_pbSelectMapFile_clicked(); break;
+        case 5: _t->on_cbIgnoreSequences_stateChanged(); break;
+        case 6: _t->on_cbWatchFile_stateChanged(); break;
+        case 7: _t->on_comboFont_textChanged(); break;
+        case 8: _t->on_comboEncoding_textChanged(); break;
+        case 9: _t->onFileChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 10: _t->plausibility(); break;
         default: ;
         }
     }
@@ -108,9 +111,9 @@ int MyDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 11;
     }
     return _id;
 }

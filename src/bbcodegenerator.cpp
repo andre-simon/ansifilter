@@ -30,8 +30,6 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "bbcodegenerator.h"
 #include "version.h"
 
-using namespace std;
-
 namespace ansifilter
 {
 
@@ -99,7 +97,7 @@ string BBCodeGenerator::getFooter()
 
 void BBCodeGenerator::printBody()
 {
-    processRootState();
+    processInput();
 }
 
 string BBCodeGenerator::maskCharacter(unsigned char c)

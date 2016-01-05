@@ -73,6 +73,7 @@ void ANSIFilterApp::printHelp()
     cout << "  -f, --fragment         Omit HTML header and footer\n";
     cout << "  -F, --font=<font>      Set HTML/RTF font face\n";
     cout << "  -l, --line-numbers     print line numbers in output file\n";
+    cout << "  -m, --map=<path>       read color mapping file (see README)\n";
     cout << "  -r, --style-ref=<rf>   Set HTML/TeX/LaTeX stylesheet path\n";
     cout << "  -s, --font-size=<fs>   Set HTML/RTF font size\n";
     cout << "  -p, --plain            Ignore ANSI formatting information\n";
@@ -108,20 +109,20 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
     auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(options.getOutputType()));
 
     string outDirectory = options.getOutDirectory();
-    /*
-      if (!outDirectory.empty() && !options.quietMode() && !dirstr::directory_exists(outDirectory) ){
-         cerr << "highlight: Output directory \""
-              << outDirectory
-    	  << "\" does not exist.\n";
-        // highlight::CodeGenerator::deleteInstance();
-         return EXIT_FAILURE;
-      }
-    */
+
     unsigned int fileCount=inFileList.size(), i=0;
     string::size_type pos=0;
     string inFileName, outFilePath;
+    string mapPath = options.getMapPath();
     bool failure=false;
 
+    if (mapPath.size()){
+      if (!generator->setColorMap(mapPath)){
+        std::cerr <<"could not read map file: " << mapPath << "\n";
+        return EXIT_FAILURE;
+      }
+    }
+    
     while (i < fileCount && !failure) {
 
         pos=(inFileList[i]).find_last_of(Platform::pathSeparator);
@@ -154,10 +155,10 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
         ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
 
         if (error==ansifilter::BAD_INPUT) {
-            std::cerr <<"could not read input: "<<inFileList[i]<<"\n";
+            std::cerr << "could not read input: " << inFileList[i] << "\n";
             failure=true;
         } else if (error==ansifilter::BAD_OUTPUT) {
-            std::cerr <<"could not write output: "<< outFilePath <<"\n";
+            std::cerr << "could not write output: " << outFilePath << "\n";
             failure=true;
         }
         ++i;

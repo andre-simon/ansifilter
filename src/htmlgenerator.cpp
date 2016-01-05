@@ -30,8 +30,6 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "htmlgenerator.h"
 #include "version.h"
 
-using namespace std;
-
 namespace ansifilter
 {
 
@@ -146,7 +144,7 @@ string HtmlGenerator::getFooter()
 
 void HtmlGenerator::printBody()
 {
-    processRootState();
+    processInput();
 }
 
 string HtmlGenerator::maskCharacter(unsigned char c)

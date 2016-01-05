@@ -16,6 +16,7 @@ print ( "\033[35mMagenta\033[0m\n")
 print ( "\033[36mCyan\033[0m\n")
 print ( "\033[37mWhite\033[0m\n")
 
+print ( "\033[90mDarkGray Bright\033[0m\n")
 print ( "\033[91mRed Bright\033[0m\n")
 print ( "\033[92mGreen Bright\033[0m\n")
 print ( "\033[93mYellow Bright\033[0m\n")

@@ -71,6 +71,7 @@ public slots:
 				void on_pbFileOpen_clicked();
 				void on_pbAbout_clicked();
 				void on_pbClipboard_clicked();
+                void on_pbSelectMapFile_clicked();
 				
 				void on_cbIgnoreSequences_stateChanged();
                // void on_cbLineNumbers_stateChanged();

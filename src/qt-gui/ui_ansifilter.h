@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 class Ui_Dialog
 {
 public:
-    QHBoxLayout *horizontalLayout;
+    QGridLayout *gridLayout_3;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout;
     QPushButton *pbFileOpen;
@@ -64,6 +64,11 @@ public:
     QLabel *label_3;
     QSpinBox *spinBoxWrap;
     QFontComboBox *comboFont;
+    QFrame *line_3;
+    QLabel *label_5;
+    QHBoxLayout *horizontalLayout;
+    QLineEdit *leColorMapPath;
+    QPushButton *pbSelectMapFile;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout_5;
     QPushButton *pbAbout;
@@ -78,7 +83,7 @@ public:
         if (Dialog->objectName().isEmpty())
             Dialog->setObjectName(QString::fromUtf8("Dialog"));
         Dialog->setWindowModality(Qt::NonModal);
-        Dialog->resize(765, 658);
+        Dialog->resize(784, 738);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -88,8 +93,8 @@ public:
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/ansifilter.xpm"), QSize(), QIcon::Normal, QIcon::Off);
         Dialog->setWindowIcon(icon);
-        horizontalLayout = new QHBoxLayout(Dialog);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        gridLayout_3 = new QGridLayout(Dialog);
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         groupBox = new QGroupBox(Dialog);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
         QSizePolicy sizePolicy1(QSizePolicy::Maximum, QSizePolicy::Preferred);
@@ -272,6 +277,45 @@ public:
 
         verticalLayout->addWidget(comboFont);
 
+        line_3 = new QFrame(groupBox);
+        line_3->setObjectName(QString::fromUtf8("line_3"));
+        line_3->setFrameShape(QFrame::HLine);
+        line_3->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout->addWidget(line_3);
+
+        label_5 = new QLabel(groupBox);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+
+        verticalLayout->addWidget(label_5);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        leColorMapPath = new QLineEdit(groupBox);
+        leColorMapPath->setObjectName(QString::fromUtf8("leColorMapPath"));
+        QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Maximum);
+        sizePolicy7.setHorizontalStretch(0);
+        sizePolicy7.setVerticalStretch(0);
+        sizePolicy7.setHeightForWidth(leColorMapPath->sizePolicy().hasHeightForWidth());
+        leColorMapPath->setSizePolicy(sizePolicy7);
+
+        horizontalLayout->addWidget(leColorMapPath);
+
+        pbSelectMapFile = new QPushButton(groupBox);
+        pbSelectMapFile->setObjectName(QString::fromUtf8("pbSelectMapFile"));
+        QSizePolicy sizePolicy8(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy8.setHorizontalStretch(0);
+        sizePolicy8.setVerticalStretch(0);
+        sizePolicy8.setHeightForWidth(pbSelectMapFile->sizePolicy().hasHeightForWidth());
+        pbSelectMapFile->setSizePolicy(sizePolicy8);
+        pbSelectMapFile->setMinimumSize(QSize(20, 0));
+        pbSelectMapFile->setMaximumSize(QSize(30, 16777215));
+
+        horizontalLayout->addWidget(pbSelectMapFile);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -300,7 +344,7 @@ public:
         verticalLayout->addLayout(horizontalLayout_5);
 
 
-        horizontalLayout->addWidget(groupBox);
+        gridLayout_3->addWidget(groupBox, 0, 0, 1, 1);
 
         gridLayout_2 = new QGridLayout();
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
@@ -311,11 +355,11 @@ public:
 
         textEdit = new QTextEdit(Dialog);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy7.setHorizontalStretch(1);
-        sizePolicy7.setVerticalStretch(1);
-        sizePolicy7.setHeightForWidth(textEdit->sizePolicy().hasHeightForWidth());
-        textEdit->setSizePolicy(sizePolicy7);
+        QSizePolicy sizePolicy9(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy9.setHorizontalStretch(1);
+        sizePolicy9.setVerticalStretch(1);
+        sizePolicy9.setHeightForWidth(textEdit->sizePolicy().hasHeightForWidth());
+        textEdit->setSizePolicy(sizePolicy9);
         QFont font2;
         font2.setFamily(QString::fromUtf8("Courier New"));
         font2.setPointSize(10);
@@ -332,7 +376,7 @@ public:
         gridLayout_2->addWidget(cbWatchFile, 2, 0, 1, 1);
 
 
-        horizontalLayout->addLayout(gridLayout_2);
+        gridLayout_3->addLayout(gridLayout_2, 0, 1, 1, 1);
 
 #ifndef QT_NO_SHORTCUT
         label_2->setBuddy(leTitle);
@@ -421,6 +465,14 @@ public:
 #ifndef QT_NO_TOOLTIP
         comboFont->setToolTip(QApplication::translate("Dialog", "Set the output font.", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
+        label_5->setText(QApplication::translate("Dialog", "Color map file:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        leColorMapPath->setToolTip(QApplication::translate("Dialog", "Color map file (see README for details).", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_TOOLTIP
+        pbSelectMapFile->setToolTip(QApplication::translate("Dialog", "Select a color map configuration file. ", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        pbSelectMapFile->setText(QApplication::translate("Dialog", "...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         pbAbout->setToolTip(QApplication::translate("Dialog", "Show information about this program.", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

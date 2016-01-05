@@ -30,8 +30,6 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "latexgenerator.h"
 #include "version.h"
 
-using namespace std;
-
 namespace ansifilter
 {
 
@@ -119,7 +117,7 @@ string LaTeXGenerator::getFooter()
 
 void LaTeXGenerator::printBody()
 {
-    processRootState();
+    processInput();
 }
 
 string LaTeXGenerator::maskCharacter(unsigned char c)

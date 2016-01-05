@@ -59,15 +59,18 @@ public:
     /** \return Output directory*/
     string getOutDirectory() ;
 
-    /** \return Char set*/
+    /** \return Character encoding*/
     string getEncoding() const;
 
-    /** \return Char set*/
+    /** \return font name*/
     string getFont() const;
 
-    /** \return Char set*/
+    /** \return font size*/
     string getFontSize() const;
 
+    /** \return path to color map*/
+    string getMapPath() const;
+    
     /** \return True if version information should be printed*/
     bool printVersion() const;
 
@@ -132,6 +135,7 @@ private:
     string font;
     string fontSize;
     string styleSheetPath;
+    string colorMapPath;
 
     int wrapLineLen;
 

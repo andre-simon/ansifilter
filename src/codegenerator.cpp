@@ -1,10 +1,10 @@
 /***************************************************************************
-			  codegenerator.cpp  -  description
-			     -------------------
-    begin		 :
-    copyright		 : (C) 2007-2015 by Andre Simon
-    email		 : andre.simon1@gmx.de
+                      codegenerator.cpp  -  description
+                             -------------------
+    copyright            : (C) 2007-2016 by Andre Simon
+    email                : andre.simon1@gmx.de
  ***************************************************************************/
+
 
 /*
 This file is part of ANSIFilter.
@@ -31,6 +31,7 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include <unistd.h>
 #endif
 
+#include <cstdlib> 
 #include <fstream>
 #include "version.h"
 
@@ -42,28 +43,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "latexgenerator.h"
 #include "bbcodegenerator.h"
 
-using namespace std;
-
 namespace ansifilter
 {
-
-//TODO Farben aus basic16 Tabelle verwenden
-string CodeGenerator::ColorBlack	= "#000000";
-string CodeGenerator::ColorRed	= "#F00000";
-string CodeGenerator::ColorGreen	= "#00F000";
-string CodeGenerator::ColorYellow	= "#F0F000";
-string CodeGenerator::ColorBlue	= "#0000F0";
-string CodeGenerator::ColorMagenta  = "#F000F0";
-string CodeGenerator::ColorCyan	= "#00F0F0";
-string CodeGenerator::ColorWhite	= "#F0F0F0";
-string CodeGenerator::ColorBrightRed	= "#ff0000";
-string CodeGenerator::ColorBrightGreen	= "#00ff00";
-string CodeGenerator::ColorBrightYellow	= "#ffff00";
-string CodeGenerator::ColorBrightBlue	= "#0000ff";
-string CodeGenerator::ColorBrightMagenta    = "#ff00ff";
-string CodeGenerator::ColorBrightCyan	= "#00ffff";
-string CodeGenerator::ColorBrightWhite	= "#ffffff";
-
 
 CodeGenerator * CodeGenerator::getInstance(OutputType type)
 {
@@ -116,7 +97,7 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      ignoreFormatting(false),
      readAfterEOF(false)
 {
-    elementStyle.setFgColour("#000000");
+    elementStyle.setFgColour(rgb2html(basic16[0]));
     //elementStyle.setBgColour("#ffffff");
 }
 
@@ -138,7 +119,6 @@ void CodeGenerator::setWrapNoNumbers(bool flag)
 {
     numberWrappedLines = flag;
 }
-
 
 bool CodeGenerator::getFragmentCode()
 {
@@ -342,7 +322,6 @@ bool CodeGenerator::parseSequence(const string& line, size_t begin, size_t end)
     int ansiCode=0;
     int colorCode=0;
     unsigned char colorValues[3]= {0};
-    char colorString[10]= {0};
 
     string codes=line.substr(begin+2, end-begin-2);
 
@@ -362,9 +341,11 @@ bool CodeGenerator::parseSequence(const string& line, size_t begin, size_t end)
         case 0:
             elementStyle.setReset(true);
             break;
+	    
         case 1:
             elementStyle.setBold(true);
             break;
+	    
         case 2: //Faint
             break;
 
@@ -411,29 +392,16 @@ bool CodeGenerator::parseSequence(const string& line, size_t begin, size_t end)
             break;
 
         case 30:
-            elementStyle.setFgColour(ColorBlack);
-            break;
         case 31:
-            elementStyle.setFgColour(ColorRed);
-            break;
         case 32:
-            elementStyle.setFgColour(ColorGreen);
-            break;
         case 33:
-            elementStyle.setFgColour(ColorYellow);
-            break;
         case 34:
-            elementStyle.setFgColour(ColorBlue);
-            break;
         case 35:
-            elementStyle.setFgColour(ColorMagenta);
-            break;
         case 36:
-            elementStyle.setFgColour(ColorCyan);
-            break;
         case 37:
-            elementStyle.setFgColour(ColorWhite);
+	    elementStyle.setFgColour(rgb2html(basic16[ansiCode-30]));
             break;
+	    
         case 38: // xterm 256 foreground color mode \033[38;5;<color>
 
             itVectorData++;
@@ -446,37 +414,22 @@ bool CodeGenerator::parseSequence(const string& line, size_t begin, size_t end)
 
             StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
             xterm2rgb((unsigned char)colorCode, colorValues);
-            sprintf(colorString, "#%02x%02x%02x",
-                    colorValues[0], colorValues[1], colorValues[2]);
-            elementStyle.setFgColour(colorString);
+            elementStyle.setFgColour(rgb2html(colorValues));
             break;
+	    
         case 39:
             elementStyle.setReset(true);
             break;
 
         case 40:
-            elementStyle.setBgColour(ColorBlack);
-            break;
         case 41:
-            elementStyle.setBgColour(ColorRed);
-            break;
         case 42:
-            elementStyle.setBgColour(ColorGreen);
-            break;
         case 43:
-            elementStyle.setBgColour(ColorYellow);
-            break;
         case 44:
-            elementStyle.setBgColour(ColorBlue);
-            break;
         case 45:
-            elementStyle.setBgColour(ColorMagenta);
-            break;
         case 46:
-            elementStyle.setBgColour(ColorCyan);
-            break;
         case 47:
-            elementStyle.setBgColour(ColorWhite);
+	    elementStyle.setBgColour(rgb2html(basic16[ansiCode-40]));
             break;
 
         case 48:  // xterm 256 background color mode \033[48;5;<color>
@@ -490,11 +443,8 @@ bool CodeGenerator::parseSequence(const string& line, size_t begin, size_t end)
             if (itVectorData == codeVector.end()) break;
 
             StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
-
             xterm2rgb((unsigned char)colorCode, colorValues);
-            sprintf(colorString, "#%02x%02x%02x",
-                    colorValues[0], colorValues[1], colorValues[2]);
-            elementStyle.setBgColour(colorString);
+            elementStyle.setBgColour(rgb2html(colorValues));
             break;
 
         case 49:
@@ -503,53 +453,27 @@ bool CodeGenerator::parseSequence(const string& line, size_t begin, size_t end)
 
         /*aixterm codes*/
         case 90:
-            elementStyle.setFgColour(ColorBlack);
-            break;
-        case 91:
-            elementStyle.setFgColour(ColorBrightRed);
-            break;
-        case 92:
-            elementStyle.setFgColour(ColorBrightGreen);
-            break;
-        case 93:
-            elementStyle.setFgColour(ColorBrightYellow);
-            break;
-        case 94:
-            elementStyle.setFgColour(ColorBrightBlue);
-            break;
-        case 95:
-            elementStyle.setFgColour(ColorBrightMagenta);
-            break;
-        case 96:
-            elementStyle.setFgColour(ColorBrightCyan);
-            break;
+	case 91:
+	case 92:
+	case 93:
+	case 94:
+	case 95:
+	case 96:
         case 97:
-            elementStyle.setFgColour(ColorBrightWhite);
+            elementStyle.setFgColour(rgb2html(basic16[ansiCode-90+8]));
             break;
+	    
         case 100:
-            elementStyle.setBgColour(ColorBlack);
-            break;
         case 101:
-            elementStyle.setBgColour(ColorBrightRed);
-            break;
         case 102:
-            elementStyle.setBgColour(ColorBrightGreen);
-            break;
         case 103:
-            elementStyle.setBgColour(ColorBrightYellow);
-            break;
         case 104:
-            elementStyle.setBgColour(ColorBrightBlue);
-            break;
         case 105:
-            elementStyle.setBgColour(ColorBrightMagenta);
-            break;
         case 106:
-            elementStyle.setBgColour(ColorBrightCyan);
-            break;
         case 107:
-            elementStyle.setBgColour(ColorBrightWhite);
+            elementStyle.setBgColour(rgb2html(basic16[ansiCode-100+8]));
             break;
+
         }
 
         // Set RTF color index
@@ -590,7 +514,7 @@ void CodeGenerator::insertLineNumber ()
 
 ////////////////////////////////////////////////////////////////////////////
 
-void CodeGenerator::processRootState()
+void CodeGenerator::processInput()
 {
 
     if (readAfterEOF && in!=&cin) {
@@ -677,9 +601,6 @@ void CodeGenerator::processRootState()
                         if (seqEnd==string::npos) seqEnd=line.find(';', i+1);
                         if (seqEnd==string::npos) seqEnd=line.find('h', i+1);
 
-                        if (seqEnd==string::npos) {
-                        }
-
                         if (!ignoreFormatting && seqEnd!=string::npos) {
                             if (!elementStyle.isReset()) {
                                 *out <<getCloseTag();
@@ -740,25 +661,66 @@ void CodeGenerator::xterm2rgb(unsigned char color, unsigned char* rgb)
     }
 }
 
+string CodeGenerator::rgb2html(unsigned char* rgb){
+  char colorString[10]= {0};
+  sprintf(colorString, "#%02x%02x%02x", rgb[0], rgb[1], rgb[2]);
+  return string(colorString);
+}
+
 const unsigned char CodeGenerator::valuerange[] = { 0x00, 0x5F, 0x87, 0xAF, 0xD7, 0xFF };
 
-const unsigned char CodeGenerator::basic16[16][3] = {
-    { 0x00, 0x00, 0x00 }, // 0
-    { 0xCD, 0x00, 0x00 }, // 1
-    { 0x00, 0xCD, 0x00 }, // 2
-    { 0xCD, 0xCD, 0x00 }, // 3
-    { 0x00, 0x00, 0xEE }, // 4
-    { 0xCD, 0x00, 0xCD }, // 5
-    { 0x00, 0xCD, 0xCD }, // 6
-    { 0xE5, 0xE5, 0xE5 }, // 7
-    { 0x7F, 0x7F, 0x7F }, // 8
-    { 0xFF, 0x00, 0x00 }, // 9
-    { 0x00, 0xFF, 0x00 }, // 10
-    { 0xFF, 0xFF, 0x00 }, // 11
-    { 0x5C, 0x5C, 0xFF }, // 12
-    { 0xFF, 0x00, 0xFF }, // 13
-    { 0x00, 0xFF, 0xFF }, // 14
-    { 0xFF, 0xFF, 0xFF }  // 15
-};
+unsigned char CodeGenerator::basic16[16][3] = {
+    { 0x00, 0x00, 0x00 }, // 0 ColorBlack
+    { 0xCD, 0x00, 0x00 }, // 1 ColorRed
+    { 0x00, 0xCD, 0x00 }, // 2 ColorGreen
+    { 0xCD, 0xCD, 0x00 }, // 3 ColorYellow
+    { 0x00, 0x00, 0xEE }, // 4 ColorBlue
+    { 0xCD, 0x00, 0xCD }, // 5 ColorMagenta
+    { 0x00, 0xCD, 0xCD }, // 6 ColorCyan
+    { 0xE5, 0xE5, 0xE5 }, // 7 ColorGray
+    { 0x7F, 0x7F, 0x7F }, // 8 ColorDarkGray
+    { 0xFF, 0x00, 0x00 }, // 9 ColorBrightRed
+    { 0x00, 0xFF, 0x00 }, // 10 ColorBrightGreen
+    { 0xFF, 0xFF, 0x00 }, // 11 ColorBrightYellow
+    { 0x5C, 0x5C, 0xFF }, // 12 ColorBrightBlue
+    { 0xFF, 0x00, 0xFF }, // 13 ColorBrightMagenta
+    { 0x00, 0xFF, 0xFF }, // 14 ColorBrightCyan
+    { 0xFF, 0xFF, 0xFF }  // 15 ColorBrightWhite
+}; 
+
+bool CodeGenerator::setColorMap(const string& mapPath){
+  ifstream mapFile ( mapPath.c_str() );
+  if ( mapFile ) {
+
+      string line;
+      
+      unsigned int idx=0;
+      char sep='\0';
+          
+      string colorCode;
+      while ( getline ( mapFile, line ) ) {
+	stringstream s(line);
+	
+	s>>idx;
+	if (idx>15) return false;
+	
+	s>>sep;
+	if (sep!='=') return false;
+	
+	s>>colorCode;
+	if (colorCode.size()>=7 && colorCode[0]=='#' ) {  
+	  basic16[idx][0] = (char)std::strtol(colorCode.substr ( 1, 2 ).c_str(), NULL, 16);
+	  basic16[idx][1] = (char)std::strtol(colorCode.substr ( 3, 2 ).c_str(), NULL, 16);
+	  basic16[idx][2] = (char)std::strtol(colorCode.substr ( 5, 2 ).c_str(), NULL, 16);  
+	} else {
+	    return false;
+        }
+      }
+      mapFile.close();
+  } else {
+      return false;
+  } 
+  return true;
+}
 
 }

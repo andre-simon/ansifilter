@@ -31,8 +31,6 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "charcodes.h"
 #include "version.h"
 
-using namespace std;
-
 namespace ansifilter
 {
 
@@ -112,7 +110,7 @@ string TeXGenerator::getFooter()
 
 void TeXGenerator::printBody()
 {
-    processRootState();
+    processInput();
 }
 
 string TeXGenerator::maskCharacter(unsigned char c)

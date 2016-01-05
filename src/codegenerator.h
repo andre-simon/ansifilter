@@ -1,7 +1,7 @@
 /***************************************************************************
                           codegenerator.h  -  description
                              -------------------
-    copyright            : (C) 2007-2015 by Andre Simon
+    copyright            : (C) 2007-2016 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -111,6 +111,13 @@ public:
     ParseError generateFileFromString (const string &sourceStr,
                                        const string &outFileName,
                                        const string &title);
+    
+    /**
+     Overrides default colours by user defined values
+     \param mapPath path of map file
+     \return true if parsing was successfull
+    */
+    bool setColorMap(const string& mapPath);
 
     /** tell parser to omit document header and footer
        \param  flag true if output should be fragmented
@@ -244,8 +251,8 @@ protected:
          numberCurrentLine,   ///< output number of current line
          addAnchors;          ///< add HTML anchor to line number
 
-    /** Processes origin state */
-    void processRootState();
+    /** Processes input data */
+    void processInput();
 
     virtual void insertLineNumber ();
 
@@ -254,27 +261,21 @@ protected:
     {
         return StringTools::lowerCase(encoding)!="none";
     }
+    
+        /** convert a rgb triple to HTML color notation
+        @param rgb RGB input values 
+        @return HTML color string
+        */
+    string rgb2html(unsigned char* rgb);
+    
+        /// 16 basic colors
+    static unsigned char basic16[16][3];
 
     ElementStyle elementStyle;
 
     /** Class for line wrapping and tab replacement*/
     PreFormatter preFormatter;
 
-    static string ColorBlack;
-    static string ColorRed;
-    static string ColorGreen;
-    static string ColorYellow;
-    static string ColorBlue;
-    static string ColorMagenta;
-    static string ColorCyan;
-    static string ColorWhite;
-    static string ColorBrightRed;
-    static string ColorBrightGreen;
-    static string ColorBrightYellow;
-    static string ColorBrightBlue;
-    static string ColorBrightMagenta;
-    static string ColorBrightCyan;
-    static string ColorBrightWhite;
 
 private:
 
@@ -318,15 +319,11 @@ private:
 
     /** convert an xterm color value (0-253) to 3 unsigned chars rgb
         @param color xterm color
-        @param rgb RGB destination string */
+        @param rgb RGB output values */
     void xterm2rgb(unsigned char color, unsigned char* rgb);
 
     /// the 6 value iterations in the xterm color cube
     static const unsigned char valuerange[] ;
-
-    /// 16 basic colors
-    static const unsigned char basic16[16][3];
-
 };
 
 }

@@ -26,8 +26,6 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "plaintextgenerator.h"
 #include "version.h"
 
-using namespace std;
-
 namespace ansifilter
 {
 
@@ -54,7 +52,7 @@ string PlaintextGenerator::getFooter()
 
 void PlaintextGenerator::printBody()
 {
-    processRootState();
+    processInput();
 }
 
 string PlaintextGenerator::maskCharacter(unsigned char c)

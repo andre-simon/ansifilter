@@ -1,12 +1,21 @@
 Ansifilter ChangeLog
 
 
+05.01.2016
+
+ansifilter 1.15
+
+-CLI: added map option
+-GUI: added map path input field
+-GUI: fixed memory of selected output format
+
+---
 03.12.2015
 
 ansifilter 1.14
 
 -fixed parsing of grep escape sequences (thanks to Manfred Hokamp)
--GUI: added drag and drop (suggested to Manfred Hokamp)
+-GUI: added drag and drop (suggested by Manfred Hokamp)
 -GUI: added format selection and watch file checkbox
 
 ---
