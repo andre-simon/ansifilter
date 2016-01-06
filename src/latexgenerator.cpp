@@ -64,21 +64,12 @@ string LaTeXGenerator::getOpenTag()
                   << "}";
     }
 
-    string fmt  = fmtStream.str();
-    tagIsOpen = fmt.size()>0;
-    if (tagIsOpen) {
-        ostringstream spanTag;
-        spanTag<< "{"<<fmt;
-        return spanTag.str();
-    }
-    return "";
+    return "{" + fmtStream.str();
 }
 
 string LaTeXGenerator::getCloseTag()
 {
-    string retVal = tagIsOpen ? "}"  : "";
-    tagIsOpen = false;
-    return retVal;
+    return "}";
 }
 
 string LaTeXGenerator::getGeneratorComment()
@@ -197,7 +188,8 @@ void LaTeXGenerator::insertLineNumber ()
         ostringstream lnum;
         lnum << setw ( 5 ) << right;
         if( numberCurrentLine ) {
-            *out << getCloseTag();
+            if (lineNumber>1)
+              *out << getCloseTag();
             lnum << lineNumber;
             *out <<"{\\color[rgb]{0,0,0} "<<lnum.str()<<"}"<<spacer;
             *out << getOpenTag();
