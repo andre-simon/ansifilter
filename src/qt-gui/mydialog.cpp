@@ -1,7 +1,7 @@
 /***************************************************************************
                         mydialog.h  -  description
                              -------------------
-    copyright            : (C) 2007 by Andre Simon
+    copyright            : (C) 2007-2015 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -27,8 +27,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtGlobal>
 
 #if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-#include <QMessageBox>
-#include <QFileDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QFileDialog>
 #include <QScrollBar>
 #else
 #include <QtWidgets/QMessageBox>
@@ -41,6 +41,7 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSettings>
 #include <QUrl>
 #include <QMimeData>
+#include <QMimeData>
 
 
 
@@ -48,7 +49,6 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
 {
     dlg.setupUi(this);
     QSettings settings("andre-simon.de", "ansifilter-gui");
-
     settings.beginGroup("format");
     dlg.leTitle->setText(settings.value("title").toString());
     dlg.leColorMapPath->setText(settings.value("map").toString());
@@ -78,6 +78,7 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
     }
     plausibility();
 }
+
 
 void MyDialog::closeEvent(QCloseEvent *event)
 {
@@ -210,6 +211,7 @@ void MyDialog::on_pbSaveAs_clicked()
     QString outFileName =QFileDialog::getSaveFileName(this, tr("Save File"), outputFileName,
                          outFileSuffix.mid(1).toUpper() + " (*" + outFileSuffix+")" );
 
+
     auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(getOutputType()));
     generator->setTitle( (dlg.leTitle->text().isEmpty()? QFileInfo(outFileName).fileName() : dlg.leTitle->text()).toStdString());
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
@@ -241,6 +243,7 @@ void MyDialog::on_pbClipboard_clicked()
 
     if (inputFileName.isEmpty()) {
         QMessageBox::information(this, "Note",
+
                                  "Please select an input file."
                                 );
         return;
@@ -258,7 +261,6 @@ void MyDialog::on_pbClipboard_clicked()
 
 void MyDialog::on_pbSelectMapFile_clicked()
 {
-
     QString openFile = QFileDialog::getOpenFileName(this, tr("Open Map File"), inputFileName, tr("Text files (*.*)"));
     if (!openFile.isEmpty()) {
         dlg.leColorMapPath->setText(openFile);
@@ -268,7 +270,6 @@ void MyDialog::on_pbSelectMapFile_clicked()
 
 void MyDialog::on_pbFileOpen_clicked()
 {
-
     QString openFile = QFileDialog::getOpenFileName(this, tr("Open File"), inputFileName, tr("Text files (*.*)"));
     if (!openFile.isEmpty()) {
         inputFileName = openFile;
@@ -306,6 +307,7 @@ void MyDialog::showFile()
 void MyDialog::on_pbAbout_clicked()
 {
     QMessageBox::about(this,
+
                        "ANSIFilter Information", "ANSIFilter GUI Version 1.15\n"
                        "(c) 2007-2016 Andre Simon\n\n"
                        "Released under the terms of the GNU GPL license.\n\n"
@@ -316,6 +318,7 @@ void MyDialog::on_pbAbout_clicked()
 
 void MyDialog::on_cbIgnoreSequences_stateChanged()
 {
+
     showFile();
 }
 

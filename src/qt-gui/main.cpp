@@ -28,9 +28,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include <QApplication>
 #include <QDialog>
 #else
-
-#include <QtWidgets/QDialog>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QDialog>
 #endif
 
 #include "mydialog.h"
@@ -38,7 +37,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    MyDialog d(0,  Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
+    MyDialog d(0, Qt::Window);
+
     if (argc>1) d.setInputFileName(argv[1]);
     d.show();
     return app.exec();

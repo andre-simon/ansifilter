@@ -21,7 +21,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 */
- 
+
 #ifndef MYDIALOG
 #define MYDIALOG
 
@@ -39,6 +39,7 @@ public:
                 //The same constructor that we used last time with QDialog default parameters
                 MyDialog(QWidget * parent = 0, Qt::WindowFlags f = 0);
 
+
 				void setInputFileName(const char* fName) {
 				   inputFileName=QString(fName);
                    showFile();
@@ -47,11 +48,11 @@ public:
                 virtual ~MyDialog() {}
 				
 protected:
-				void closeEvent(QCloseEvent *event);
-				
+                void closeEvent(QCloseEvent *event);
+
 private:
-				QString inputFileName;
-				QString outputFileName;
+                QString inputFileName;
+                QString outputFileName;
 
                 QFileSystemWatcher fileWatcher;
 
@@ -78,10 +79,8 @@ public slots:
                 void on_cbWatchFile_stateChanged();
                 void on_comboFont_currentIndexChanged(int idx);
                 void on_comboEncoding_currentIndexChanged(int idx);
-
                 void onFileChanged(const QString & path);
                 void plausibility();
-
 };
 
 #endif
