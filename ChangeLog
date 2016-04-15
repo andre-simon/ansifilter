@@ -1,6 +1,12 @@
 Ansifilter ChangeLog
 
+15.04.2016
 
+ansifilter 1.16
+
+-fixed Pango output (patch by Dominik Schmidt)
+
+---
 06.01.2016
 
 ansifilter 1.15

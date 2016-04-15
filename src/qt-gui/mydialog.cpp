@@ -308,7 +308,7 @@ void MyDialog::on_pbAbout_clicked()
 {
     QMessageBox::about(this,
 
-                       "ANSIFilter Information", "ANSIFilter GUI Version 1.15\n"
+                       "ANSIFilter Information", "ANSIFilter GUI Version 1.16\n"
                        "(c) 2007-2016 Andre Simon\n\n"
                        "Released under the terms of the GNU GPL license.\n\n"
                        "andre dot simon1 at gmx dot de\n"

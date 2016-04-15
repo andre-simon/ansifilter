@@ -143,6 +143,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_KIMAP.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOCore.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOFileWidgets.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KIOGui.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOWidgets.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KItemModels.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KItemViews.pri \
@@ -394,6 +395,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_KIMAP.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOCore.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOFileWidgets.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KIOGui.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOWidgets.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KItemModels.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KItemViews.pri \
@@ -606,6 +608,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_KIMAP.pri:
 /usr/lib/qt/mkspecs/modules/qt_KIOCore.pri:
 /usr/lib/qt/mkspecs/modules/qt_KIOFileWidgets.pri:
+/usr/lib/qt/mkspecs/modules/qt_KIOGui.pri:
 /usr/lib/qt/mkspecs/modules/qt_KIOWidgets.pri:
 /usr/lib/qt/mkspecs/modules/qt_KItemModels.pri:
 /usr/lib/qt/mkspecs/modules/qt_KItemViews.pri:

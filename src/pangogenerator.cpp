@@ -49,32 +49,34 @@ string PangoGenerator::getOpenTag()
 
 
     if (elementStyle.isBold()) {
-        fmtStream<< " font-weight=bold";
+        fmtStream<< " font-weight=\"bold\"";
     }
     if (elementStyle.isItalic()) {
-        fmtStream<< " font-style=italic";
+        fmtStream<< " font-style=\"italic\"";
     }
     if (elementStyle.isUnderline()) {
-        fmtStream<< " underline=single";
+        fmtStream<< " underline=\"single\"";
     }
 
     if (elementStyle.isFgColorSet()) {
-        fmtStream << " fgcolor=#"
+        fmtStream << " fgcolor=\"#"
            << elementStyle.getFgColour().getRed(HTML)
            << elementStyle.getFgColour().getGreen(HTML)
-           << elementStyle.getFgColour().getBlue(HTML);
+           << elementStyle.getFgColour().getBlue(HTML)
+           << "\"";
     }
     if (elementStyle.isBgColorSet()) {
-        fmtStream <<" bgcolor=#"
+        fmtStream <<" bgcolor=#\""
            << elementStyle.getBgColour().getRed(HTML)
            << elementStyle.getBgColour().getGreen(HTML)
-           << elementStyle.getBgColour().getBlue(HTML);
+           << elementStyle.getBgColour().getBlue(HTML)
+           << "\"";
     }  
     string fmt  = fmtStream.str();
     tagIsOpen = fmt.size()>0;
     if (tagIsOpen) {
         ostringstream spanTag;
-        spanTag<< "<span style=\""<<fmt<<"\">";
+        spanTag<< "<span "<<fmt<<">";
         return spanTag.str();
     }
     return "";
@@ -122,7 +124,10 @@ string PangoGenerator::maskCharacter(unsigned char c)
     case '&' :
         return "&amp;";
         break;
-
+    case '\t':
+        return "\t";
+        break;
+	
     default :
         if (c>0x1f ) { // printable?
             return string( 1, c );
