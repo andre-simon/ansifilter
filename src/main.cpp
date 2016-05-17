@@ -106,7 +106,7 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
     }
 
     const  vector <string> inFileList=options.getInputFileNames();
-    auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(options.getOutputType()));
+    unique_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(options.getOutputType()));
 
     string outDirectory = options.getOutDirectory();
 

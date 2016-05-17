@@ -1,7 +1,7 @@
 /***************************************************************************
                         mydialog.h  -  description
                              -------------------
-    copyright            : (C) 2007-2015 by Andre Simon
+    copyright            : (C) 2007-2016 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -121,7 +121,6 @@ void MyDialog::dragLeaveEvent(QDragLeaveEvent* event)
 
 void MyDialog::dropEvent(QDropEvent* event)
 {
-
     dlg.lblDrop->setEnabled(false);
 
     QList<QUrl> urls = event->mimeData()->urls();
@@ -200,7 +199,6 @@ QString MyDialog::getOutFileSuffix()
 
 void MyDialog::on_pbSaveAs_clicked()
 {
-
     if (inputFileName.isEmpty()) {
         QMessageBox::information(this, "Note", "Please select an input file.");
         return;
@@ -211,8 +209,7 @@ void MyDialog::on_pbSaveAs_clicked()
     QString outFileName =QFileDialog::getSaveFileName(this, tr("Save File"), outputFileName,
                          outFileSuffix.mid(1).toUpper() + " (*" + outFileSuffix+")" );
 
-
-    auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(getOutputType()));
+    unique_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(getOutputType()));
     generator->setTitle( (dlg.leTitle->text().isEmpty()? QFileInfo(outFileName).fileName() : dlg.leTitle->text()).toStdString());
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(dlg.cbFragment->isChecked());
@@ -243,12 +240,11 @@ void MyDialog::on_pbClipboard_clicked()
 
     if (inputFileName.isEmpty()) {
         QMessageBox::information(this, "Note",
-
                                  "Please select an input file."
                                 );
         return;
     }
-    auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::TEXT));
+    unique_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::TEXT));
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     //generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
     QString outString = QString(generator->generateStringFromFile( inputFileName.toStdString ()).c_str() ) ;
@@ -285,7 +281,7 @@ void MyDialog::showFile()
 
     dlg.lblInFilePath->setText(inputFileName);
 
-    auto_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::HTML));
+    unique_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::HTML));
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(false);
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
@@ -307,8 +303,7 @@ void MyDialog::showFile()
 void MyDialog::on_pbAbout_clicked()
 {
     QMessageBox::about(this,
-
-                       "ANSIFilter Information", "ANSIFilter GUI Version 1.16\n"
+                       "ANSIFilter Information", "ANSIFilter GUI Version 1.17\n"
                        "(c) 2007-2016 Andre Simon\n\n"
                        "Released under the terms of the GNU GPL license.\n\n"
                        "andre dot simon1 at gmx dot de\n"

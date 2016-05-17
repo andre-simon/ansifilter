@@ -162,6 +162,9 @@ string HtmlGenerator::maskCharacter(unsigned char c)
     case '\"' :
         return "&quot;";
         break;
+    case '\'' :
+      return "&apos;";
+      break;
     case '\t' : // see deletion of nonprintable chars below
         return "\t";
         break;

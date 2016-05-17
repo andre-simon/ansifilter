@@ -61,9 +61,9 @@ string BBCodeGenerator::getOpenTag()
     string fmt  = fmtStream.str();
     tagIsOpen = fmt.size()>0;
     if (tagIsOpen) {
-        ostringstream spanTag;
-        spanTag<< "<span style=\""<<fmt<<"\">";
-        return spanTag.str();
+      ostringstream spanTag;
+      spanTag<<fmt;
+      return spanTag.str();
     }
     return "";
 }
@@ -76,7 +76,7 @@ string BBCodeGenerator::getCloseTag()
         if ( elementStyle.isUnderline() ) s << "[/u]";
         if ( elementStyle.isItalic() ) s << "[/i]";
         if ( elementStyle.isBold() ) s << "[/b]";
-        s << "[/color]";
+        if ( elementStyle.isFgColorSet() ) s << "[/color]";
     }
     tagIsOpen = false;
     return  s.str();
