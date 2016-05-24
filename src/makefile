@@ -4,7 +4,8 @@
 
 CC=g++
 
-CFLAGS= -c -Wall -O2 -DNDEBUG
+# Added -std=c++11 because of auto_ptr to unique_ptr transition
+CFLAGS= -c -Wall -O2 -DNDEBUG -std=c++11
 
 LDFLAGS=
 

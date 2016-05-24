@@ -5,6 +5,7 @@ Ansifilter ChangeLog
 ansifilter 1.17
 
 -fixed BBCode output (thanks to Karsten)
+-fixed gcc 6 warnings about deprecated auto_ptr usage
 
 ---
 15.04.2016
@@ -12,6 +13,8 @@ ansifilter 1.17
 ansifilter 1.16
 
 -fixed Pango output (patch by Dominik Schmidt)
+-fixed gcc 6 warnings about deprecated auto_ptr usage
+-src/makefile: added -std=c++11 because of auto_ptr to unique_ptr transition
 
 ---
 06.01.2016
