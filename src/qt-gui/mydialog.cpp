@@ -36,6 +36,7 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets/QScrollBar>
 #endif
 
+#include "../version.h"
 #include <memory>
 #include <QClipboard>
 #include <QSettings>
@@ -151,7 +152,7 @@ void MyDialog::plausibility()
     dlg.cbIgnoreSequences->setEnabled(selIdx!=0);
     dlg.cbFragment->setEnabled(selIdx==1 || selIdx==3 || selIdx==4|| selIdx==6);
     dlg.label->setEnabled(selIdx==1||selIdx==3);
-    dlg.comboEncoding->setEnabled(selIdx==1||selIdx==3);
+    dlg.comboEncoding->setEnabled(selIdx==1||selIdx==2||selIdx==3);
     dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
     dlg.comboFont->setEnabled(selIdx==1||selIdx==2||selIdx==6);
 }
@@ -303,11 +304,13 @@ void MyDialog::showFile()
 void MyDialog::on_pbAbout_clicked()
 {
     QMessageBox::about(this,
-                       "ANSIFilter Information", "ANSIFilter GUI Version 1.17\n"
+                       "ANSIFilter Information", 
+                       QString("ANSIFilter GUI %1\n" 
                        "(c) 2007-2016 Andre Simon\n\n"
+                       "Built with Qt version %2\n\n"
                        "Released under the terms of the GNU GPL license.\n\n"
                        "andre dot simon1 at gmx dot de\n"
-                       "See www.andre-simon.de for updates."
+                       "See www.andre-simon.de for updates.").arg(ANSIFILTER_VERSION).arg(QString(qVersion ())) 
                       );
 }
 

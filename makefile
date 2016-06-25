@@ -19,8 +19,7 @@ man_dir = ${PREFIX}/share/man/man1/
 doc_dir = ${PREFIX}/share/doc/ansifilter/
 
 # Commands:
-#QMAKE=qmake
-QMAKE=qmake-qt5
+QMAKE=qmake
 
 INSTALL_DATA=install -m644
 INSTALL_PROGRAM=install -m755

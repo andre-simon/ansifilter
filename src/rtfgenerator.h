@@ -93,6 +93,15 @@ private:
 
     /** name of page size which is mapped to page dimensions*/
     string pageSize;
+   
+    
+    /** flag to enable Unicode conversion */
+    bool isUtf8;
+    
+    /** utf-8 to utf-16 conversion variables */
+    unsigned long utf16Char;
+    size_t utf8SeqLen;
+
 
     /** \return escaped character*/
     virtual string maskCharacter(unsigned char );

@@ -47,21 +47,22 @@ c) Compile Qt:
     -Open cmd.exe and change into the Qt directory
     -Configure Qt. Use static if you do not want to ship Qt DLLs:
      configure -release -nomake examples -opensource -static -strip -opengl desktop
-    -make-mingw32 -j4
+    -Compile Qt:
+     mingw32-make -j4
 
-d) Add compiler and Qt build paths (location of qmake.exe) in QtCreator
+d) Add compiler and Qt paths (location of qmake.exe) in QtCreator
 
 e) Install upx from http://upx.sourceforge.net/
 
 f) Open the pro files in src/w32-projects and src/gui_qt in QtCreator and 
    adjust the paths of libraries and tools. Compile the lib project first.
 
-g) Ship highlight with libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll
+g) Ship Ansifilter with libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll
    (all DLLs are located in the mingw32 installation)
  
  
 2. Known compiler issues
 ========================
 
-Highlight was tested with gcc > 4.8. It will not compile with gcc 2.x.
+Ansifilter was tested with gcc > 4.8. It will not compile with gcc 2.x.
 For gcc versions < 4.7, unique_ptr needs to be replaced by auto_ptr.

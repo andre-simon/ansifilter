@@ -70,7 +70,10 @@ string  RtfGenerator::getCloseTag()
 
 RtfGenerator::RtfGenerator()
     : CodeGenerator(RTF),
-      pageSize("a4") // Default: DIN A4
+      pageSize("a4"), // Default: DIN A4
+      isUtf8(false),
+      utf16Char(0),
+      utf8SeqLen(0)
 {
     newLineTag = "\\line\n";
     spacer=" ";
@@ -98,8 +101,9 @@ string RtfGenerator::getHeader()
 
 void RtfGenerator::printBody()
 {
-
-    *out << "{\\rtf1\\ansi\\uc0 \\deff1"
+    isUtf8 = encoding == "utf-8" || encoding == "UTF-8"; // FIXME
+  
+    *out << "{\\rtf1\\ansi \\deff1"
          << "{\\fonttbl{\\f1\\fmodern\\fprq1\\fcharset0 " ;
     *out << font ;
     *out << ";}}"
@@ -131,6 +135,46 @@ string RtfGenerator::getFooter()
 
 string RtfGenerator::maskCharacter(unsigned char c)
 {
+  if (isUtf8 && c > 0x7f  && utf8SeqLen==0){
+    
+    //http://stackoverflow.com/questions/7153935/how-to-convert-utf-8-stdstring-to-utf-16-stdwstring
+    
+    if (c <= 0xDF)
+    {
+      utf16Char = c&0x1F;
+      utf8SeqLen = 1;
+    }
+    else if (c <= 0xEF)
+    {
+      utf16Char = c&0x0F;
+      utf8SeqLen = 2;
+    }
+    else if (c <= 0xF7)
+    {
+      utf16Char = c&0x07;
+      utf8SeqLen = 3;
+    } else {
+      utf8SeqLen = 0;
+    }
+    return "";
+  }
+  
+  if (utf8SeqLen) {
+    utf16Char <<= 6;
+    utf16Char += c & 0x3f;   
+    --utf8SeqLen;
+    
+    if (!utf8SeqLen){
+      string m ( "\\u" );
+      m += to_string(utf16Char);
+      m += '?';
+      utf16Char=0L;
+      return m;
+    } else {
+      return "";
+    }
+  }
+  
     switch (c) {
     case '}' :
     case '{' :

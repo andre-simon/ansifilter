@@ -2,6 +2,7 @@
 # This file will compile the ansifilter binary.
 # See INSTALL for instructions.
 
+# afl-g++ for preparing fuzzing tests
 CC=g++
 
 # Added -std=c++11 because of auto_ptr to unique_ptr transition
