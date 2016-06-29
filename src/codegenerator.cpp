@@ -535,6 +535,7 @@ void CodeGenerator::processInput()
     bool isCharSeq=false;
     bool isEraseLine=false;
     bool isGrepOutput=false;
+    //bool isDelWithParam=false;
     while (true) {
 
         bool eof=false;
@@ -578,8 +579,42 @@ void CodeGenerator::processInput()
             while (i <line.length() ) {
                 if (line[i]==0x1b) {
 
+                  
+                  /** FIXME Mocha script:
+                   *  Expose some basic cursor interactions that are common among reporters.
+             
+                  exports.cursor = {
+                    hide: function() {
+                      isatty && process.stdout.write('\u001b[?25l');
+                    },
+                    
+                    show: function() {
+                      isatty && process.stdout.write('\u001b[?25h');
+                    },
+                    
+                    deleteLine: function() {
+                      isatty && process.stdout.write('\u001b[2K');
+                    },
+                    
+                    beginningOfLine: function() {
+                      isatty && process.stdout.write('\u001b[0G');
+                    },
+                    
+                    CR: function() {
+                      if (isatty) {
+                        exports.cursor.deleteLine();
+                        exports.cursor.beginningOfLine();
+                      } else {
+                        process.stdout.write('\r');
+                      }
+                    }
+                  };*/
+                  
                     // fix grep --colour .[K (1b 5b 4b) sequences
                     isEraseLine = line[i+2]=='K' || line[i+2]=='u' || line[i+2]=='s';
+                    /* if (!isEraseLine && line.length()-i > 3){
+                      isEraseLine = isDelWithParam = line[i+3]=='K';
+                    }*/
 
                     // workaround for grep color=always output which contains [K after m delimiter
                     isGrepOutput  = i>0 && line[i+2]=='K' && line[i-1] == 'm';
@@ -588,6 +623,7 @@ void CodeGenerator::processInput()
 
                     if (line.length()>i+2 && (isEraseLine || isGrepOutput)) {
                         seqEnd=i+2;
+                        
                     } else {
 
                         seqEnd=line.find_first_of('m', i+1);
@@ -615,8 +651,7 @@ void CodeGenerator::processInput()
                     }
 
                     i= 1+ ((seqEnd!=string::npos)?seqEnd:i);
-                    if (isCharSeq /*&& !elementStyle.isReset()*/ && !isGrepOutput) {
-                        //    i++;
+                    if (isCharSeq  && !isGrepOutput) {
                         if (isEraseLine) i   = line.length();
                     }
 

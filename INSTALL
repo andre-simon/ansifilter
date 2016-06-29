@@ -17,7 +17,7 @@ There are no configuration files or libs to take care of.
  3. make help
 
  4. make
-    make all-gui         (build the Qt GUI (requires Qt 4/5))
+    make gui             (build the Qt GUI (requires Qt 4/5))
 
  5. make install         (install binary and documentation files)
     make install-gui     (install GUI binary)

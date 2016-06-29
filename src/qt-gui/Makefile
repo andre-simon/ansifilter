@@ -105,6 +105,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_ComposerEditorNG.pri \
 		/usr/lib/qt/mkspecs/modules/qt_EventViews.pri \
 		/usr/lib/qt/mkspecs/modules/qt_FollowupReminder.pri \
+		/usr/lib/qt/mkspecs/modules/qt_GrantleeTheme.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Gravatar.pri \
 		/usr/lib/qt/mkspecs/modules/qt_IncidenceEditor.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KActivities.pri \
@@ -122,6 +123,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_KConfigCore.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KConfigGui.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KConfigWidgets.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KContacts.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KCoreAddons.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KCrash.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KDBusAddons.pri \
@@ -129,6 +131,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_KdepimDBusInterfaces.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KDESu.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KDEWebKit.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KDGantt2.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KDNSSD.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KEmoticons.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KGAPIBlogger.pri \
@@ -141,10 +144,13 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_KGAPITasks.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KGlobalAccel.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KGuiAddons.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KHolidays.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KHtml.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KI18n.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIconThemes.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KIdentityManagement.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIdleTime.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KIMAP.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOCore.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOFileWidgets.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOGui.pri \
@@ -155,12 +161,18 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_KJS.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KJSApi.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KJsEmbed.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KMailTransport.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KManageSieve.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KMime.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KNewStuff.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KNotifications.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KNotifyConfig.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KNTLM.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KontactInterface.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KParts.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KPeople.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KPeopleWidgets.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KPIMTextEdit.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KPlotting.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KPty.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KrossCore.pri \
@@ -172,6 +184,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_KSieveUi.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KTextEditor.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KTextWidgets.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KTNef.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KUnitConversion.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KWallet.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KWaylandClient.pri \
@@ -179,6 +192,8 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_KWidgetsAddons.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KWindowSystem.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KXmlGui.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KXmlRpcClient.pri \
+		/usr/lib/qt/mkspecs/modules/qt_Ldap.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_bootstrap_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_clucene_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_concurrent.pri \
@@ -254,8 +269,10 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Libkdepim.pri \
+		/usr/lib/qt/mkspecs/modules/qt_Libkleo.pri \
 		/usr/lib/qt/mkspecs/modules/qt_MailCommon.pri \
 		/usr/lib/qt/mkspecs/modules/qt_MailImporter.pri \
+		/usr/lib/qt/mkspecs/modules/qt_Mbox.pri \
 		/usr/lib/qt/mkspecs/modules/qt_MessageComposer.pri \
 		/usr/lib/qt/mkspecs/modules/qt_MessageCore.pri \
 		/usr/lib/qt/mkspecs/modules/qt_MessageList.pri \
@@ -265,11 +282,13 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_phonon4qt5.pri \
 		/usr/lib/qt/mkspecs/modules/qt_PimCommon.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Prison.pri \
+		/usr/lib/qt/mkspecs/modules/qt_QGpgme.pri \
 		/usr/lib/qt/mkspecs/modules/qt_QuickAddons.pri \
 		/usr/lib/qt/mkspecs/modules/qt_SendLater.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Solid.pri \
 		/usr/lib/qt/mkspecs/modules/qt_SonnetCore.pri \
 		/usr/lib/qt/mkspecs/modules/qt_SonnetUi.pri \
+		/usr/lib/qt/mkspecs/modules/qt_Syndication.pri \
 		/usr/lib/qt/mkspecs/modules/qt_TemplateParser.pri \
 		/usr/lib/qt/mkspecs/modules/qt_ThreadWeaver.pri \
 		/usr/lib/qt/mkspecs/features/qt_functions.prf \
@@ -342,6 +361,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_ComposerEditorNG.pri \
 		/usr/lib/qt/mkspecs/modules/qt_EventViews.pri \
 		/usr/lib/qt/mkspecs/modules/qt_FollowupReminder.pri \
+		/usr/lib/qt/mkspecs/modules/qt_GrantleeTheme.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Gravatar.pri \
 		/usr/lib/qt/mkspecs/modules/qt_IncidenceEditor.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KActivities.pri \
@@ -359,6 +379,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_KConfigCore.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KConfigGui.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KConfigWidgets.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KContacts.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KCoreAddons.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KCrash.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KDBusAddons.pri \
@@ -366,6 +387,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_KdepimDBusInterfaces.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KDESu.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KDEWebKit.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KDGantt2.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KDNSSD.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KEmoticons.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KGAPIBlogger.pri \
@@ -378,10 +400,13 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_KGAPITasks.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KGlobalAccel.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KGuiAddons.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KHolidays.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KHtml.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KI18n.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIconThemes.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KIdentityManagement.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIdleTime.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KIMAP.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOCore.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOFileWidgets.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOGui.pri \
@@ -392,12 +417,18 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_KJS.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KJSApi.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KJsEmbed.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KMailTransport.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KManageSieve.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KMime.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KNewStuff.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KNotifications.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KNotifyConfig.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KNTLM.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KontactInterface.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KParts.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KPeople.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KPeopleWidgets.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KPIMTextEdit.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KPlotting.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KPty.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KrossCore.pri \
@@ -409,6 +440,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_KSieveUi.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KTextEditor.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KTextWidgets.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KTNef.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KUnitConversion.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KWallet.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KWaylandClient.pri \
@@ -416,6 +448,8 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_KWidgetsAddons.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KWindowSystem.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KXmlGui.pri \
+		/usr/lib/qt/mkspecs/modules/qt_KXmlRpcClient.pri \
+		/usr/lib/qt/mkspecs/modules/qt_Ldap.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_bootstrap_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_clucene_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_concurrent.pri \
@@ -491,8 +525,10 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Libkdepim.pri \
+		/usr/lib/qt/mkspecs/modules/qt_Libkleo.pri \
 		/usr/lib/qt/mkspecs/modules/qt_MailCommon.pri \
 		/usr/lib/qt/mkspecs/modules/qt_MailImporter.pri \
+		/usr/lib/qt/mkspecs/modules/qt_Mbox.pri \
 		/usr/lib/qt/mkspecs/modules/qt_MessageComposer.pri \
 		/usr/lib/qt/mkspecs/modules/qt_MessageCore.pri \
 		/usr/lib/qt/mkspecs/modules/qt_MessageList.pri \
@@ -502,11 +538,13 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_phonon4qt5.pri \
 		/usr/lib/qt/mkspecs/modules/qt_PimCommon.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Prison.pri \
+		/usr/lib/qt/mkspecs/modules/qt_QGpgme.pri \
 		/usr/lib/qt/mkspecs/modules/qt_QuickAddons.pri \
 		/usr/lib/qt/mkspecs/modules/qt_SendLater.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Solid.pri \
 		/usr/lib/qt/mkspecs/modules/qt_SonnetCore.pri \
 		/usr/lib/qt/mkspecs/modules/qt_SonnetUi.pri \
+		/usr/lib/qt/mkspecs/modules/qt_Syndication.pri \
 		/usr/lib/qt/mkspecs/modules/qt_TemplateParser.pri \
 		/usr/lib/qt/mkspecs/modules/qt_ThreadWeaver.pri \
 		/usr/lib/qt/mkspecs/features/qt_functions.prf \
@@ -559,6 +597,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_ComposerEditorNG.pri:
 /usr/lib/qt/mkspecs/modules/qt_EventViews.pri:
 /usr/lib/qt/mkspecs/modules/qt_FollowupReminder.pri:
+/usr/lib/qt/mkspecs/modules/qt_GrantleeTheme.pri:
 /usr/lib/qt/mkspecs/modules/qt_Gravatar.pri:
 /usr/lib/qt/mkspecs/modules/qt_IncidenceEditor.pri:
 /usr/lib/qt/mkspecs/modules/qt_KActivities.pri:
@@ -576,6 +615,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_KConfigCore.pri:
 /usr/lib/qt/mkspecs/modules/qt_KConfigGui.pri:
 /usr/lib/qt/mkspecs/modules/qt_KConfigWidgets.pri:
+/usr/lib/qt/mkspecs/modules/qt_KContacts.pri:
 /usr/lib/qt/mkspecs/modules/qt_KCoreAddons.pri:
 /usr/lib/qt/mkspecs/modules/qt_KCrash.pri:
 /usr/lib/qt/mkspecs/modules/qt_KDBusAddons.pri:
@@ -583,6 +623,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_KdepimDBusInterfaces.pri:
 /usr/lib/qt/mkspecs/modules/qt_KDESu.pri:
 /usr/lib/qt/mkspecs/modules/qt_KDEWebKit.pri:
+/usr/lib/qt/mkspecs/modules/qt_KDGantt2.pri:
 /usr/lib/qt/mkspecs/modules/qt_KDNSSD.pri:
 /usr/lib/qt/mkspecs/modules/qt_KEmoticons.pri:
 /usr/lib/qt/mkspecs/modules/qt_KGAPIBlogger.pri:
@@ -595,10 +636,13 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_KGAPITasks.pri:
 /usr/lib/qt/mkspecs/modules/qt_KGlobalAccel.pri:
 /usr/lib/qt/mkspecs/modules/qt_KGuiAddons.pri:
+/usr/lib/qt/mkspecs/modules/qt_KHolidays.pri:
 /usr/lib/qt/mkspecs/modules/qt_KHtml.pri:
 /usr/lib/qt/mkspecs/modules/qt_KI18n.pri:
 /usr/lib/qt/mkspecs/modules/qt_KIconThemes.pri:
+/usr/lib/qt/mkspecs/modules/qt_KIdentityManagement.pri:
 /usr/lib/qt/mkspecs/modules/qt_KIdleTime.pri:
+/usr/lib/qt/mkspecs/modules/qt_KIMAP.pri:
 /usr/lib/qt/mkspecs/modules/qt_KIOCore.pri:
 /usr/lib/qt/mkspecs/modules/qt_KIOFileWidgets.pri:
 /usr/lib/qt/mkspecs/modules/qt_KIOGui.pri:
@@ -609,12 +653,18 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_KJS.pri:
 /usr/lib/qt/mkspecs/modules/qt_KJSApi.pri:
 /usr/lib/qt/mkspecs/modules/qt_KJsEmbed.pri:
+/usr/lib/qt/mkspecs/modules/qt_KMailTransport.pri:
 /usr/lib/qt/mkspecs/modules/qt_KManageSieve.pri:
+/usr/lib/qt/mkspecs/modules/qt_KMime.pri:
 /usr/lib/qt/mkspecs/modules/qt_KNewStuff.pri:
 /usr/lib/qt/mkspecs/modules/qt_KNotifications.pri:
 /usr/lib/qt/mkspecs/modules/qt_KNotifyConfig.pri:
 /usr/lib/qt/mkspecs/modules/qt_KNTLM.pri:
+/usr/lib/qt/mkspecs/modules/qt_KontactInterface.pri:
 /usr/lib/qt/mkspecs/modules/qt_KParts.pri:
+/usr/lib/qt/mkspecs/modules/qt_KPeople.pri:
+/usr/lib/qt/mkspecs/modules/qt_KPeopleWidgets.pri:
+/usr/lib/qt/mkspecs/modules/qt_KPIMTextEdit.pri:
 /usr/lib/qt/mkspecs/modules/qt_KPlotting.pri:
 /usr/lib/qt/mkspecs/modules/qt_KPty.pri:
 /usr/lib/qt/mkspecs/modules/qt_KrossCore.pri:
@@ -626,6 +676,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_KSieveUi.pri:
 /usr/lib/qt/mkspecs/modules/qt_KTextEditor.pri:
 /usr/lib/qt/mkspecs/modules/qt_KTextWidgets.pri:
+/usr/lib/qt/mkspecs/modules/qt_KTNef.pri:
 /usr/lib/qt/mkspecs/modules/qt_KUnitConversion.pri:
 /usr/lib/qt/mkspecs/modules/qt_KWallet.pri:
 /usr/lib/qt/mkspecs/modules/qt_KWaylandClient.pri:
@@ -633,6 +684,8 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_KWidgetsAddons.pri:
 /usr/lib/qt/mkspecs/modules/qt_KWindowSystem.pri:
 /usr/lib/qt/mkspecs/modules/qt_KXmlGui.pri:
+/usr/lib/qt/mkspecs/modules/qt_KXmlRpcClient.pri:
+/usr/lib/qt/mkspecs/modules/qt_Ldap.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_bootstrap_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_clucene_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_concurrent.pri:
@@ -708,8 +761,10 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_Libkdepim.pri:
+/usr/lib/qt/mkspecs/modules/qt_Libkleo.pri:
 /usr/lib/qt/mkspecs/modules/qt_MailCommon.pri:
 /usr/lib/qt/mkspecs/modules/qt_MailImporter.pri:
+/usr/lib/qt/mkspecs/modules/qt_Mbox.pri:
 /usr/lib/qt/mkspecs/modules/qt_MessageComposer.pri:
 /usr/lib/qt/mkspecs/modules/qt_MessageCore.pri:
 /usr/lib/qt/mkspecs/modules/qt_MessageList.pri:
@@ -719,11 +774,13 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_phonon4qt5.pri:
 /usr/lib/qt/mkspecs/modules/qt_PimCommon.pri:
 /usr/lib/qt/mkspecs/modules/qt_Prison.pri:
+/usr/lib/qt/mkspecs/modules/qt_QGpgme.pri:
 /usr/lib/qt/mkspecs/modules/qt_QuickAddons.pri:
 /usr/lib/qt/mkspecs/modules/qt_SendLater.pri:
 /usr/lib/qt/mkspecs/modules/qt_Solid.pri:
 /usr/lib/qt/mkspecs/modules/qt_SonnetCore.pri:
 /usr/lib/qt/mkspecs/modules/qt_SonnetUi.pri:
+/usr/lib/qt/mkspecs/modules/qt_Syndication.pri:
 /usr/lib/qt/mkspecs/modules/qt_TemplateParser.pri:
 /usr/lib/qt/mkspecs/modules/qt_ThreadWeaver.pri:
 /usr/lib/qt/mkspecs/features/qt_functions.prf:

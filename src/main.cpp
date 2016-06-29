@@ -69,7 +69,7 @@ void ANSIFilterApp::printHelp()
     cout << "\nFormat options:\n";
     cout << "  -a, --anchors          add HTML line anchors (assumes -l)\n";
     cout << "  -d, --doc-title        Set HTML/LaTeX document title\n";
-    cout << "  -e, --encoding         Set HTML encoding (must match input file encoding)\n";
+    cout << "  -e, --encoding         Set HTML/RTF encoding (must match input file encoding)\n";
     cout << "  -f, --fragment         Omit HTML header and footer\n";
     cout << "  -F, --font=<font>      Set HTML/RTF font face\n";
     cout << "  -l, --line-numbers     print line numbers in output file\n";
@@ -129,7 +129,6 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
         inFileName = inFileList[i].substr(pos+1);
 
         if (fileCount>1) {
-
             outFilePath = outDirectory;
             outFilePath += inFileName;
             outFilePath += options.getOutFileSuffix();
@@ -168,7 +167,6 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
 
 int main( const int argc, const char *argv[] )
 {
-
     ANSIFilterApp app;
     return app.run(argc, argv);
 }

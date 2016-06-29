@@ -57,7 +57,9 @@ print ( "tab1\ttab2\t\ttab3\t\t\tend")
 print ( "abc1\033[sTEST s - DELETED\n")
 print ( "abc2\033[uTEST u - DELETED\n")
 print ( "abc3\033[KTEST K - DELETED\033[K\033[K\033[K xxx blablabla\n")
+print ( "abc4\033[1KTEST K1 - DELETED\033[K\033[K\033[2K xxx blablabla\n")
 
+print ( "abc5\033[0GTEST G - DELETED\033[0G\033[0G\033[0G xxx blablabla\n")
 # but not with grep --color
 print ( "\033[01;31m\033[KGREP COLOR SEQUENCE\033[m\033[K 0;\n")
 

@@ -227,10 +227,12 @@ void MyDialog::on_pbSaveAs_clicked()
     generator->setFontSize("10pt"); //TODO TeX?
 
     if (!dlg.leColorMapPath->text().isEmpty()) {
-        if (!generator->setColorMap(dlg.leColorMapPath->text().toStdString()))
+        if (!generator->setColorMap(dlg.leColorMapPath->text().toStdString())){
             QMessageBox::warning(this, "Color Mapping Error", "Could not read color map");
-        return;
+            return;
+        }
     }
+    
     ansifilter::ParseError result= generator->generateFile( inputFileName.toStdString (), outFileName.toStdString () ) ;
     if (result==ansifilter::BAD_OUTPUT) {
         QMessageBox::warning(this, "IO Error", "Could not write output file");
@@ -267,7 +269,7 @@ void MyDialog::on_pbClipboard_clicked()
 
 void MyDialog::on_pbSelectMapFile_clicked()
 {
-    QString openFile = QFileDialog::getOpenFileName(this, tr("Open Map File"), inputFileName, tr("Text files (*.*)"));
+  QString openFile = QFileDialog::getOpenFileName(this, tr("Open Map File"), "/home", tr("Text files (*.*)"));
     if (!openFile.isEmpty()) {
         dlg.leColorMapPath->setText(openFile);
         showFile();
