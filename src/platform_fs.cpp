@@ -17,36 +17,14 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "platform_fs.h"
 
-#include <iostream>
-
 using namespace std;
 
-namespace Platform
-{
+namespace Platform {
 
 #ifdef _WIN32
-#include <windows.h>
-
-const char pathSeparator = '\\';
-//const std::string pathSeparatorStr = "\\";
-
-std::string getAppPath()
-{
-    char pathAndName[MAX_PATH], path[MAX_PATH], drive[3];
-    GetModuleFileName(NULL, pathAndName, MAX_PATH);
-    _splitpath(pathAndName, drive, path, 0, 0);
-    return std::string(drive)+path;
-}
-
+    const char pathSeparator = '\\';
 #else
-const char pathSeparator = '/';
-// const std::string pathSeparatorStr = "/";
-
-std::string getAppPath()
-{
-    return "";
-}
-
+    const char pathSeparator = '/';
 #endif
 
 }

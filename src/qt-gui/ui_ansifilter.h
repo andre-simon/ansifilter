@@ -58,7 +58,7 @@ public:
     QLabel *label_2;
     QLineEdit *leTitle;
     QHBoxLayout *horizontalLayout_3;
-    QLabel *label;
+    QLabel *lblEncoding;
     QComboBox *comboEncoding;
     QHBoxLayout *horizontalLayout_4;
     QLabel *label_3;
@@ -236,12 +236,12 @@ public:
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        label = new QLabel(groupBox);
-        label->setObjectName(QString::fromUtf8("label"));
-        sizePolicy1.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy1);
+        lblEncoding = new QLabel(groupBox);
+        lblEncoding->setObjectName(QString::fromUtf8("lblEncoding"));
+        sizePolicy1.setHeightForWidth(lblEncoding->sizePolicy().hasHeightForWidth());
+        lblEncoding->setSizePolicy(sizePolicy1);
 
-        horizontalLayout_3->addWidget(label);
+        horizontalLayout_3->addWidget(lblEncoding);
 
         comboEncoding = new QComboBox(groupBox);
         comboEncoding->setObjectName(QString::fromUtf8("comboEncoding"));
@@ -380,7 +380,7 @@ public:
 
 #ifndef QT_NO_SHORTCUT
         label_2->setBuddy(leTitle);
-        label->setBuddy(comboEncoding);
+        lblEncoding->setBuddy(comboEncoding);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(cbIgnoreSequences, cbFragment);
         QWidget::setTabOrder(cbFragment, leTitle);
@@ -437,7 +437,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         leTitle->setToolTip(QApplication::translate("Dialog", "Set the output document title.", 0));
 #endif // QT_NO_TOOLTIP
-        label->setText(QApplication::translate("Dialog", "En&coding:", 0));
+        lblEncoding->setText(QApplication::translate("Dialog", "En&coding:", 0));
         comboEncoding->clear();
         comboEncoding->insertItems(0, QStringList()
          << QApplication::translate("Dialog", "ISO-8859-1", 0)

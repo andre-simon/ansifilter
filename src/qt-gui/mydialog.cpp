@@ -43,7 +43,7 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include <QUrl>
 #include <QMimeData>
 #include <QMimeData>
-
+#include <QFileInfo>
 
 
 MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
@@ -151,8 +151,8 @@ void MyDialog::plausibility()
     int selIdx = dlg.comboFormat->currentIndex();
     dlg.cbIgnoreSequences->setEnabled(selIdx!=0);
     dlg.cbFragment->setEnabled(selIdx==1 || selIdx==3 || selIdx==4|| selIdx==6);
-    dlg.label->setEnabled(selIdx==1||selIdx==3);
-    dlg.comboEncoding->setEnabled(selIdx==1||selIdx==2||selIdx==3);
+    dlg.lblEncoding->setEnabled(selIdx==1|| selIdx==2 || selIdx==3);
+    dlg.comboEncoding->setEnabled(selIdx==1 || selIdx==2 ||selIdx==3);
     dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
     dlg.comboFont->setEnabled(selIdx==1||selIdx==2||selIdx==6);
 }
@@ -205,6 +205,13 @@ void MyDialog::on_pbSaveAs_clicked()
         return;
     }
 
+    QFileInfo check_file(dlg.leColorMapPath->text());
+    if (dlg.leColorMapPath->text().length() && (!check_file.exists() || !check_file.isFile())) {
+        QMessageBox::information(this, "Note", "Please select a color map file.");
+        dlg.leColorMapPath->setFocus();
+        return;
+    }
+
     QString outFileSuffix = getOutFileSuffix();
 
     QString outFileName =QFileDialog::getSaveFileName(this, tr("Save File"), outputFileName,
@@ -218,7 +225,6 @@ void MyDialog::on_pbSaveAs_clicked()
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt"); //TODO TeX?
-    // generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
 
     if (!dlg.leColorMapPath->text().isEmpty()) {
         if (!generator->setColorMap(dlg.leColorMapPath->text().toStdString()))
@@ -240,14 +246,17 @@ void MyDialog::on_pbClipboard_clicked()
 {
 
     if (inputFileName.isEmpty()) {
-        QMessageBox::information(this, "Note",
-                                 "Please select an input file."
-                                );
+        QMessageBox::information(this, "Note", "Please select an input file.");
+        return;
+    }
+    QFileInfo check_file(dlg.leColorMapPath->text());
+    if (dlg.leColorMapPath->text().length() && (!check_file.exists() || !check_file.isFile())) {
+        QMessageBox::information(this, "Note", "Please select a color map file.");
+        dlg.leColorMapPath->setFocus();
         return;
     }
     unique_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::TEXT));
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
-    //generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
     QString outString = QString(generator->generateStringFromFile( inputFileName.toStdString ()).c_str() ) ;
 
     if(!outString.isEmpty()) {
@@ -291,8 +300,6 @@ void MyDialog::showFile()
     generator->setFontSize("10pt");
     if (!dlg.leColorMapPath->text().isEmpty())
         generator->setColorMap(dlg.leColorMapPath->text().toStdString());
-
-    //      generator->setShowLineNumbers(dlg.cbLineNumbers->isChecked());
 
     QString htmlString = QString( generator->generateStringFromFile(inputFileName.toStdString ()).c_str() );
     if (!htmlString.isEmpty()) {
