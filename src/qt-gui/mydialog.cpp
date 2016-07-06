@@ -251,12 +251,7 @@ void MyDialog::on_pbClipboard_clicked()
         QMessageBox::information(this, "Note", "Please select an input file.");
         return;
     }
-    QFileInfo check_file(dlg.leColorMapPath->text());
-    if (dlg.leColorMapPath->text().length() && (!check_file.exists() || !check_file.isFile())) {
-        QMessageBox::information(this, "Note", "Please select a color map file.");
-        dlg.leColorMapPath->setFocus();
-        return;
-    }
+    
     unique_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::TEXT));
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     QString outString = QString(generator->generateStringFromFile( inputFileName.toStdString ()).c_str() ) ;

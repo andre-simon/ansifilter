@@ -1,10 +1,11 @@
 Ansifilter ChangeLog
 
-xx.06.2016
+29.06.2016
 
 ansifilter 1.18
 
 -fixed RTF output of UTF-8 input; needs input encoding set to utf-8 
+-GUI: fixed issue with color map setting
 
 ---
 17.05.2016

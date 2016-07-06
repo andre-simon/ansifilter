@@ -25,7 +25,7 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef VERSION_H
 #define VERSION_H
 
-#define ANSIFILTER_VERSION "1.18"
+#define ANSIFILTER_VERSION "1.19"
 
 #define ANSIFILTER_URL   "http://www.andre-simon.de/"
 #define ANSIFILTER_EMAIL "andre.simon1@gmx.de"

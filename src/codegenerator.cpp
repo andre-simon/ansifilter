@@ -313,28 +313,26 @@ ParseError CodeGenerator::generateFileFromString (const string &sourceStr,
     return error;
 }
 
-bool CodeGenerator::parseSequence(const string& line, size_t begin, size_t end)
-{
-
-    if (end-begin>2 && line[begin]!=0x1b && line[begin+1]!=0x5b) {
-        return false;
+bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t end)
+{  
+    if (line.empty() || begin==end) { // fix empty grep --color ending sequence
+      elementStyle.setReset(true);
+      return true;
     }
+  
     int ansiCode=0;
     int colorCode=0;
     unsigned char colorValues[3]= {0};
 
-    string codes=line.substr(begin+2, end-begin-2);
-
+    string codes=line.substr(begin, end-begin);
+   // std::cerr<<"L:"<<line<<" begin "<<begin<<" end "<<end <<" val: " <<codes<<"\n";
     vector<string> codeVector = StringTools::splitString(codes, ';');
-    if (codes.empty()) { // fix empty grep --color ending sequence
-        elementStyle.setReset(true);
-        return true;
-    }
+    
 
     std::vector<std::string>::iterator itVectorData = codeVector.begin();
     while( itVectorData != codeVector.end()) {
         StringTools::str2num<int>(ansiCode, *(itVectorData), std::dec);
-
+        //std::cerr<<"L: ansiCode "<<ansiCode<<" itVectorData "<< *(itVectorData) <<"\n";
         elementStyle.setReset(false);
 
         switch (ansiCode) {
@@ -514,6 +512,38 @@ void CodeGenerator::insertLineNumber ()
 
 ////////////////////////////////////////////////////////////////////////////
 
+
+/** FIXME Mocha script:
+ *  Expose some basic cursor interactions that are common among reporters.
+ * 
+ e xpo*rts.cursor = {
+ hide: function() {
+ isatty && process.stdout.write('\u001b[?25l');
+},
+
+show: function() {
+isatty && process.stdout.write('\u001b[?25h');
+},
+
+deleteLine: function() {
+isatty && process.stdout.write('\u001b[2K');
+},
+
+beginningOfLine: function() {
+isatty && process.stdout.write('\u001b[0G');
+},
+
+CR: function() {
+if (isatty) {
+  exports.cursor.deleteLine();
+  exports.cursor.beginningOfLine();
+} else {
+  process.stdout.write('\r');
+}
+}
+};*/
+
+
 void CodeGenerator::processInput()
 {
 
@@ -532,10 +562,8 @@ void CodeGenerator::processInput()
     string line;
     size_t i=0;
     bool tagOpen=false;
-    bool isCharSeq=false;
-    bool isEraseLine=false;
     bool isGrepOutput=false;
-    //bool isDelWithParam=false;
+
     while (true) {
 
         bool eof=false;
@@ -577,87 +605,71 @@ void CodeGenerator::processInput()
             i=0;
             size_t seqEnd=string::npos;
             while (i <line.length() ) {
-                if (line[i]==0x1b) {
+              
+              // CSI ?
+              if (line[i]==0x1b || line[i]==0x9b || line[i]==0xc2) {
 
-                  
-                  /** FIXME Mocha script:
-                   *  Expose some basic cursor interactions that are common among reporters.
-             
-                  exports.cursor = {
-                    hide: function() {
-                      isatty && process.stdout.write('\u001b[?25l');
-                    },
+                  if (line.length() - i > 2){
+                                                        
+                    //move index behind CSI
+                    if ( (line[i]==0x1b && line[i+1]==0x5b) || (line[i]==0xc2 && line[i+1]==0x9b) ) {
+                      ++i;
+                    }
+                    ++i;
                     
-                    show: function() {
-                      isatty && process.stdout.write('\u001b[?25h');
-                    },
-                    
-                    deleteLine: function() {
-                      isatty && process.stdout.write('\u001b[2K');
-                    },
-                    
-                    beginningOfLine: function() {
-                      isatty && process.stdout.write('\u001b[0G');
-                    },
-                    
-                    CR: function() {
-                      if (isatty) {
-                        exports.cursor.deleteLine();
-                        exports.cursor.beginningOfLine();
-                      } else {
-                        process.stdout.write('\r');
+                    if (line[i-1]==0x5b){
+                      
+                      seqEnd=i;
+                      //find sequence end
+                      while (seqEnd<line.length() && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
+                          ++seqEnd;
+                      }
+                                            
+                      if (line[seqEnd]=='m' && !ignoreFormatting && seqEnd!=string::npos) {
+                        if (!elementStyle.isReset()) {
+                          *out <<getCloseTag();
+                          tagOpen=false;
+                        }
+                        parseSGRParameters(line, i, seqEnd);
+                        if (!elementStyle.isReset()) {
+                          *out <<getOpenTag();
+                          tagOpen=true;
+                        }
+                      }
+                      
+                      // http://www.syaross.org/thedraw/ : make this optional?
+                      if (line[seqEnd]=='C'){
+                        int howMany=0;
+                        StringTools::str2num<int>(howMany, line.substr(i, seqEnd-i), std::dec);
+                        line.insert(seqEnd+1, howMany, ' ' ); 
+                      }
+                      
+                      isGrepOutput = line[seqEnd]=='K' && line[seqEnd-3] == 'm';
+                      // fix grep special K
+                      if (line[seqEnd]=='s' || line[seqEnd]=='u'|| (line[seqEnd]=='K' && !isGrepOutput) )
+                        i=line.length();
+                      else
+                        i =    ((line[seqEnd]=='m' || line[seqEnd]=='C'|| isGrepOutput) ?  1 : 0 )
+                             + ((seqEnd!=line.length())?seqEnd:i);
+                    } else 
+                      
+                      //ignore content of two and single byte sequences (no CSI)
+                      if ((    line[i-1]==0x1b && (line[i]==0x50 || line[i]==0x5d || line[i]==0x58 ||line[i]==0x5e||line[i]==0x5f) )
+                            ||(line[i-1]==0x90 || line[i-1]==0x9d || line[i-1]==0x98 || line[i-1]==0x9e ||line[i-1]==0x9f) )
+                      {
+                        seqEnd=i;
+                        //find string end
+                        while (seqEnd<line.length() && line[seqEnd]!=0x9e && line[seqEnd]!=0x07 ) {
+                          ++seqEnd;
+                        }
+                        i=seqEnd+1;
                       }
                     }
-                  };*/
-                  
-                    // fix grep --colour .[K (1b 5b 4b) sequences
-                    isEraseLine = line[i+2]=='K' || line[i+2]=='u' || line[i+2]=='s';
-                    /* if (!isEraseLine && line.length()-i > 3){
-                      isEraseLine = isDelWithParam = line[i+3]=='K';
-                    }*/
-
-                    // workaround for grep color=always output which contains [K after m delimiter
-                    isGrepOutput  = i>0 && line[i+2]=='K' && line[i-1] == 'm';
-
-                    isCharSeq = isalpha(line[i+2]) && !isGrepOutput;
-
-                    if (line.length()>i+2 && (isEraseLine || isGrepOutput)) {
-                        seqEnd=i+2;
-                        
-                    } else {
-
-                        seqEnd=line.find_first_of('m', i+1);
-
-                        //TODO vor ; das hier abfangen xterm: ^[]0;~^G^M^M
-                        // xterm -> ctlseq2.txt
-                        // http://sourceforge.net/p/libutk/wiki/ANSI%20Escape%20Sequences/
-                        if (seqEnd==string::npos) {
-                            if (line[i+1]==']') seqEnd=line.find(0x07, i+1);
-                        }
-                        if (seqEnd==string::npos) seqEnd=line.find(';', i+1);
-                        if (seqEnd==string::npos) seqEnd=line.find('h', i+1);
-
-                        if (!ignoreFormatting && seqEnd!=string::npos) {
-                            if (!elementStyle.isReset()) {
-                                *out <<getCloseTag();
-                                tagOpen=false;
-                            }
-                            parseSequence(line, i, seqEnd);
-                            if (!elementStyle.isReset()) {
-                                *out <<getOpenTag();
-                                tagOpen=true;
-                            }
-                        }
-                    }
-
-                    i= 1+ ((seqEnd!=string::npos)?seqEnd:i);
-                    if (isCharSeq  && !isGrepOutput) {
-                        if (isEraseLine) i   = line.length();
-                    }
-
+               
                 } else {
-                    *out << maskCharacter(line[i]);
-                    ++i;
+                  // output printable character
+                  *out << maskCharacter(line[i]);
+                  ++i;
                 }
             }
             *out << newLineTag;

@@ -291,7 +291,7 @@ private:
         @param begin starting position within line
         @param end ending position within line
         @return true if sequence was recognized */
-    bool parseSequence(const string& line, size_t begin, size_t end);
+    bool parseSGRParameters(const string& line, size_t begin, size_t end);
 
     /** Prints document footer
         @return footer */
