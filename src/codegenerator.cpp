@@ -98,7 +98,6 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      readAfterEOF(false)
 {
     elementStyle.setFgColour(rgb2html(basic16[0]));
-    //elementStyle.setBgColour("#ffffff");
 }
 
 CodeGenerator::~CodeGenerator()
@@ -325,25 +324,20 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
     unsigned char colorValues[3]= {0};
 
     string codes=line.substr(begin, end-begin);
-   // std::cerr<<"L:"<<line<<" begin "<<begin<<" end "<<end <<" val: " <<codes<<"\n";
     vector<string> codeVector = StringTools::splitString(codes, ';');
     
-
-    std::vector<std::string>::iterator itVectorData = codeVector.begin();
+    vector<string>::iterator itVectorData = codeVector.begin();
     while( itVectorData != codeVector.end()) {
         StringTools::str2num<int>(ansiCode, *(itVectorData), std::dec);
-        //std::cerr<<"L: ansiCode "<<ansiCode<<" itVectorData "<< *(itVectorData) <<"\n";
         elementStyle.setReset(false);
 
         switch (ansiCode) {
         case 0:
             elementStyle.setReset(true);
-            break;
-	    
+            break;   
         case 1:
             elementStyle.setBold(true);
             break;
-	    
         case 2: //Faint
             break;
 
@@ -397,9 +391,9 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 35:
         case 36:
         case 37:
-	    elementStyle.setFgColour(rgb2html(basic16[ansiCode-30]));
+            elementStyle.setFgColour(rgb2html(basic16[ansiCode-30]));
             break;
-	    
+            
         case 38: // xterm 256 foreground color mode \033[38;5;<color>
 
             itVectorData++;
@@ -414,7 +408,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
             xterm2rgb((unsigned char)colorCode, colorValues);
             elementStyle.setFgColour(rgb2html(colorValues));
             break;
-	    
+
         case 39:
             elementStyle.setReset(true);
             break;
@@ -427,7 +421,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 45:
         case 46:
         case 47:
-	    elementStyle.setBgColour(rgb2html(basic16[ansiCode-40]));
+            elementStyle.setBgColour(rgb2html(basic16[ansiCode-40]));
             break;
 
         case 48:  // xterm 256 background color mode \033[48;5;<color>
@@ -451,16 +445,16 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
 
         /*aixterm codes*/
         case 90:
-	case 91:
-	case 92:
-	case 93:
-	case 94:
-	case 95:
-	case 96:
+        case 91:
+        case 92:
+        case 93:
+        case 94:
+        case 95:
+        case 96:
         case 97:
             elementStyle.setFgColour(rgb2html(basic16[ansiCode-90+8]));
             break;
-	    
+    
         case 100:
         case 101:
         case 102:
@@ -492,7 +486,6 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
     return true;
 }
 
-
 void CodeGenerator::insertLineNumber ()
 {
     if ( showLineNumbers ) {
@@ -511,38 +504,6 @@ void CodeGenerator::insertLineNumber ()
 }
 
 ////////////////////////////////////////////////////////////////////////////
-
-
-/** FIXME Mocha script:
- *  Expose some basic cursor interactions that are common among reporters.
- * 
- e xpo*rts.cursor = {
- hide: function() {
- isatty && process.stdout.write('\u001b[?25l');
-},
-
-show: function() {
-isatty && process.stdout.write('\u001b[?25h');
-},
-
-deleteLine: function() {
-isatty && process.stdout.write('\u001b[2K');
-},
-
-beginningOfLine: function() {
-isatty && process.stdout.write('\u001b[0G');
-},
-
-CR: function() {
-if (isatty) {
-  exports.cursor.deleteLine();
-  exports.cursor.beginningOfLine();
-} else {
-  process.stdout.write('\r');
-}
-}
-};*/
-
 
 void CodeGenerator::processInput()
 {
@@ -563,6 +524,8 @@ void CodeGenerator::processInput()
     size_t i=0;
     bool tagOpen=false;
     bool isGrepOutput=false;
+    
+    bool parseTheDrawFile=true;
 
     while (true) {
 
@@ -604,28 +567,30 @@ void CodeGenerator::processInput()
             insertLineNumber();
             i=0;
             size_t seqEnd=string::npos;
+            int cur=0;
+            int next=0;
             while (i <line.length() ) {
-              
               // CSI ?
-              if (line[i]==0x1b || line[i]==0x9b || line[i]==0xc2) {
-
+              cur = line[i]&0xff;
+              if (cur==0x1b || cur==0x9b || cur==0xc2) {
                   if (line.length() - i > 2){
-                                                        
+              
+                    next = line[i+1]&0xff;
                     //move index behind CSI
-                    if ( (line[i]==0x1b && line[i+1]==0x5b) || (line[i]==0xc2 && line[i+1]==0x9b) ) {
+                    if ( (cur==0x1b && next==0x5b) || ( cur==0xc2 && next==0x9b) ) {
                       ++i;
                     }
                     ++i;
-                    
-                    if (line[i-1]==0x5b){
-                      
+                    if (line[i-1]==0x5b || (line[i-1]&0xff)==0x9b){
                       seqEnd=i;
                       //find sequence end
-                      while (seqEnd<line.length() && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
+                      while (   seqEnd<line.length() 
+                             && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
                           ++seqEnd;
                       }
                                             
-                      if (line[seqEnd]=='m' && !ignoreFormatting && seqEnd!=string::npos) {
+                      if (   line[seqEnd]=='m' && !ignoreFormatting 
+                          && seqEnd!=string::npos) {
                         if (!elementStyle.isReset()) {
                           *out <<getCloseTag();
                           tagOpen=false;
@@ -638,7 +603,7 @@ void CodeGenerator::processInput()
                       }
                       
                       // http://www.syaross.org/thedraw/ : make this optional?
-                      if (line[seqEnd]=='C'){
+                      if (parseTheDrawFile && line[seqEnd]=='C'){
                         int howMany=0;
                         StringTools::str2num<int>(howMany, line.substr(i, seqEnd-i), std::dec);
                         line.insert(seqEnd+1, howMany, ' ' ); 
@@ -646,31 +611,44 @@ void CodeGenerator::processInput()
                       
                       isGrepOutput = line[seqEnd]=='K' && line[seqEnd-3] == 'm';
                       // fix grep special K
-                      if (line[seqEnd]=='s' || line[seqEnd]=='u'|| (line[seqEnd]=='K' && !isGrepOutput) )
+                      if (   line[seqEnd]=='s' || line[seqEnd]=='u'
+                          || (line[seqEnd]=='K' && !isGrepOutput) )
                         i=line.length();
                       else
-                        i =    ((line[seqEnd]=='m' || line[seqEnd]=='C'|| isGrepOutput) ?  1 : 0 )
-                             + ((seqEnd!=line.length())?seqEnd:i);
-                    } else 
-                      
+                        i =   // ((line[seqEnd]=='m' || line[seqEnd]=='C'|| isGrepOutput) ?  1 : 0 )
+                             1 + ((seqEnd!=line.length())?seqEnd:i);
+                    } else {
+                      cur= line[i-1]&0xff;
+                      next = line[i]&0xff;
+                                            
                       //ignore content of two and single byte sequences (no CSI)
-                      if ((    line[i-1]==0x1b && (line[i]==0x50 || line[i]==0x5d || line[i]==0x58 ||line[i]==0x5e||line[i]==0x5f) )
-                            ||(line[i-1]==0x90 || line[i-1]==0x9d || line[i-1]==0x98 || line[i-1]==0x9e ||line[i-1]==0x9f) )
+                      if (cur==0x1b && (  next==0x50 || next==0x5d || next==0x58
+                                        ||next==0x5e||next==0x5f) )
                       {
                         seqEnd=i;
                         //find string end
-                        while (seqEnd<line.length() && line[seqEnd]!=0x9e && line[seqEnd]!=0x07 ) {
+                        while ( seqEnd<line.length() && (line[seqEnd]&0xff)!=0x9e 
+                                && line[seqEnd]!=0x07 ) {
                           ++seqEnd;
                         }
                         i=seqEnd+1;
                       }
                     }
-               
+                  }
+                } 
+                else if (cur==0x90 || cur==0x9d || cur==0x98 || cur==0x9e ||cur==0x9f) {
+                    seqEnd=i;
+                    //find string end
+                    while (   seqEnd<line.length() && (line[seqEnd]&0xff)!=0x9e
+                           && line[seqEnd]!=0x07 ) {
+                      ++seqEnd;
+                    }
+                    i=seqEnd+1;
                 } else {
-                  // output printable character
-                  *out << maskCharacter(line[i]);
-                  ++i;
-                }
+                    // output printable character
+                    *out << maskCharacter(line[i]);
+                    ++i;
+                }  
             }
             *out << newLineTag;
         }
@@ -746,21 +724,21 @@ bool CodeGenerator::setColorMap(const string& mapPath){
           
       string colorCode;
       while ( getline ( mapFile, line ) ) {
-	stringstream s(line);
-	
-	s>>idx;
-	if (idx>15) return false;
-	
-	s>>sep;
-	if (sep!='=') return false;
-	
-	s>>colorCode;
-	if (colorCode.size()>=7 && colorCode[0]=='#' ) {  
-	  basic16[idx][0] = (char)std::strtol(colorCode.substr ( 1, 2 ).c_str(), NULL, 16);
-	  basic16[idx][1] = (char)std::strtol(colorCode.substr ( 3, 2 ).c_str(), NULL, 16);
-	  basic16[idx][2] = (char)std::strtol(colorCode.substr ( 5, 2 ).c_str(), NULL, 16);  
-	} else {
-	    return false;
+        stringstream s(line);
+
+        s>>idx;
+        if (idx>15) return false;
+
+        s>>sep;
+        if (sep!='=') return false;
+
+        s>>colorCode;
+        if (colorCode.size()>=7 && colorCode[0]=='#' ) {  
+          basic16[idx][0] = (char)std::strtol(colorCode.substr ( 1, 2 ).c_str(), NULL, 16);
+          basic16[idx][1] = (char)std::strtol(colorCode.substr ( 3, 2 ).c_str(), NULL, 16);
+          basic16[idx][2] = (char)std::strtol(colorCode.substr ( 5, 2 ).c_str(), NULL, 16);  
+        } else {
+          return false;
         }
       }
       mapFile.close();

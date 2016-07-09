@@ -16,7 +16,7 @@
 
 Name:    ansifilter
 Summary: ANSI terminal escape code converter
-Version: 1.15
+Version: 1.19
 Release: 1
 Group:   Development/Tools
 License: GPLv3
@@ -29,7 +29,7 @@ Buildroot: %{_tmppath}/%{name}-%{version}.%{release}-root
 %description
 Ansifilter handles text files containing ANSI terminal escape codes.
 The command sequences may be stripped or be interpreted to generate formatted 
-output (HTML, RTF, TeX, LaTeX, BBCode).
+output (HTML, RTF, TeX, LaTeX, BBCode, Pango).
 
 %prep
 %setup -q -n ansifilter-%{version}

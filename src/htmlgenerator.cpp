@@ -172,7 +172,72 @@ string HtmlGenerator::maskCharacter(unsigned char c)
     case '@' :
         return "&#64;";
         break;
+        
+        // thedraw tests
+        
+        //punktiert voll
+    case 177:
+      return "&#9619;";
+      break;
+      
+        //punktiert voll
+    case 178:
+      return "&#9617;";
+        break;
+    
+    case 179:
+      return "|";
+      break;
+    
+    case 193:
+      return "&perp;";
+      break;
+   
+    case 191:
+    case 192:
+    case 195:
+      return " ";
+      break;
+      
+    case 196:
+      return "-";
+      break;  
+    case 197:
+      return "+";
+      break;  
+        
+        //voll
+    case 219:
+      return "&#9608;";
+      break;
+      
+      //halb
+    case 220:
+      return "&#9622;";
+      break;
 
+      //schmal
+    case 221:
+      return "&#9612;";
+      break;
+    case 222:
+      return "&#9616;";
+      break;
+      
+      
+      
+    case 223:
+      return "&#9623;";
+      break;
+    
+    case 236:
+      return "&infin;";
+      break;
+    
+    case 250:
+      return ".";
+      break;
+      
     default :
         if (c>0x1f ) { // printable?
             return string( 1, c );
