@@ -174,7 +174,7 @@ string HtmlGenerator::maskCharacter(unsigned char c)
         break;
         
         // thedraw tests
-        
+        /*
         //punktiert voll
     case 177:
       return "&#9619;";
@@ -224,8 +224,6 @@ string HtmlGenerator::maskCharacter(unsigned char c)
       return "&#9616;";
       break;
       
-      
-      
     case 223:
       return "&#9623;";
       break;
@@ -235,8 +233,15 @@ string HtmlGenerator::maskCharacter(unsigned char c)
       break;
     
     case 250:
-      return ".";
+      return "&#8226;";
       break;
+    
+    case 10:
+    case 13:
+      return "";
+      break;
+      */
+      
       
     default :
         if (c>0x1f ) { // printable?

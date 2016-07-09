@@ -49,6 +49,7 @@ print ( "\033[48;32;47mTEST 256 Colours\033[0m\n")
 #alternative CSI
 print ( "CSI\23332mGreen ALT CSI\2330mDefault\n")
 print ( "CSI\23333mYellow ALT CSI\2330mDefault\n")
+print ( "CSI\xc2\x9b33mYellow UTF8 CSI\xc2\x9b0mDefault\n")
 
 # xterm sequences)
 #^[]0;~^G^M^M)

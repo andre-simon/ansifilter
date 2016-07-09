@@ -311,6 +311,14 @@ ParseError CodeGenerator::generateFileFromString (const string &sourceStr,
 
     return error;
 }
+/*
+  
+ ESC[nL       Inserts n blank lines at cursor line.   (NANSI)
+ ESC[nM       Deletes n lines including cursor line.  (NANSI)
+ ESC[n@       Inserts n blank chars at cursor.        (NANSI)
+ ESC[nP       Deletes n chars including cursor char.  (NANSI)
+ ESC[n;ny     Output char translate                   (NANSI)
+ */
 
 bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t end)
 {  
@@ -350,6 +358,10 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
             elementStyle.setBlink(true);
             break;
 
+        case 7:
+            elementStyle.imageMode(true);
+            break;
+
         case 8:
             elementStyle.setConceal(true);
             break;
@@ -357,10 +369,6 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 4:// Underline Single
         case 21: // Underline double
             elementStyle.setUnderline(true);
-            break;
-
-        case 7:
-            elementStyle.imageMode(true);
             break;
 
         case 22:
@@ -525,7 +533,7 @@ void CodeGenerator::processInput()
     bool tagOpen=false;
     bool isGrepOutput=false;
     
-    bool parseTheDrawFile=true;
+    bool parseTheDrawFile=false;
 
     while (true) {
 
