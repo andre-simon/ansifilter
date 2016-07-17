@@ -45,8 +45,13 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 namespace ansifilter
 {
 
-class ReGroup;
-
+  /** TheDraw output information of individual characters*/
+  struct TDChar {
+    unsigned char c;
+    ElementStyle style;
+  };
+  
+  
 /** \brief Base class for escape sequence parsing.
 
     The virtual class provides escape sequence parsing functionality.<br>
@@ -207,6 +212,8 @@ protected:
         \return Escape sequence of output format */
     virtual string maskCharacter(unsigned char c) = 0;
 
+    virtual string maskCP437Character(unsigned char c) { return ""; };
+    
     /** Tag for inserting line feeds*/
     string newLineTag;
 
@@ -292,6 +299,15 @@ private:
         @param end ending position within line
         @return true if sequence was recognized */
     bool parseSGRParameters(const string& line, size_t begin, size_t end);
+    
+    /** parses ANSI.SYS sequence information
+        @param line text line                     
+        @param begin starting position within line
+        @param end ending position within line
+        @param curX current X Pos
+        @param curY current Y Pos
+        */
+    void parseAnsiSysSeq(string line, size_t begin, size_t end, int& curX, int& curY);
 
     /** Prints document footer
         @return footer */
@@ -321,10 +337,11 @@ private:
         @param color xterm color
         @param rgb RGB output values */
     void xterm2rgb(unsigned char color, unsigned char* rgb);
-
+    
     /// the 6 value iterations in the xterm color cube
     static const unsigned char valuerange[] ;
 };
+
 
 }
 

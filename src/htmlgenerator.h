@@ -79,6 +79,7 @@ private:
 
     /** \return escaped character*/
     virtual string maskCharacter(unsigned char );
+    virtual string maskCP437Character(unsigned char);
 };
 
 }

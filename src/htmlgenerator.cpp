@@ -126,6 +126,12 @@ string HtmlGenerator::getHeader()
         os << "<pre>";
     } else {
         os << "<pre style=\"";
+        
+        // thedraw only:
+        os << "color: #e5e5e5;";
+        os << "background-color: black;";
+        
+        
         os << "font-family:"<< font << ";";
         os << "font-size:"<< fontSize << ";";
         os << "\">";
@@ -173,76 +179,6 @@ string HtmlGenerator::maskCharacter(unsigned char c)
         return "&#64;";
         break;
         
-        // thedraw tests
-        /*
-        //punktiert voll
-    case 177:
-      return "&#9619;";
-      break;
-      
-        //punktiert voll
-    case 178:
-      return "&#9617;";
-        break;
-    
-    case 179:
-      return "|";
-      break;
-    
-    case 193:
-      return "&perp;";
-      break;
-   
-    case 191:
-    case 192:
-    case 195:
-      return " ";
-      break;
-      
-    case 196:
-      return "-";
-      break;  
-    case 197:
-      return "+";
-      break;  
-        
-        //voll
-    case 219:
-      return "&#9608;";
-      break;
-      
-      //halb
-    case 220:
-      return "&#9622;";
-      break;
-
-      //schmal
-    case 221:
-      return "&#9612;";
-      break;
-    case 222:
-      return "&#9616;";
-      break;
-      
-    case 223:
-      return "&#9623;";
-      break;
-    
-    case 236:
-      return "&infin;";
-      break;
-    
-    case 250:
-      return "&#8226;";
-      break;
-    
-    case 10:
-    case 13:
-      return "";
-      break;
-      */
-      
-      
     default :
         if (c>0x1f ) { // printable?
             return string( 1, c );
@@ -252,6 +188,125 @@ string HtmlGenerator::maskCharacter(unsigned char c)
     }
 }
 
+string HtmlGenerator::maskCP437Character(unsigned char c)
+{  
+  
+  if (c>=0xb3 && c<=0xda) return "&#9608;";
+  
+  switch (c) {
+    case 0 :
+      return " ";
+      break;
+      
+    case '<' :
+      return "&lt;";
+      break;
+    case '>' :
+      return "&gt;";
+      break;
+    case '&' :
+      return "&amp;";
+      break;
+    case '\"' :
+      return "&quot;";
+      break;
+    case '\'' :
+      return "&apos;";
+      break;
+    case '\t' : // see deletion of nonprintable chars below
+      return "\t";
+      break;
+    
+    case '\r' : // see deletion of nonprintable chars below
+      return "\n";
+      break;
+      
+      
+    case '@' :
+      return "&#64;";
+      break;
+      
+      // thedraw tests
+      
+      //https://de.wikipedia.org/wiki/Unicodeblock_Blockelemente
+   case 177:
+       return "&#9619;";
+       break;
+       
+       //punktiert voll
+    case 178:
+      return "&#9617;";
+      break;
+      
+    case 179:
+      return "|";
+      break;
+    
+    case 0xb4:
+      return "&#9508;";
+      break;
+    
+    case 0xc3:
+      return "&#9500;";
+      break;
+      
+    case 193:
+      return "&perp;";
+      break;
+      
+    case 191:
+    case 192:
+    
+      return " ";
+      break;
+      
+    case 196:
+      return "-";
+      break;  
+    case 197:
+      return "+";
+      break;  
+      
+      //voll
+    case 219:
+      return "&#9608;";
+      break;
+      
+      //halb unten
+    case 220:
+      return "&#9604;";
+      break;
+      
+      //schmal
+    case 221:
+      return "&#9612;";
+      break;
+    case 222:
+      return "&#9616;";
+      break;
+      
+    case 223:
+      return "&#9600;";
+      break;
+      
+    case 236:
+      return "&infin;";
+      break;
+      
+    case 250:
+      return "&#8226;";
+      break;
+      
+      
+    default :
+        if (c>0x1f && c<0x7f) { // printable?          
+          return string( 1, c );
+        } else {
+          std::cerr<<"XXXXX: "<<(int)c<<"\n";
+          return "";
+        }
+  }
+};
 
 void HtmlGenerator::insertLineNumber ()
 {

@@ -23,7 +23,7 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "elementstyle.h"
-
+#include <iostream>
 namespace ansifilter
 {
 
@@ -87,13 +87,14 @@ void  ElementStyle::imageMode(bool negative)
 
 void ElementStyle::setReset(bool b)
 {
+  
+  
     reset=b;
     if (reset) {
-        setFgColour("#000000");
-        //setBgColour("#ffffff");
-        setFgColourID(0);
-        setBgColourID(-1);
-        bold= italic= underline= conceal = blink = bgColorSet = fgColorSet = false;
+      setFgColour("#000000");
+      setFgColourID(0);
+      setBgColourID(-1);
+      bold= italic= underline= conceal = blink = bgColorSet = fgColorSet = false;
     }
 }
 

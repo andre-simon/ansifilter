@@ -341,10 +341,11 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
 
         switch (ansiCode) {
         case 0:
-            elementStyle.setReset(true);
+          elementStyle.setReset(true);
             break;   
         case 1:
             elementStyle.setBold(true);
+            elementStyle.setFgColour(rgb2html(basic16[8]));
             break;
         case 2: //Faint
             break;
@@ -399,7 +400,12 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 35:
         case 36:
         case 37:
-            elementStyle.setFgColour(rgb2html(basic16[ansiCode-30]));
+            if (elementStyle.isBold()){
+              
+              elementStyle.setFgColour(rgb2html(basic16[ansiCode-30+8]));
+            } else
+              elementStyle.setFgColour(rgb2html(basic16[ansiCode-30]));
+            elementStyle.setBold(false);
             break;
             
         case 38: // xterm 256 foreground color mode \033[38;5;<color>
@@ -418,7 +424,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
             break;
 
         case 39:
-            elementStyle.setReset(true);
+          elementStyle.setReset(true);
             break;
 
         case 40:
@@ -429,7 +435,11 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 45:
         case 46:
         case 47:
-            elementStyle.setBgColour(rgb2html(basic16[ansiCode-40]));
+          /*   if (elementStyle.isBold())
+              elementStyle.setBgColour(rgb2html(basic16[ansiCode-40+8]));
+            else */
+              elementStyle.setBgColour(rgb2html(basic16[ansiCode-40]));
+            /*elementStyle.setBold(false);*/
             break;
 
         case 48:  // xterm 256 background color mode \033[48;5;<color>
@@ -448,7 +458,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
             break;
 
         case 49:
-            elementStyle.setReset(true);
+          elementStyle.setReset(true);
             break;
 
         /*aixterm codes*/
@@ -494,6 +504,86 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
     return true;
 }
 
+
+void CodeGenerator::parseAnsiSysSeq(string line, size_t begin, size_t end, int& curX, int& curY){
+  
+  string codes=line.substr(begin, end-begin);
+  vector<string> codeVector = StringTools::splitString(codes, ',');
+  
+  if (line[end]=='H'){
+   if (codeVector.size()==2){
+     curX = atoi(codeVector[0].c_str());
+     curY = atoi(codeVector[1].c_str());
+   } else {
+     curX = curY = 0;
+   }
+  }
+  
+  if (line[end]=='A'){    
+    if (codeVector.size()==1){
+      curY -= atoi(codeVector[0].c_str());
+     } else {
+      curY--;
+    }
+  }
+  
+  if (line[end]=='B'){
+    if (codeVector.size()==1){
+      curY += atoi(codeVector[0].c_str());
+    } else {
+      curY++;
+    }
+  }
+  
+  if (line[end]=='C'){
+    //std::cerr<<"C 1: "<<curX<<"\n";
+    
+    if (codeVector.size()==1){
+      curX += atoi(codeVector[0].c_str());
+    } else {
+      curX++;
+    }
+  //  std::cerr<<"C 2: "<<curX<<"\n";
+  }
+  
+  if (line[end]=='D'){
+//    std::cerr<<"D 1: "<<curX<<"\n";
+    if (codeVector.size()==1){
+      curX -= atoi(codeVector[0].c_str());
+    } else {
+      curX--;
+    }
+    if (curX<0) curX=0;
+  //  std::cerr<<"D 2: "<<curX<<"\n";
+    
+  }
+  
+  if (line[end]=='J'){
+    std::cerr<<"J!!!\n";
+    /*
+    if (codeVector.size()==1 && codeVector[0]=="2"){
+      for (int i=0;i<100*100;i++) *termBuffer[i]->c =0;
+    } 
+    */
+  }
+  
+  if (line[end]=='K'){
+    std::cerr<<"K!!!\n";
+      //for (int i=*curX;i<80;i++) *termBuffer[i]->c =0;
+     
+  }
+  if (line[end]=='S'){
+    std::cerr<<"S!!!\n";
+    //for (int i=*curX;i<80;i++) *termBuffer[i]->c =0;
+    
+  }
+  if (line[end]=='M'){
+    std::cerr<<"M!!!\n";
+    //for (int i=*curX;i<80;i++) *termBuffer[i]->c =0;
+    
+  }
+}
+
 void CodeGenerator::insertLineNumber ()
 {
     if ( showLineNumbers ) {
@@ -534,6 +624,10 @@ void CodeGenerator::processInput()
     bool isGrepOutput=false;
     
     bool parseTheDrawFile=false;
+    
+    
+    TDChar termBuffer[80*100] = { 0 };
+    int curX = 0, curY = 0;
 
     while (true) {
 
@@ -577,9 +671,55 @@ void CodeGenerator::processInput()
             size_t seqEnd=string::npos;
             int cur=0;
             int next=0;
+            
+            
             while (i <line.length() ) {
               // CSI ?
               cur = line[i]&0xff;
+             
+              // http://www.syaross.org/thedraw/ : make this optional
+              if (parseTheDrawFile){
+                
+                if (cur==0x1b && line.length() - i > 2){
+                  next = line[i+1]&0xff;
+                  if (next==0x5b) {
+                     i+=2;
+                     seqEnd = i;
+                     //find sequence end
+                     while (   seqEnd<line.length() 
+                       && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
+                       ++seqEnd;
+                     }
+                     
+                     if ( line[seqEnd]=='m' ) {  
+                       parseSGRParameters(line, i, seqEnd);
+                     } else {
+                       parseAnsiSysSeq(line, i, seqEnd, curX, curY);
+                       
+                    }
+                     
+                     i=seqEnd+1;  
+                  }
+                } else {
+                  if (curX>=0 && curX<80 && curY>=0 && curY<100){
+                    termBuffer[curX + curY*80].c = line[i];
+                    termBuffer[curX + curY*80].style = elementStyle;
+                    curX++;
+                  }
+                  
+                  if (line[i]=='\r') {
+                    curY++;
+                    curX=0;
+                    i=line.length();
+                   }
+                  ++i;
+                }
+                
+              }
+              
+              
+              if (!parseTheDrawFile){
+              
               if (cur==0x1b || cur==0x9b || cur==0xc2) {
                   if (line.length() - i > 2){
               
@@ -597,8 +737,7 @@ void CodeGenerator::processInput()
                           ++seqEnd;
                       }
                                             
-                      if (   line[seqEnd]=='m' && !ignoreFormatting 
-                          && seqEnd!=string::npos) {
+                      if (   line[seqEnd]=='m' && !ignoreFormatting ) {
                         if (!elementStyle.isReset()) {
                           *out <<getCloseTag();
                           tagOpen=false;
@@ -608,13 +747,6 @@ void CodeGenerator::processInput()
                           *out <<getOpenTag();
                           tagOpen=true;
                         }
-                      }
-                      
-                      // http://www.syaross.org/thedraw/ : make this optional?
-                      if (parseTheDrawFile && line[seqEnd]=='C'){
-                        int howMany=0;
-                        StringTools::str2num<int>(howMany, line.substr(i, seqEnd-i), std::dec);
-                        line.insert(seqEnd+1, howMany, ' ' ); 
                       }
                       
                       isGrepOutput = line[seqEnd]=='K' && line[seqEnd-3] == 'm';
@@ -656,14 +788,41 @@ void CodeGenerator::processInput()
                     // output printable character
                     *out << maskCharacter(line[i]);
                     ++i;
-                }  
+                }
+                
             }
-            *out << newLineTag;
+                
+            }
+            if (!parseTheDrawFile) *out << newLineTag;
         }
     }
     if (tagOpen) {
         *out <<getCloseTag();
     }
+    
+    if (parseTheDrawFile){
+     for (int y=0;y<100;y++) {
+       for (int x=0;x<80;x++) {
+         if (termBuffer[x + y* 80].c=='\r') {
+           *out<<"\n";
+           break;
+         }
+         elementStyle = termBuffer[x + y* 80].style;
+        
+         if (!elementStyle.isReset()) {
+           *out <<getOpenTag();
+           tagOpen=true;
+         }
+         
+         *out << maskCP437Character(termBuffer[x + y* 80].c);
+         if (!elementStyle.isReset()) {
+           *out <<getCloseTag();
+           tagOpen=false;
+         }
+       }
+     }
+    }
+    
     out->flush();
 }
 
