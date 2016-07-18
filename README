@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
----  ANSIFILTER MANUAL - Version 1.15  ----------------------- January 2016 ---
+---  ANSIFILTER MANUAL - Version 1.19  -------------------------- July 2016 ---
 -------------------------------------------------------------------------------
 
 OSI Certified Open Source Software
@@ -33,7 +33,6 @@ File handling:
   -o, --output=<file>    name of single output file
   -O, --outdir=<dir>     name of output directory
   -t, --tail             Continue reading after end-of-file (like tail -f)
-                         Use system tail if available
 
 Output text formats:
   -T, --text (default)   Output text
@@ -47,7 +46,7 @@ Output text formats:
 Format options:
   -a, --anchors          add HTML line anchors (assumes -l)
   -d, --doc-title        Set HTML/LaTeX document title
-  -e, --encoding         Set HTML encoding (must match input file encoding)
+  -e, --encoding         Set HTML/RTF encoding (must match input file encoding)
   -f, --fragment         Omit HTML header and footer
   -F, --font=<font>      Set HTML/RTF font face
   -l, --line-numbers     print line numbers in output file
@@ -56,12 +55,17 @@ Format options:
   -s, --font-size=<fs>   Set HTML/RTF font size
   -p, --plain            Ignore ANSI formatting information
   -w, --wrap=<len>       wrap long lines
+      --cp437            parse codepage 437 ASCII art (HTML output only)
       --wrap-no-numbers  omit line numbers of wrapped lines (assumes -l)
 
 Other options:
   -h, --help             Print help
   -v, --version          Print version and license info
 
+Examples:
+ansifilter -i input.ansi -o output.txt
+ansifilter *.txt
+tail -f server.log | ansifilter
 
 
 Examples:
@@ -84,12 +88,10 @@ Ansifilter is currently available for Linux and Win32 platforms.
 3.  Features
 -------------------------------------------------------------------------------
 
-Supported control sequences:
-ESC [ * m
-ESC ] * ND
-ESC ] Ps ND string NP
+Ansifilter understands most CSI sequences. Support for ASCII art files based on 
+codepage 437 and ANSI.SYS commands is enabled with the --cp437 option.
 
-Supported commands:
+Supported SGR paramters:
 Formatting: Bold, Underline, Italic, Blink
 Colors:     Black, Red, Green, Yellow, Blue, Magenta, Cyan, White
             xterm 256 color modes

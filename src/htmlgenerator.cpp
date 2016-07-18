@@ -127,10 +127,10 @@ string HtmlGenerator::getHeader()
     } else {
         os << "<pre style=\"";
         
-        // thedraw only:
-        os << "color: #e5e5e5;";
-        os << "background-color: black;";
-        
+        if (parseCP437) {
+          os << "color: #e5e5e5;";
+          os << "background-color: black;";
+        }
         
         os << "font-family:"<< font << ";";
         os << "font-size:"<< fontSize << ";";
@@ -189,10 +189,7 @@ string HtmlGenerator::maskCharacter(unsigned char c)
 }
 
 string HtmlGenerator::maskCP437Character(unsigned char c)
-{  
-  
-  if (c>=0xb3 && c<=0xda) return "&#9608;";
-  
+{    
   switch (c) {
     case 0 :
       return " ";
@@ -221,88 +218,203 @@ string HtmlGenerator::maskCP437Character(unsigned char c)
       return "\n";
       break;
       
-      
     case '@' :
       return "&#64;";
       break;
       
-      // thedraw tests
-      
-      //https://de.wikipedia.org/wiki/Unicodeblock_Blockelemente
-   case 177:
-       return "&#9619;";
-       break;
-       
-       //punktiert voll
-    case 178:
+      //shades
+    case 0xb0:   
       return "&#9617;";
       break;
-      
-    case 179:
-      return "|";
+    case 0xb1:   
+      return "&#9618;";
       break;
-    
-    case 0xb4:
+    case 0xb2:   
+      return "&#9619;";
+      break;
+      
+      //box drawings
+    case 0xb3:   
+      return "&#9474;";
+      break;
+    case 0xb4:   
       return "&#9508;";
       break;
-    
-    case 0xc3:
+    case 0xb5:   
+      return "&#9569;";
+      break;
+    case 0xb6:   
+      return "&#9570;";
+      break;
+    case 0xb7:   
+      return "&#9558;";
+      break;
+    case 0xb8:   
+      return "&#9557;";
+      break;
+    case 0xb9:   
+      return "&#9571;";
+      break;
+    case 0xba:   
+      return "&#9553;";
+      break;
+    case 0xbb:   
+      return "&#9559;";
+      break;
+    case 0xbc:   
+      return "&#9565;";
+      break;
+    case 0xbd:   
+      return "&#9564;";
+      break;
+    case 0xbe:   
+      return "&#9563;";
+      break;
+    case 0xbf:   
+      return "&#9488;";
+      break;
+      
+    case 0xc0:   
+      return "&#9492;";
+      break;
+    case 0xc1:   
+      return "&#9524;";
+      break;
+    case 0xc2:   
+      return "&#9516;";
+      break;
+    case 0xc3:   
       return "&#9500;";
       break;
-      
-    case 193:
-      return "&perp;";
+    case 0xc4:   
+      return "&#9472;";
       break;
-      
-    case 191:
-    case 192:
+    case 0xc5:   
+      return "&#9532;";
+      break;
+    case 0xc6:   
+      return "&#9566;";
+      break;
+    case 0xc7:   
+      return "&#9567;";
+      break;
+    case 0xc8:   
+      return "&#9562;";
+      break;
+    case 0xc9:   
+      return "&#9556;";
+      break;
+    case 0xca:   
+      return "&#9577;";
+      break;
+    case 0xcb:   
+      return "&#9574;";
+      break;
+    case 0xcc:   
+      return "&#9568;";
+      break;
+    case 0xcd:   
+      return "&#9552;";
+      break;
+    case 0xce:   
+      return "&#9580;";
+      break;
+    case 0xcf:   
+      return "&#9575;";
+      break;
+  
+    case 0xd0:   
+      return "&#9576;";
+      break;
+    case 0xd1:   
+      return "&#9572;";
+      break;
+    case 0xd2:   
+      return "&#9573;";
+      break;
+    case 0xd3:   
+      return "&#9561;";
+      break;
+    case 0xd4:   
+      return "&#9560;";
+      break;
+    case 0xd5:   
+      return "&#9554;";
+      break;
+    case 0xd6:   
+      return "&#9555;";
+      break;
+    case 0xd7:   
+      return "&#9579;";
+      break;
+    case 0xd8:   
+      return "&#9578;";
+      break;
+    case 0xd9:   
+      return "&#9496;";
+      break;
+    case 0xda:   
+      return "&#9484;";
+      break;
     
-      return " ";
-      break;
       
-    case 196:
-      return "-";
-      break;  
-    case 197:
-      return "+";
-      break;  
       
-      //voll
-    case 219:
+      //https://de.wikipedia.org/wiki/Unicodeblock_Blockelemente
+    case 0xdb:
       return "&#9608;";
       break;
-      
-      //halb unten
-    case 220:
+    case 0xdc:
       return "&#9604;";
       break;
-      
-      //schmal
-    case 221:
+    case 0xdd:
       return "&#9612;";
       break;
-    case 222:
+    case 0xde:
       return "&#9616;";
-      break;
-      
-    case 223:
+      break;      
+    case 0xdf:
       return "&#9600;";
       break;
-      
-    case 236:
+   
+    case 0xec:
       return "&infin;";
       break;
       
-    case 250:
-      return "&#8226;";
+    case 0xfe:   
+      return "&#9632;";
       break;
       
+    case 0x9b:   
+      return "&#x00a2;";
+      break;
+      
+      
+    
+    case 0xf0:
+      return "&#x2261;";
+      break;
+    
+    case 0xf9:
+      return "&#x2219;";
+      break;
+      
+      
+      
+    case 0xfa:
+      return "&#8226;";
+      break;
+    
+    case 22:
+    case 25:
+    case 26:
+      return " ";
+      break;
       
     default :
         if (c>0x1f && c<0x7f) { // printable?          
           return string( 1, c );
         } else {
-          std::cerr<<"XXXXX: "<<(int)c<<"\n";
+          std::cerr<<"Unknown: "<<(int)c<<"\n";
           return "";
         }
   }

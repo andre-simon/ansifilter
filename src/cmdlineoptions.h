@@ -104,6 +104,9 @@ public:
     /** \return True if line numbers should be printed */
     bool wrapNoNumbers() const;
 
+    /** \return True if input should be treated as codepage 437 ASCII art */
+    bool useCP437() const;
+    
     /** \return Document title */
     string getDocumentTitle() const ;
 
@@ -126,6 +129,7 @@ private:
     bool opt_linenum;
     bool opt_wrapNoNum;
     bool opt_anchors;
+    bool opt_cp437;
 
     // name of single output file
     string outFilename;

@@ -55,6 +55,7 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
     dlg.leColorMapPath->setText(settings.value("map").toString());
     dlg.cbFragment->setChecked(settings.value("fragment").toBool());
     dlg.cbIgnoreSequences->setChecked(settings.value("ignoreseq").toBool());
+    dlg.cbCodepage437->setChecked(settings.value("cp437").toBool());
     dlg.comboEncoding->setCurrentIndex(settings.value("encoding").toInt());
     dlg.comboFont->setCurrentIndex(settings.value("font").toInt());
     dlg.comboFormat->setCurrentIndex(settings.value("format").toInt());
@@ -89,6 +90,7 @@ void MyDialog::closeEvent(QCloseEvent *event)
     settings.setValue("map", dlg.leColorMapPath->text());
     settings.setValue("fragment", dlg.cbFragment->isChecked());
     settings.setValue("ignoreseq", dlg.cbIgnoreSequences->isChecked());
+    settings.setValue("cp437", dlg.cbCodepage437->isChecked());
     settings.setValue("encoding", dlg.comboEncoding->currentIndex());
     settings.setValue("format", dlg.comboFormat->currentIndex());
     settings.setValue("font", dlg.comboFont->currentIndex());
@@ -151,6 +153,7 @@ void MyDialog::plausibility()
     int selIdx = dlg.comboFormat->currentIndex();
     dlg.cbIgnoreSequences->setEnabled(selIdx!=0);
     dlg.cbFragment->setEnabled(selIdx==1 || selIdx==3 || selIdx==4|| selIdx==6);
+    dlg.cbCodepage437->setEnabled(selIdx==1);
     dlg.lblEncoding->setEnabled(selIdx==1|| selIdx==2 || selIdx==3);
     dlg.comboEncoding->setEnabled(selIdx==1 || selIdx==2 ||selIdx==3);
     dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
@@ -222,6 +225,7 @@ void MyDialog::on_pbSaveAs_clicked()
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(dlg.cbFragment->isChecked());
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
+    generator->setCodePage437(dlg.cbCodepage437->isChecked());
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt"); //TODO TeX?
@@ -292,6 +296,7 @@ void MyDialog::showFile()
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(false);
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
+    generator->setCodePage437(dlg.cbCodepage437->isChecked());
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt");
@@ -320,7 +325,11 @@ void MyDialog::on_pbAbout_clicked()
 
 void MyDialog::on_cbIgnoreSequences_stateChanged()
 {
+    showFile();
+}
 
+void MyDialog::on_cbCodepage437_stateChanged()
+{
     showFile();
 }
 

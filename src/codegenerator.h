@@ -202,6 +202,9 @@ public:
     /** \param b set to true if line numbers of wrapped lines should be omitted */
     void setWrapNoNumbers(bool flag);
 
+    /** \param b set to true if input is codepage 437 ASCII art  */
+    void setCodePage437(bool flag);
+    
 protected:
 
     /** \param type Output type */
@@ -258,6 +261,8 @@ protected:
          numberCurrentLine,   ///< output number of current line
          addAnchors;          ///< add HTML anchor to line number
 
+    bool parseCP437;
+         
     /** Processes input data */
     void processInput();
 
@@ -300,14 +305,13 @@ private:
         @return true if sequence was recognized */
     bool parseSGRParameters(const string& line, size_t begin, size_t end);
     
-    /** parses ANSI.SYS sequence information
+    /** parses Codepage 437 sequence information
         @param line text line                     
         @param begin starting position within line
         @param end ending position within line
-        @param curX current X Pos
-        @param curY current Y Pos
+        
         */
-    void parseAnsiSysSeq(string line, size_t begin, size_t end, int& curX, int& curY);
+    void parseCodePage437Seq(string line, size_t begin, size_t end);
 
     /** Prints document footer
         @return footer */
@@ -332,7 +336,10 @@ private:
 
     bool ignoreFormatting; ///< ignore color and font face information
     bool readAfterEOF;     ///< continue reading after EOF occoured
-
+    
+    int curX, curY, memX, memY; ///< cursor position for Codepage 437 sequences
+    ElementStyle memStyle;
+    
     /** convert an xterm color value (0-253) to 3 unsigned chars rgb
         @param color xterm color
         @param rgb RGB output values */

@@ -280,6 +280,16 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="cbCodepage437">
+        <property name="toolTip">
+         <string>Enable support for codepage 437 symbols and ANSI.SYS commands.</string>
+        </property>
+        <property name="text">
+         <string>Codepage 437 (ASCII art)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLabel" name="label_2">

@@ -44,6 +44,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     opt_linenum(false),
     opt_wrapNoNum(false),
     opt_anchors(false),
+    opt_cp437(false),
     encodingName("ISO-8859-1"),
     font("Courier New"),
     fontSize("10pt"),
@@ -76,6 +77,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         { 'v', "version",   Arg_parser::no  },
         { 'V', "version",   Arg_parser::no  },
         { 'W', "wrap-no-numbers",   Arg_parser::no  },
+        { 'C', "cp437",     Arg_parser::no  },
 	{ 'm', "map",       Arg_parser::yes },
         {  0,  0,           Arg_parser::no  }
     };
@@ -91,7 +93,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     for( ; argind < parser.arguments(); ++argind ) {
         const int code = parser.code( argind );
         const std::string & arg = parser.argument( argind );
-        if( !code ) break;					// no more options
+        if( !code ) break;
         switch( code ) {
         /* tbd
         case 'O':
@@ -194,6 +196,9 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         case 'W':
             opt_wrapNoNum=true;
             break;
+        case 'C':
+          opt_cp437=true;
+          break;
         default:
             cerr << "ansifilter: option parsing failed" << endl;
         }
@@ -269,6 +274,11 @@ bool CmdLineOptions::fragmentOutput()const
 bool CmdLineOptions::showLineNumbers()const
 {
     return opt_linenum;
+}
+
+bool CmdLineOptions::useCP437() const
+{
+  return opt_cp437;
 }
 
 string CmdLineOptions::getOutFileSuffix()const

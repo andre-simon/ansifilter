@@ -75,7 +75,7 @@ public slots:
                 void on_pbSelectMapFile_clicked();
 				
 				void on_cbIgnoreSequences_stateChanged();
-               // void on_cbLineNumbers_stateChanged();
+                void on_cbCodepage437_stateChanged();
                 void on_cbWatchFile_stateChanged();
                 void on_comboFont_currentIndexChanged(int idx);
                 void on_comboEncoding_currentIndexChanged(int idx);

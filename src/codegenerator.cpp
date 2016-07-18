@@ -43,6 +43,9 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "latexgenerator.h"
 #include "bbcodegenerator.h"
 
+#define MAX_ART_COL 80
+#define MAX_ART_LIN 100
+
 namespace ansifilter
 {
 
@@ -90,12 +93,17 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      lineNumberWidth ( 5 ),
      lineNumber ( 0 ),
      showLineNumbers ( false ),
+     parseCP437(false),
+     
      numberWrappedLines ( true ), //TODO add option
      numberCurrentLine(false),
      outputType(type),
-
      ignoreFormatting(false),
-     readAfterEOF(false)
+     readAfterEOF(false),
+     curX(0),
+     curY(0),
+     memX(0),
+     memY(0)
 {
     elementStyle.setFgColour(rgb2html(basic16[0]));
 }
@@ -117,6 +125,10 @@ void CodeGenerator::setFragmentCode(bool flag)
 void CodeGenerator::setWrapNoNumbers(bool flag)
 {
     numberWrappedLines = flag;
+}
+
+void CodeGenerator::setCodePage437(bool flag){
+ parseCP437 = flag; 
 }
 
 bool CodeGenerator::getFragmentCode()
@@ -406,6 +418,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
             } else
               elementStyle.setFgColour(rgb2html(basic16[ansiCode-30]));
             elementStyle.setBold(false);
+            
             break;
             
         case 38: // xterm 256 foreground color mode \033[38;5;<color>
@@ -505,18 +518,23 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
 }
 
 
-void CodeGenerator::parseAnsiSysSeq(string line, size_t begin, size_t end, int& curX, int& curY){
+void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
+  
+ // std::cerr <<"SEA "<<curX << " "<<curY<<"\n";
   
   string codes=line.substr(begin, end-begin);
   vector<string> codeVector = StringTools::splitString(codes, ',');
   
   if (line[end]=='H'){
-   if (codeVector.size()==2){
-     curX = atoi(codeVector[0].c_str());
-     curY = atoi(codeVector[1].c_str());
-   } else {
-     curX = curY = 0;
-   }
+    codeVector = StringTools::splitString(codes, ';');
+    
+    curX = curY = 0;
+    if (codeVector.size()==1) {
+      curY = atoi(codeVector[0].c_str());
+    } else  if (codeVector.size()==2){
+     curY = atoi(codeVector[0].c_str());
+     curX = atoi(codeVector[1].c_str()); 
+    }      
   }
   
   if (line[end]=='A'){    
@@ -536,30 +554,25 @@ void CodeGenerator::parseAnsiSysSeq(string line, size_t begin, size_t end, int& 
   }
   
   if (line[end]=='C'){
-    //std::cerr<<"C 1: "<<curX<<"\n";
     
     if (codeVector.size()==1){
       curX += atoi(codeVector[0].c_str());
     } else {
       curX++;
     }
-  //  std::cerr<<"C 2: "<<curX<<"\n";
   }
   
   if (line[end]=='D'){
-//    std::cerr<<"D 1: "<<curX<<"\n";
     if (codeVector.size()==1){
       curX -= atoi(codeVector[0].c_str());
     } else {
       curX--;
     }
-    if (curX<0) curX=0;
-  //  std::cerr<<"D 2: "<<curX<<"\n";
-    
+    if (curX<0) curX=0;    
   }
   
   if (line[end]=='J'){
-    std::cerr<<"J!!!\n";
+ //   std::cerr<<"J!!!\n";
     /*
     if (codeVector.size()==1 && codeVector[0]=="2"){
       for (int i=0;i<100*100;i++) *termBuffer[i]->c =0;
@@ -568,20 +581,24 @@ void CodeGenerator::parseAnsiSysSeq(string line, size_t begin, size_t end, int& 
   }
   
   if (line[end]=='K'){
-    std::cerr<<"K!!!\n";
+  //  std::cerr<<"K!!!\n";
       //for (int i=*curX;i<80;i++) *termBuffer[i]->c =0;
      
   }
-  if (line[end]=='S'){
-    std::cerr<<"S!!!\n";
-    //for (int i=*curX;i<80;i++) *termBuffer[i]->c =0;
-    
+  
+  if (line[end]=='s'){
+    memX = curX;
+    memY = curY;
+    memStyle = elementStyle;
   }
-  if (line[end]=='M'){
-    std::cerr<<"M!!!\n";
-    //for (int i=*curX;i<80;i++) *termBuffer[i]->c =0;
-    
+  if (line[end]=='u'){
+    curX = memX;
+    curY = memY;
+    elementStyle=memStyle;
   }
+  
+  
+  //std::cerr <<"SEE "<<curX << " "<<curY<<"\n";
 }
 
 void CodeGenerator::insertLineNumber ()
@@ -623,11 +640,8 @@ void CodeGenerator::processInput()
     bool tagOpen=false;
     bool isGrepOutput=false;
     
-    bool parseTheDrawFile=false;
+    TDChar termBuffer[MAX_ART_COL*MAX_ART_LIN] = { 0 };
     
-    
-    TDChar termBuffer[80*100] = { 0 };
-    int curX = 0, curY = 0;
 
     while (true) {
 
@@ -672,13 +686,12 @@ void CodeGenerator::processInput()
             int cur=0;
             int next=0;
             
-            
             while (i <line.length() ) {
               // CSI ?
               cur = line[i]&0xff;
              
               // http://www.syaross.org/thedraw/ : make this optional
-              if (parseTheDrawFile){
+              if (parseCP437){
                 
                 if (cur==0x1b && line.length() - i > 2){
                   next = line[i+1]&0xff;
@@ -694,31 +707,27 @@ void CodeGenerator::processInput()
                      if ( line[seqEnd]=='m' ) {  
                        parseSGRParameters(line, i, seqEnd);
                      } else {
-                       parseAnsiSysSeq(line, i, seqEnd, curX, curY);
-                       
+                       parseCodePage437Seq(line, i, seqEnd);  
                     }
-                     
-                     i=seqEnd+1;  
+                    i=seqEnd+1;  
                   }
                 } else {
-                  if (curX>=0 && curX<80 && curY>=0 && curY<100){
-                    termBuffer[curX + curY*80].c = line[i];
-                    termBuffer[curX + curY*80].style = elementStyle;
+                  if (curX>=0 && curX<MAX_ART_COL && curY>=0 && curY<MAX_ART_LIN){
+                    termBuffer[curX + curY*MAX_ART_COL].c = line[i];
+                    termBuffer[curX + curY*MAX_ART_COL].style = elementStyle;
                     curX++;
                   }
                   
                   if (line[i]=='\r') {
-                    curY++;
+                    curY++;  
                     curX=0;
                     i=line.length();
                    }
                   ++i;
-                }
-                
+                }  
               }
               
-              
-              if (!parseTheDrawFile){
+              if (!parseCP437){
               
               if (cur==0x1b || cur==0x9b || cur==0xc2) {
                   if (line.length() - i > 2){
@@ -793,33 +802,44 @@ void CodeGenerator::processInput()
             }
                 
             }
-            if (!parseTheDrawFile) *out << newLineTag;
+            if (!parseCP437) *out << newLineTag;
         }
     }
     if (tagOpen) {
         *out <<getCloseTag();
     }
     
-    if (parseTheDrawFile){
-     for (int y=0;y<100;y++) {
-       for (int x=0;x<80;x++) {
-         if (termBuffer[x + y* 80].c=='\r') {
-           *out<<"\n";
+    if (parseCP437){
+     
+      for (int y=0;y<MAX_ART_LIN;y++) {
+       
+        for (int x=0;x<MAX_ART_COL;x++) {
+          if (termBuffer[x + y* MAX_ART_COL].c=='\r') {           
+          
            break;
          }
-         elementStyle = termBuffer[x + y* 80].style;
+         elementStyle = termBuffer[x + y* MAX_ART_COL].style;
         
+         //full block
+         if (termBuffer[x + y* MAX_ART_COL].c == 0xdb){
+           elementStyle.setBgColour(elementStyle.getFgColour());
+         }
+         
          if (!elementStyle.isReset()) {
            *out <<getOpenTag();
            tagOpen=true;
          }
-         
-         *out << maskCP437Character(termBuffer[x + y* 80].c);
+  
+        *out << maskCP437Character(termBuffer[x + y* MAX_ART_COL].c);
+  
          if (!elementStyle.isReset()) {
            *out <<getCloseTag();
            tagOpen=false;
          }
        }
+       
+       *out<<"\n";
+       
      }
     }
     

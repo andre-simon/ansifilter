@@ -2,7 +2,7 @@
                           main.cpp  -  description
                              -------------------
 
-    copyright            : (C) 2007-2015 by Andre Simon
+    copyright            : (C) 2007-2016 by Andre Simon
     email                : andre.simon1@gmx.de
 
    Highlight is a universal source code to HTML converter. Syntax highlighting
@@ -53,11 +53,10 @@ void ANSIFilterApp::printHelp()
     cout << "Invocation: ansifilter [OPTION]... [FILE]...\n\n";
     cout << "ansifilter handles text files containing ANSI terminal escape codes.\n";
     cout << "\nFile handling:\n";
-    cout << "  -i, --input=<file>     name of single input file\n";
-    cout << "  -o, --output=<file>    name of single output file\n";
-    cout << "  -O, --outdir=<dir>     name of output directory\n";
+    cout << "  -i, --input=<file>     Name of input file\n";
+    cout << "  -o, --output=<file>    Name of output file\n";
+    cout << "  -O, --outdir=<dir>     Name of output directory\n";
     cout << "  -t, --tail             Continue reading after end-of-file (like tail -f)\n";
-    cout << "                         Use system tail if available\n";
     cout << "\nOutput text formats:\n";
     cout << "  -T, --text (default)   Output text\n";
     cout << "  -H, --html             Output HTML\n";
@@ -67,18 +66,19 @@ void ANSIFilterApp::printHelp()
     cout << "  -R, --rtf              Output RTF\n";
     cout << "  -B, --bbcode           Output BBCode\n";
     cout << "\nFormat options:\n";
-    cout << "  -a, --anchors          add HTML line anchors (assumes -l)\n";
+    cout << "  -a, --anchors          Add HTML line anchors (assumes -l)\n";
     cout << "  -d, --doc-title        Set HTML/LaTeX document title\n";
     cout << "  -e, --encoding         Set HTML/RTF encoding (must match input file encoding)\n";
     cout << "  -f, --fragment         Omit HTML header and footer\n";
     cout << "  -F, --font=<font>      Set HTML/RTF font face\n";
-    cout << "  -l, --line-numbers     print line numbers in output file\n";
-    cout << "  -m, --map=<path>       read color mapping file (see README)\n";
+    cout << "  -l, --line-numbers     Print line numbers in output file\n";
+    cout << "  -m, --map=<path>       Read color mapping file (see README)\n";
     cout << "  -r, --style-ref=<rf>   Set HTML/TeX/LaTeX stylesheet path\n";
     cout << "  -s, --font-size=<fs>   Set HTML/RTF font size\n";
     cout << "  -p, --plain            Ignore ANSI formatting information\n";
-    cout << "  -w, --wrap=<len>       wrap long lines\n";
-    cout << "      --wrap-no-numbers  omit line numbers of wrapped lines (assumes -l)\n";
+    cout << "  -w, --wrap=<len>       Wrap long lines\n";
+    cout << "      --cp437            Parse codepage 437 ASCII art (HTML output only)\n";
+    cout << "      --wrap-no-numbers  Omit line numbers of wrapped lines (assumes -l)\n";
     cout << "\nOther options:\n";
     cout << "  -h, --help             Print help\n";
     cout << "  -v, --version          Print version and license info\n";
@@ -150,7 +150,8 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
         generator->setShowLineNumbers(options.showLineNumbers());
         generator->setWrapNoNumbers(!options.wrapNoNumbers());
         generator->setAddAnchors(options.addAnchors());
-
+        generator->setCodePage437(options.useCP437());
+        
         ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
 
         if (error==ansifilter::BAD_INPUT) {
