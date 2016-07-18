@@ -337,7 +337,7 @@ private:
     bool ignoreFormatting; ///< ignore color and font face information
     bool readAfterEOF;     ///< continue reading after EOF occoured
     
-    int curX, curY, memX, memY; ///< cursor position for Codepage 437 sequences
+    int curX, curY, memX, memY, maxY; ///< cursor position for Codepage 437 sequences
     ElementStyle memStyle;
     
     /** convert an xterm color value (0-253) to 3 unsigned chars rgb

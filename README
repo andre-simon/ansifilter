@@ -92,6 +92,7 @@ Ansifilter understands most CSI sequences. Support for ASCII art files based on
 codepage 437 and ANSI.SYS commands is enabled with the --cp437 option.
 
 Supported SGR paramters:
+
 Formatting: Bold, Underline, Italic, Blink
 Colors:     Black, Red, Green, Yellow, Blue, Magenta, Cyan, White
             xterm 256 color modes

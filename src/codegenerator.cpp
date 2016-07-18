@@ -93,17 +93,20 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      lineNumberWidth ( 5 ),
      lineNumber ( 0 ),
      showLineNumbers ( false ),
-     parseCP437(false),
      
      numberWrappedLines ( true ), //TODO add option
      numberCurrentLine(false),
+     addAnchors(false),
+     parseCP437(false),
+     
      outputType(type),
      ignoreFormatting(false),
      readAfterEOF(false),
      curX(0),
      curY(0),
      memX(0),
-     memY(0)
+     memY(0),
+     maxY(0)
 {
     elementStyle.setFgColour(rgb2html(basic16[0]));
 }
@@ -534,7 +537,8 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
     } else  if (codeVector.size()==2){
      curY = atoi(codeVector[0].c_str());
      curX = atoi(codeVector[1].c_str()); 
-    }      
+    }     
+    if (maxY<curY && curY<MAX_ART_LIN) maxY=curY;
   }
   
   if (line[end]=='A'){    
@@ -551,6 +555,7 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
     } else {
       curY++;
     }
+    if (maxY<curY && curY<MAX_ART_LIN) maxY=curY;
   }
   
   if (line[end]=='C'){
@@ -640,7 +645,7 @@ void CodeGenerator::processInput()
     bool tagOpen=false;
     bool isGrepOutput=false;
     
-    TDChar termBuffer[MAX_ART_COL*MAX_ART_LIN] = { 0 };
+    TDChar termBuffer[MAX_ART_COL*MAX_ART_LIN] = {0};
     
 
     while (true) {
@@ -718,8 +723,9 @@ void CodeGenerator::processInput()
                     curX++;
                   }
                   
-                  if (line[i]=='\r') {
+                  if (line[i]=='\r' ) {
                     curY++;  
+                    if (maxY<curY && curY<MAX_ART_LIN) maxY=curY;
                     curX=0;
                     i=line.length();
                    }
@@ -811,7 +817,7 @@ void CodeGenerator::processInput()
     
     if (parseCP437){
      
-      for (int y=0;y<MAX_ART_LIN;y++) {
+      for (int y=0;y<=maxY;y++) {
        
         for (int x=0;x<MAX_ART_COL;x++) {
           if (termBuffer[x + y* MAX_ART_COL].c=='\r') {           

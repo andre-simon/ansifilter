@@ -213,13 +213,244 @@ string HtmlGenerator::maskCP437Character(unsigned char c)
     case '\t' : // see deletion of nonprintable chars below
       return "\t";
       break;
-    
+      
+    /*
     case '\r' : // see deletion of nonprintable chars below
       return "\n";
       break;
       
     case '@' :
       return "&#64;";
+      break;*/
+      
+    case 0x01:  
+      return "&#x263a;";
+      break;
+    case 0x02:  
+      return "&#x263b;";
+      break;
+    case 0x03:  
+      return "&#x2665;";
+      break;
+      
+    case 0x04:  
+      return "&#x2666;";
+      break;
+    case 0x05:  
+      return "&#x2663;";
+      break;
+    case 0x06:  
+      return "&#x2660;";
+      break;
+    case 0x08:  
+      return "&#x25d8;";
+      break;  
+     
+    case 0x0a:  
+      return "&#x25d9;";
+      break;
+    case 0x0b:  
+      return "&#x2642;";
+      break;
+    case 0x0c:  
+      return "&#x2640;";
+      break;
+    
+    case 0x10:  
+      return "&#x25BA;";
+      break;  
+    case 0x11:  
+      return "&#x25C4;";
+      break;
+    case 0x12:  
+      return "&#x2195;";
+      break;  
+    case 0x13:  
+      return "&#x203C;";
+      break;  
+    case 0x14:  
+      return "&#x00b6;";
+      break;  
+    case 0x15:  
+      return "&#x00a7;";
+      break;  
+    case 0x16:  
+      return "&#x25ac;";
+      break;  
+    case 0x17:  
+      return "&#x21A8;";
+      break;  
+    case 0x18:  
+      return "&#x2191;";
+      break;  
+    case 0x19:  
+      return "&#x2193;";
+      break; 
+    case 0x1a:  
+      return "&#x2192;";
+      break; 
+    case 0x1b:  
+      return "&#x2190;";
+      break; 
+    case 0x1c:  
+      return "&#x221F;";
+      break; 
+    case 0x1d:  
+      return "&#x2194;";
+      break; 
+    case 0x1e:  
+      return "&#x25B2;";
+      break; 
+    case 0x1f:  
+      return "&#x25BC;";
+      break; 
+      
+    case 0x80:  
+      return "&#x00c7;";
+      break;  
+    case 0x81:  
+      return "&#x00fc;";
+      break;  
+    case 0x82:  
+      return "&#x00e9;";
+      break;  
+    case 0x83:  
+      return "&#x00e2;";
+      break;  
+    case 0x84:  
+      return "&#x00e4;";
+      break;  
+    case 0x85:  
+      return "&#x00e0;";
+      break;  
+    case 0x86:  
+      return "&#x00e5;";
+      break;  
+    case 0x87:  
+      return "&#x00e7;";
+      break;  
+    case 0x88:  
+      return "&#x00ea;";
+      break;  
+    case 0x89:  
+      return "&#x00eb;";
+      break;  
+    case 0x8a:  
+      return "&#x00e8;";
+      break;  
+    case 0x8b:  
+      return "&#x00ef;";
+      break;  
+    case 0x8c:  
+      return "&#x00ee;";
+      break;  
+    case 0x8d:  
+      return "&#x00ec;";
+      break;  
+    case 0x8e:  
+      return "&#x00c4;";
+      break;  
+    case 0x8f:  
+      return "&#x00c5;";
+      break;  
+    
+    case 0x90:  
+      return "&#x00c9;";
+      break;  
+    case 0x91:  
+      return "&#x00e6;";
+      break;  
+    case 0x92:  
+      return "&#x00c6;";
+      break;  
+    case 0x93:  
+      return "&#x00f4;";
+      break;  
+    case 0x94:  
+      return "&#x00f6;";
+      break;  
+    case 0x95:  
+      return "&#x00f2;";
+      break;  
+    case 0x96:  
+      return "&#x00fb;";
+      break;  
+    case 0x97:  
+      return "&#x00f9;";
+      break;  
+    case 0x98:  
+      return "&#x00ff;";
+      break;  
+    case 0x99:  
+      return "&#x00d6;";
+      break;  
+    case 0x9a:  
+      return "&#x00dc;";
+      break;  
+    case 0x9b:  
+      return "&#x00a2;";
+      break;  
+    case 0x9c:  
+      return "&#x00a3;";
+      break;  
+    case 0x9d:  
+      return "&#x00a5;";
+      break;  
+    case 0x9e:  
+      return "&#x20a7;";
+      break;  
+    case 0x9f:  
+      return "&#x0192;";
+      break;  
+      
+    
+    case 0xa0:  
+      return "&#x00e1;";
+      break;
+    case 0xa1:  
+      return "&#x00ed;";
+      break;
+    case 0xa2:  
+      return "&#x00f3;";
+      break;
+    case 0xa3:  
+      return "&#x00fa;";
+      break;
+    case 0xa4:  
+      return "&#x00f1;";
+      break;
+    case 0xa5:  
+      return "&#x00d1;";
+      break;
+    case 0xa6:  
+      return "&#x00aa;";
+      break;
+    case 0xa7:  
+      return "&#x00ba;";
+      break;
+    case 0xa8:  
+      return "&#x00bf;";
+      break;
+    case 0xa9:  
+      return "&#x2310;";
+      break;
+    case 0xaa:  
+      return "&#x00ac;";
+      break;
+    case 0xab:  
+      return "&#x00bd;";
+      break;
+    case 0xac:  
+      return "&#x00bc;";
+      break;
+    case 0xad:  
+      return "&#x00a1;";
+      break;
+    case 0xae:  
+      return "&#x00ab;";
+      break;
+    case 0xaf:  
+      return "&#x00bb;";
       break;
       
       //shades
@@ -356,9 +587,7 @@ string HtmlGenerator::maskCP437Character(unsigned char c)
     case 0xda:   
       return "&#9484;";
       break;
-    
-      
-      
+          
       //https://de.wikipedia.org/wiki/Unicodeblock_Blockelemente
     case 0xdb:
       return "&#9608;";
@@ -376,39 +605,106 @@ string HtmlGenerator::maskCP437Character(unsigned char c)
       return "&#9600;";
       break;
    
+    case 0xe0:
+      return "&#x03b1;";
+      break;
+    case 0xe1:
+      return "&#x00df;";
+      break;
+    case 0xe2:
+      return "&#x0393;";
+      break;
+    case 0xe3:
+      return "&#x03c0;";
+      break;
+    case 0xe4:
+      return "&#x03a3;";
+      break;
+    case 0xe5:
+      return "&#x03c3;";
+      break;
+    case 0xe6:
+      return "&#x00b5;";
+      break;
+    case 0xe7:
+      return "&#x03c4;";
+      break;
+    case 0xe8:
+      return "&#x03a6;";
+      break;
+    case 0xe9:
+      return "&#x0398;";
+      break;
+    case 0xea:
+      return "&#x03a9;";
+      break;
+    case 0xeb:
+      return "&#x03b4;";
+      break;
+      
     case 0xec:
-      return "&infin;";
+      return "&#x221e;";
+      break;
+    case 0xed:
+      return "&#x03c6;";
+      break;
+    case 0xee:
+      return "&#x03b5;";
+      break;
+    case 0xef:
+      return "&#x2229;";
       break;
       
-    case 0xfe:   
-      return "&#9632;";
-      break;
-      
-    case 0x9b:   
-      return "&#x00a2;";
-      break;
-      
-      
-    
     case 0xf0:
       return "&#x2261;";
       break;
     
+    case 0xf1:
+      return "&#x00b1;";
+      break;
+    case 0xf2:
+      return "&#x2265;";
+      break;
+    case 0xf3:
+      return "&#x2264;";
+      break;
+    case 0xf4:
+      return "&#x2320;";
+      break;
+    case 0xf5:
+      return "&#x2321;";
+      break;
+    case 0xf6:
+      return "&#x00f7;";
+      break;
+    case 0xf7:
+      return "&#x2248;";
+      break;
+    case 0xf8:
+      return "&#x00b0;";
+      break;
+      
     case 0xf9:
       return "&#x2219;";
       break;
-      
-      
-      
     case 0xfa:
-      return "&#8226;";
+      return "&#x00b7;";
       break;
-    
-    case 22:
-    case 25:
-    case 26:
-      return " ";
+    case 0xfb:
+      return "&#x221a;";
       break;
+    case 0xfc:
+      return "&#x207F;";
+      break;
+    case 0xfd:
+      return "&#x20b2;";
+      break;
+    case 0xfe:
+      return "&#x25a0;";
+      break;  
+    case 0xff:
+      return "&nbsp;";
+      break;  
       
     default :
         if (c>0x1f && c<0x7f) { // printable?          
