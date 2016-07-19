@@ -153,7 +153,7 @@ void MyDialog::plausibility()
     int selIdx = dlg.comboFormat->currentIndex();
     dlg.cbIgnoreSequences->setEnabled(selIdx!=0);
     dlg.cbFragment->setEnabled(selIdx==1 || selIdx==3 || selIdx==4|| selIdx==6);
-    dlg.cbCodepage437->setEnabled(selIdx==1);
+    dlg.cbCodepage437->setEnabled(selIdx==1 || selIdx==2);
     dlg.lblEncoding->setEnabled(selIdx==1|| selIdx==2 || selIdx==3);
     dlg.comboEncoding->setEnabled(selIdx==1 || selIdx==2 ||selIdx==3);
     dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
@@ -226,6 +226,7 @@ void MyDialog::on_pbSaveAs_clicked()
     generator->setFragmentCode(dlg.cbFragment->isChecked());
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
     generator->setCodePage437(dlg.cbCodepage437->isChecked());
+    generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt"); //TODO TeX?
@@ -293,17 +294,19 @@ void MyDialog::showFile()
     dlg.lblInFilePath->setText(inputFileName);
 
     unique_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::HTML));
+
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(false);
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
     generator->setCodePage437(dlg.cbCodepage437->isChecked());
+    generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt");
     if (!dlg.leColorMapPath->text().isEmpty())
         generator->setColorMap(dlg.leColorMapPath->text().toStdString());
 
-    QString htmlString = QString( generator->generateStringFromFile(inputFileName.toStdString ()).c_str() );
+    QString htmlString( generator->generateStringFromFile(inputFileName.toStdString ()).c_str() );
     if (!htmlString.isEmpty()) {
         dlg.textEdit->setText(htmlString);
         this->setWindowTitle("ANSIFilter - " + inputFileName);
@@ -330,9 +333,18 @@ void MyDialog::on_cbIgnoreSequences_stateChanged()
 
 void MyDialog::on_cbCodepage437_stateChanged()
 {
+    dlg.artSizeFrame->setEnabled(dlg.cbCodepage437->isChecked());
     showFile();
 }
 
+void MyDialog::on_sbWidth_valueChanged(int i)
+{
+    showFile();
+}
+void MyDialog::on_sbHeight_valueChanged(int i)
+{
+    showFile();
+}
 void MyDialog::on_comboFont_currentIndexChanged(int idx)
 {
     showFile();

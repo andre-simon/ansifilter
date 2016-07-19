@@ -214,15 +214,6 @@ string HtmlGenerator::maskCP437Character(unsigned char c)
       return "\t";
       break;
       
-    /*
-    case '\r' : // see deletion of nonprintable chars below
-      return "\n";
-      break;
-      
-    case '@' :
-      return "&#64;";
-      break;*/
-      
     case 0x01:  
       return "&#x263a;";
       break;
@@ -232,7 +223,6 @@ string HtmlGenerator::maskCP437Character(unsigned char c)
     case 0x03:  
       return "&#x2665;";
       break;
-      
     case 0x04:  
       return "&#x2666;";
       break;
@@ -708,7 +698,7 @@ string HtmlGenerator::maskCP437Character(unsigned char c)
       
     default :
         if (c>0x1f && c<0x7f) { // printable?          
-          return string( 1, c );
+            return string( 1, c );
         } else {
           std::cerr<<"Unknown: "<<(int)c<<"\n";
           return "";
@@ -718,7 +708,7 @@ string HtmlGenerator::maskCP437Character(unsigned char c)
 
 void HtmlGenerator::insertLineNumber ()
 {
-    if ( showLineNumbers ) {
+  if ( showLineNumbers && !parseCP437) {
 
         ostringstream lnum;
         lnum << setw ( 5 ) << right;

@@ -43,9 +43,6 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "latexgenerator.h"
 #include "bbcodegenerator.h"
 
-#define MAX_ART_COL 80
-#define MAX_ART_LIN 100
-
 namespace ansifilter
 {
 
@@ -106,7 +103,9 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      curY(0),
      memX(0),
      memY(0),
-     maxY(0)
+     maxY(0),
+     asciiArtWidth(80),
+     asciiArtHeight(150)
 {
     elementStyle.setFgColour(rgb2html(basic16[0]));
 }
@@ -132,6 +131,11 @@ void CodeGenerator::setWrapNoNumbers(bool flag)
 
 void CodeGenerator::setCodePage437(bool flag){
  parseCP437 = flag; 
+}
+
+void CodeGenerator::setAsciiArtSize(int width, int height){
+  if (width>0) asciiArtWidth = width;
+  if (height>0) asciiArtHeight = height;
 }
 
 bool CodeGenerator::getFragmentCode()
@@ -415,13 +419,10 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 35:
         case 36:
         case 37:
-            if (elementStyle.isBold()){
-              
+            if (elementStyle.isBold()){              
               elementStyle.setFgColour(rgb2html(basic16[ansiCode-30+8]));
             } else
               elementStyle.setFgColour(rgb2html(basic16[ansiCode-30]));
-            elementStyle.setBold(false);
-            
             break;
             
         case 38: // xterm 256 foreground color mode \033[38;5;<color>
@@ -451,11 +452,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 45:
         case 46:
         case 47:
-          /*   if (elementStyle.isBold())
-              elementStyle.setBgColour(rgb2html(basic16[ansiCode-40+8]));
-            else */
-              elementStyle.setBgColour(rgb2html(basic16[ansiCode-40]));
-            /*elementStyle.setBold(false);*/
+            elementStyle.setBgColour(rgb2html(basic16[ansiCode-40]));
             break;
 
         case 48:  // xterm 256 background color mode \033[48;5;<color>
@@ -504,13 +501,13 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
 
         // Set RTF color index
         // 8 default colours followed by bright colors see rtfgenerator.cpp
-        if (ansiCode>=30 and ansiCode <40)
-            elementStyle.setFgColourID(ansiCode-30);
+        if (ansiCode>=30 and ansiCode <=37)
+          elementStyle.setFgColourID(ansiCode-30 + elementStyle.isBold()? 8 : 0 );
         else if (ansiCode>=90 and ansiCode <98)
             elementStyle.setFgColourID(ansiCode-90+8);
 
-        else if (ansiCode>=40 and ansiCode <50)
-            elementStyle.setBgColourID(ansiCode-40);
+        else if (ansiCode>=40 and ansiCode <=47)
+          elementStyle.setBgColourID(ansiCode-40 /*+ elementStyle.isBold()? 8 : 0 */);
         else if (ansiCode>=100 and ansiCode <108)
             elementStyle.setBgColourID(ansiCode-100+8);
 
@@ -538,7 +535,12 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
      curY = atoi(codeVector[0].c_str());
      curX = atoi(codeVector[1].c_str()); 
     }     
-    if (maxY<curY && curY<MAX_ART_LIN) maxY=curY;
+    if (curX>asciiArtWidth && curY<asciiArtHeight){
+      //std::cerr<<"fix overflow2\n";
+      curX-=asciiArtWidth;
+      curY++;
+    }
+    if (maxY<curY && curY<asciiArtHeight) maxY=curY;
   }
   
   if (line[end]=='A'){    
@@ -555,7 +557,7 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
     } else {
       curY++;
     }
-    if (maxY<curY && curY<MAX_ART_LIN) maxY=curY;
+    if (maxY<curY && curY<asciiArtHeight) maxY=curY;
   }
   
   if (line[end]=='C'){
@@ -565,12 +567,18 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
     } else {
       curX++;
     }
+    if (curX>asciiArtWidth && curY<asciiArtHeight){
+      //std::cerr<<"fix overflow1 "<<curX<<"\n";
+      curX-=asciiArtWidth;
+      curY++;
+      if (maxY<curY && curY<asciiArtHeight) maxY=curY;
+    }
   }
   
   if (line[end]=='D'){
     if (codeVector.size()==1){
       curX -= atoi(codeVector[0].c_str());
-    } else {
+     } else {
       curX--;
     }
     if (curX<0) curX=0;    
@@ -608,7 +616,7 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
 
 void CodeGenerator::insertLineNumber ()
 {
-    if ( showLineNumbers ) {
+    if ( showLineNumbers && !parseCP437) {
 
         ostringstream lnum;
         lnum << setw ( 5 ) << right;
@@ -645,8 +653,10 @@ void CodeGenerator::processInput()
     bool tagOpen=false;
     bool isGrepOutput=false;
     
-    TDChar termBuffer[MAX_ART_COL*MAX_ART_LIN] = {0};
-    
+    TDChar* termBuffer = NULL;
+
+    if (parseCP437)
+        termBuffer = new TDChar[asciiArtWidth*asciiArtHeight];
 
     while (true) {
 
@@ -717,15 +727,15 @@ void CodeGenerator::processInput()
                     i=seqEnd+1;  
                   }
                 } else {
-                  if (curX>=0 && curX<MAX_ART_COL && curY>=0 && curY<MAX_ART_LIN){
-                    termBuffer[curX + curY*MAX_ART_COL].c = line[i];
-                    termBuffer[curX + curY*MAX_ART_COL].style = elementStyle;
+                  if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
+                    termBuffer[curX + curY*asciiArtWidth].c = line[i];
+                    termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
                     curX++;
-                  }
+                    } 
                   
                   if (line[i]=='\r' ) {
                     curY++;  
-                    if (maxY<curY && curY<MAX_ART_LIN) maxY=curY;
+                    if (maxY<curY && curY<asciiArtHeight) maxY=curY;
                     curX=0;
                     i=line.length();
                    }
@@ -819,37 +829,35 @@ void CodeGenerator::processInput()
      
       for (int y=0;y<=maxY;y++) {
        
-        for (int x=0;x<MAX_ART_COL;x++) {
-          if (termBuffer[x + y* MAX_ART_COL].c=='\r') {           
+        for (int x=0;x<asciiArtWidth;x++) {
+          if (termBuffer[x + y* asciiArtWidth].c=='\r' ) {           
           
            break;
          }
-         elementStyle = termBuffer[x + y* MAX_ART_COL].style;
+         elementStyle = termBuffer[x + y* asciiArtWidth].style;
         
          //full block
-         if (termBuffer[x + y* MAX_ART_COL].c == 0xdb){
+         if (termBuffer[x + y* asciiArtWidth].c == 0xdb){
            elementStyle.setBgColour(elementStyle.getFgColour());
          }
          
          if (!elementStyle.isReset()) {
            *out <<getOpenTag();
-           tagOpen=true;
          }
   
-        *out << maskCP437Character(termBuffer[x + y* MAX_ART_COL].c);
+        *out << maskCP437Character(termBuffer[x + y* asciiArtWidth].c);
   
          if (!elementStyle.isReset()) {
            *out <<getCloseTag();
-           tagOpen=false;
          }
        }
-       
-       *out<<"\n";
-       
+       *out<<newLineTag;  
      }
+     delete [] termBuffer;
     }
     
     out->flush();
+
 }
 
 

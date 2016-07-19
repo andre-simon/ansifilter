@@ -282,11 +282,85 @@
       <item>
        <widget class="QCheckBox" name="cbCodepage437">
         <property name="toolTip">
-         <string>Enable support for codepage 437 symbols and ANSI.SYS commands.</string>
+         <string>Enable support for codepage 437 symbols and ANSI.SYS sequences.</string>
         </property>
         <property name="text">
          <string>Codepage 437 (ASCII art)</string>
         </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="artSizeFrame">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLabel" name="lblWidth">
+           <property name="text">
+            <string>Width</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="sbWidth">
+           <property name="minimum">
+            <number>60</number>
+           </property>
+           <property name="maximum">
+            <number>240</number>
+           </property>
+           <property name="singleStep">
+            <number>5</number>
+           </property>
+           <property name="value">
+            <number>80</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>18</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblHeight">
+           <property name="text">
+            <string>Height</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="sbHeight">
+           <property name="minimum">
+            <number>80</number>
+           </property>
+           <property name="maximum">
+            <number>200</number>
+           </property>
+           <property name="singleStep">
+            <number>5</number>
+           </property>
+           <property name="value">
+            <number>150</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -577,13 +651,6 @@
    </item>
    <item row="0" column="1">
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="lblInFilePath">
-       <property name="text">
-        <string>Input file:</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QTextEdit" name="textEdit">
        <property name="sizePolicy">
@@ -613,6 +680,13 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Courier New'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;Please open a file.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lblInFilePath">
+       <property name="text">
+        <string>Input file:</string>
        </property>
       </widget>
      </item>

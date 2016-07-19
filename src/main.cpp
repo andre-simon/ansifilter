@@ -77,7 +77,10 @@ void ANSIFilterApp::printHelp()
     cout << "  -s, --font-size=<fs>   Set HTML/RTF font size\n";
     cout << "  -p, --plain            Ignore ANSI formatting information\n";
     cout << "  -w, --wrap=<len>       Wrap long lines\n";
-    cout << "      --cp437            Parse codepage 437 ASCII art (HTML output only)\n";
+    cout << "      --cp437            Parse codepage 437 ASCII art (HTML, RTF output only)\n";
+    cout << "      --width            Set ASCII art width (default 80)\n";
+    cout << "      --height           Set ASCII art height (default 150)\n";
+    
     cout << "      --wrap-no-numbers  Omit line numbers of wrapped lines (assumes -l)\n";
     cout << "\nOther options:\n";
     cout << "  -h, --help             Print help\n";
@@ -151,6 +154,8 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
         generator->setWrapNoNumbers(!options.wrapNoNumbers());
         generator->setAddAnchors(options.addAnchors());
         generator->setCodePage437(options.useCP437());
+        generator->setAsciiArtSize(options.getAsciiArtWidth(), options.getAsciiArtHeight());
+        
         
         ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
 

@@ -48,7 +48,9 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     encodingName("ISO-8859-1"),
     font("Courier New"),
     fontSize("10pt"),
-    wrapLineLen(0)
+    wrapLineLen(0),
+    asciiArtWidth(80),
+    asciiArtHeight(100)
 {
 
     const Arg_parser::Option options[] = {
@@ -77,7 +79,9 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         { 'v', "version",   Arg_parser::no  },
         { 'V', "version",   Arg_parser::no  },
         { 'W', "wrap-no-numbers",   Arg_parser::no  },
-        { 'C', "cp437",     Arg_parser::no  },
+        { 'X', "cp437",     Arg_parser::no  },
+        { 'Y', "width",     Arg_parser::yes  },
+        { 'Z', "height",     Arg_parser::yes  },
 	{ 'm', "map",       Arg_parser::yes },
         {  0,  0,           Arg_parser::no  }
     };
@@ -196,8 +200,14 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         case 'W':
             opt_wrapNoNum=true;
             break;
-        case 'C':
+        case 'X':
           opt_cp437=true;
+          break;
+        case 'Y':
+          asciiArtWidth=atoi(arg.c_str());
+          break;
+        case 'Z':
+          asciiArtHeight=atoi(arg.c_str());
           break;
         default:
             cerr << "ansifilter: option parsing failed" << endl;
@@ -279,6 +289,14 @@ bool CmdLineOptions::showLineNumbers()const
 bool CmdLineOptions::useCP437() const
 {
   return opt_cp437;
+}
+
+
+int CmdLineOptions::getAsciiArtWidth() const {
+  return asciiArtWidth;   
+}
+int CmdLineOptions::getAsciiArtHeight() const{
+  return asciiArtHeight;   
 }
 
 string CmdLineOptions::getOutFileSuffix()const

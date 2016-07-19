@@ -117,6 +117,9 @@ public:
     const vector <string> & getInputFileNames() const;
 
     int getWrapLineLength() const;
+    
+    int getAsciiArtWidth() const;
+    int getAsciiArtHeight() const;
 
 private:
     ansifilter::OutputType outputType;
@@ -142,6 +145,8 @@ private:
     string colorMapPath;
 
     int wrapLineLen;
+    int asciiArtWidth;
+    int asciiArtHeight;
 
     /** list of all input file names */
     vector <string> inputFileNames;

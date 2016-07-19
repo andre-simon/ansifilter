@@ -205,6 +205,8 @@ public:
     /** \param b set to true if input is codepage 437 ASCII art  */
     void setCodePage437(bool flag);
     
+    void setAsciiArtSize(int width, int height);
+    
 protected:
 
     /** \param type Output type */
@@ -215,7 +217,7 @@ protected:
         \return Escape sequence of output format */
     virtual string maskCharacter(unsigned char c) = 0;
 
-    virtual string maskCP437Character(unsigned char c) { return ""; };
+    virtual string maskCP437Character(unsigned char c) { return maskCharacter(c); };
     
     /** Tag for inserting line feeds*/
     string newLineTag;
@@ -338,6 +340,9 @@ private:
     bool readAfterEOF;     ///< continue reading after EOF occoured
     
     int curX, curY, memX, memY, maxY; ///< cursor position for Codepage 437 sequences
+    int asciiArtWidth;
+    int asciiArtHeight;
+    
     ElementStyle memStyle;
     
     /** convert an xterm color value (0-253) to 3 unsigned chars rgb

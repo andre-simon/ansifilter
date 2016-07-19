@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MyDialog_t {
-    QByteArrayData data[16];
-    char stringdata0[319];
+    QByteArrayData data[19];
+    char stringdata0[370];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,12 +39,15 @@ QT_MOC_LITERAL(6, 94, 26), // "on_pbSelectMapFile_clicked"
 QT_MOC_LITERAL(7, 121, 33), // "on_cbIgnoreSequences_stateCha..."
 QT_MOC_LITERAL(8, 155, 29), // "on_cbCodepage437_stateChanged"
 QT_MOC_LITERAL(9, 185, 27), // "on_cbWatchFile_stateChanged"
-QT_MOC_LITERAL(10, 213, 32), // "on_comboFont_currentIndexChanged"
-QT_MOC_LITERAL(11, 246, 3), // "idx"
-QT_MOC_LITERAL(12, 250, 36), // "on_comboEncoding_currentIndex..."
-QT_MOC_LITERAL(13, 287, 13), // "onFileChanged"
-QT_MOC_LITERAL(14, 301, 4), // "path"
-QT_MOC_LITERAL(15, 306, 12) // "plausibility"
+QT_MOC_LITERAL(10, 213, 23), // "on_sbWidth_valueChanged"
+QT_MOC_LITERAL(11, 237, 1), // "i"
+QT_MOC_LITERAL(12, 239, 24), // "on_sbHeight_valueChanged"
+QT_MOC_LITERAL(13, 264, 32), // "on_comboFont_currentIndexChanged"
+QT_MOC_LITERAL(14, 297, 3), // "idx"
+QT_MOC_LITERAL(15, 301, 36), // "on_comboEncoding_currentIndex..."
+QT_MOC_LITERAL(16, 338, 13), // "onFileChanged"
+QT_MOC_LITERAL(17, 352, 4), // "path"
+QT_MOC_LITERAL(18, 357, 12) // "plausibility"
 
     },
     "MyDialog\0on_pbSaveAs_clicked\0\0"
@@ -54,6 +57,8 @@ QT_MOC_LITERAL(15, 306, 12) // "plausibility"
     "on_cbIgnoreSequences_stateChanged\0"
     "on_cbCodepage437_stateChanged\0"
     "on_cbWatchFile_stateChanged\0"
+    "on_sbWidth_valueChanged\0i\0"
+    "on_sbHeight_valueChanged\0"
     "on_comboFont_currentIndexChanged\0idx\0"
     "on_comboEncoding_currentIndexChanged\0"
     "onFileChanged\0path\0plausibility"
@@ -66,7 +71,7 @@ static const uint qt_meta_data_MyDialog[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -74,18 +79,20 @@ static const uint qt_meta_data_MyDialog[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   74,    2, 0x0a /* Public */,
-       3,    0,   75,    2, 0x0a /* Public */,
-       4,    0,   76,    2, 0x0a /* Public */,
-       5,    0,   77,    2, 0x0a /* Public */,
-       6,    0,   78,    2, 0x0a /* Public */,
-       7,    0,   79,    2, 0x0a /* Public */,
-       8,    0,   80,    2, 0x0a /* Public */,
-       9,    0,   81,    2, 0x0a /* Public */,
-      10,    1,   82,    2, 0x0a /* Public */,
-      12,    1,   85,    2, 0x0a /* Public */,
-      13,    1,   88,    2, 0x0a /* Public */,
-      15,    0,   91,    2, 0x0a /* Public */,
+       1,    0,   84,    2, 0x0a /* Public */,
+       3,    0,   85,    2, 0x0a /* Public */,
+       4,    0,   86,    2, 0x0a /* Public */,
+       5,    0,   87,    2, 0x0a /* Public */,
+       6,    0,   88,    2, 0x0a /* Public */,
+       7,    0,   89,    2, 0x0a /* Public */,
+       8,    0,   90,    2, 0x0a /* Public */,
+       9,    0,   91,    2, 0x0a /* Public */,
+      10,    1,   92,    2, 0x0a /* Public */,
+      12,    1,   95,    2, 0x0a /* Public */,
+      13,    1,   98,    2, 0x0a /* Public */,
+      15,    1,  101,    2, 0x0a /* Public */,
+      16,    1,  104,    2, 0x0a /* Public */,
+      18,    0,  107,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -98,7 +105,9 @@ static const uint qt_meta_data_MyDialog[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,   11,
     QMetaType::Void, QMetaType::Int,   11,
-    QMetaType::Void, QMetaType::QString,   14,
+    QMetaType::Void, QMetaType::Int,   14,
+    QMetaType::Void, QMetaType::Int,   14,
+    QMetaType::Void, QMetaType::QString,   17,
     QMetaType::Void,
 
        0        // eod
@@ -118,10 +127,12 @@ void MyDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 5: _t->on_cbIgnoreSequences_stateChanged(); break;
         case 6: _t->on_cbCodepage437_stateChanged(); break;
         case 7: _t->on_cbWatchFile_stateChanged(); break;
-        case 8: _t->on_comboFont_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 9: _t->on_comboEncoding_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 10: _t->onFileChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 11: _t->plausibility(); break;
+        case 8: _t->on_sbWidth_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 9: _t->on_sbHeight_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 10: _t->on_comboFont_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 11: _t->on_comboEncoding_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 12: _t->onFileChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 13: _t->plausibility(); break;
         default: ;
         }
     }
@@ -152,13 +163,13 @@ int MyDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 14;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 14)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 12;
+        _id -= 14;
     }
     return _id;
 }

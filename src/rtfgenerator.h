@@ -106,6 +106,9 @@ private:
     /** \return escaped character*/
     virtual string maskCharacter(unsigned char );
 
+    /** \return escaped character*/
+    virtual string maskCP437Character(unsigned char );
+    
     /**\return text formatting attributes in RTF format */
     string  getAttributes( const StyleColour & col);
 

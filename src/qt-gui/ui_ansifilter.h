@@ -55,6 +55,13 @@ public:
     QCheckBox *cbIgnoreSequences;
     QCheckBox *cbFragment;
     QCheckBox *cbCodepage437;
+    QFrame *artSizeFrame;
+    QHBoxLayout *horizontalLayout_7;
+    QLabel *lblWidth;
+    QSpinBox *sbWidth;
+    QSpacerItem *horizontalSpacer;
+    QLabel *lblHeight;
+    QSpinBox *sbHeight;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_2;
     QLineEdit *leTitle;
@@ -75,8 +82,8 @@ public:
     QPushButton *pbAbout;
     QPushButton *pbExit;
     QGridLayout *gridLayout_2;
-    QLabel *lblInFilePath;
     QTextEdit *textEdit;
+    QLabel *lblInFilePath;
     QCheckBox *cbWatchFile;
 
     void setupUi(QDialog *Dialog)
@@ -214,6 +221,48 @@ public:
         cbCodepage437->setObjectName(QStringLiteral("cbCodepage437"));
 
         verticalLayout->addWidget(cbCodepage437);
+
+        artSizeFrame = new QFrame(groupBox);
+        artSizeFrame->setObjectName(QStringLiteral("artSizeFrame"));
+        artSizeFrame->setEnabled(false);
+        artSizeFrame->setFrameShape(QFrame::StyledPanel);
+        artSizeFrame->setFrameShadow(QFrame::Raised);
+        horizontalLayout_7 = new QHBoxLayout(artSizeFrame);
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        lblWidth = new QLabel(artSizeFrame);
+        lblWidth->setObjectName(QStringLiteral("lblWidth"));
+
+        horizontalLayout_7->addWidget(lblWidth);
+
+        sbWidth = new QSpinBox(artSizeFrame);
+        sbWidth->setObjectName(QStringLiteral("sbWidth"));
+        sbWidth->setMinimum(60);
+        sbWidth->setMaximum(240);
+        sbWidth->setSingleStep(5);
+        sbWidth->setValue(80);
+
+        horizontalLayout_7->addWidget(sbWidth);
+
+        horizontalSpacer = new QSpacerItem(18, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer);
+
+        lblHeight = new QLabel(artSizeFrame);
+        lblHeight->setObjectName(QStringLiteral("lblHeight"));
+
+        horizontalLayout_7->addWidget(lblHeight);
+
+        sbHeight = new QSpinBox(artSizeFrame);
+        sbHeight->setObjectName(QStringLiteral("sbHeight"));
+        sbHeight->setMinimum(80);
+        sbHeight->setMaximum(200);
+        sbHeight->setSingleStep(5);
+        sbHeight->setValue(150);
+
+        horizontalLayout_7->addWidget(sbHeight);
+
+
+        verticalLayout->addWidget(artSizeFrame);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
@@ -354,11 +403,6 @@ public:
 
         gridLayout_2 = new QGridLayout();
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        lblInFilePath = new QLabel(Dialog);
-        lblInFilePath->setObjectName(QStringLiteral("lblInFilePath"));
-
-        gridLayout_2->addWidget(lblInFilePath, 0, 0, 1, 1);
-
         textEdit = new QTextEdit(Dialog);
         textEdit->setObjectName(QStringLiteral("textEdit"));
         QSizePolicy sizePolicy9(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -374,6 +418,11 @@ public:
         textEdit->setReadOnly(true);
 
         gridLayout_2->addWidget(textEdit, 1, 0, 1, 1);
+
+        lblInFilePath = new QLabel(Dialog);
+        lblInFilePath->setObjectName(QStringLiteral("lblInFilePath"));
+
+        gridLayout_2->addWidget(lblInFilePath, 0, 0, 1, 1);
 
         cbWatchFile = new QCheckBox(Dialog);
         cbWatchFile->setObjectName(QStringLiteral("cbWatchFile"));
@@ -443,6 +492,8 @@ public:
         cbCodepage437->setToolTip(QApplication::translate("Dialog", "Enable support for codepage 437 symbols and ANSI.SYS commands.", 0));
 #endif // QT_NO_TOOLTIP
         cbCodepage437->setText(QApplication::translate("Dialog", "Codepage 437 (ASCII art)", 0));
+        lblWidth->setText(QApplication::translate("Dialog", "Width", 0));
+        lblHeight->setText(QApplication::translate("Dialog", "Height", 0));
         label_2->setText(QApplication::translate("Dialog", "Tit&le:", 0));
 #ifndef QT_NO_TOOLTIP
         leTitle->setToolTip(QApplication::translate("Dialog", "Set the output document title.", 0));
@@ -491,7 +542,6 @@ public:
         pbExit->setToolTip(QApplication::translate("Dialog", "Quit this program.", 0));
 #endif // QT_NO_TOOLTIP
         pbExit->setText(QApplication::translate("Dialog", "Quit", 0));
-        lblInFilePath->setText(QApplication::translate("Dialog", "Input file:", 0));
 #ifndef QT_NO_TOOLTIP
         textEdit->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
@@ -500,6 +550,7 @@ public:
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Courier New'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'MS Shell Dlg 2'; font-size:8pt;\">Please open a file.</span></p></body></html>", 0));
+        lblInFilePath->setText(QApplication::translate("Dialog", "Input file:", 0));
 #ifndef QT_NO_TOOLTIP
         cbWatchFile->setToolTip(QApplication::translate("Dialog", "Update view if input file changes, Do not apply with big or fast growing input files.", 0));
 #endif // QT_NO_TOOLTIP
