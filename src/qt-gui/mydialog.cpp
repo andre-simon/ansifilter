@@ -55,7 +55,10 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
     dlg.leColorMapPath->setText(settings.value("map").toString());
     dlg.cbFragment->setChecked(settings.value("fragment").toBool());
     dlg.cbIgnoreSequences->setChecked(settings.value("ignoreseq").toBool());
-    dlg.cbCodepage437->setChecked(settings.value("cp437").toBool());
+    dlg.cbParseAsciiArt->setChecked(settings.value("parseart").toBool());
+
+    dlg.rbAsciiCP437->setChecked(settings.value("cp437").toBool());
+    dlg.rbAsciiBin->setChecked(settings.value("asciibin").toBool());
     dlg.comboEncoding->setCurrentIndex(settings.value("encoding").toInt());
     dlg.comboFont->setCurrentIndex(settings.value("font").toInt());
     dlg.comboFormat->setCurrentIndex(settings.value("format").toInt());
@@ -91,7 +94,10 @@ void MyDialog::closeEvent(QCloseEvent *event)
     settings.setValue("map", dlg.leColorMapPath->text());
     settings.setValue("fragment", dlg.cbFragment->isChecked());
     settings.setValue("ignoreseq", dlg.cbIgnoreSequences->isChecked());
-    settings.setValue("cp437", dlg.cbCodepage437->isChecked());
+    settings.setValue("parseart", dlg.cbParseAsciiArt->isChecked());
+
+    settings.setValue("cp437", dlg.rbAsciiCP437->isChecked());
+    settings.setValue("asciibin", dlg.rbAsciiBin->isChecked());
     settings.setValue("encoding", dlg.comboEncoding->currentIndex());
     settings.setValue("format", dlg.comboFormat->currentIndex());
     settings.setValue("font", dlg.comboFont->currentIndex());
@@ -154,11 +160,18 @@ void MyDialog::plausibility()
     int selIdx = dlg.comboFormat->currentIndex();
     dlg.cbIgnoreSequences->setEnabled(selIdx!=0);
     dlg.cbFragment->setEnabled(selIdx==1 || selIdx==3 || selIdx==4|| selIdx==6);
-    dlg.cbCodepage437->setEnabled(selIdx==1 || selIdx==2);
+    dlg.cbParseAsciiArt->setEnabled(selIdx==1 || selIdx==2);
+
     dlg.lblEncoding->setEnabled(selIdx==1|| selIdx==2 || selIdx==3);
     dlg.comboEncoding->setEnabled(selIdx==1 || selIdx==2 ||selIdx==3);
     dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
     dlg.comboFont->setEnabled(selIdx==1||selIdx==2||selIdx==6);
+    dlg.gbAsciiArt->setEnabled(dlg.cbParseAsciiArt->isEnabled() && dlg.cbParseAsciiArt->isChecked());
+    dlg.artSizeFrame->setEnabled(dlg.cbParseAsciiArt->isEnabled() && dlg.cbParseAsciiArt->isChecked());
+    dlg.lblHeight->setEnabled(dlg.gbAsciiArt->isEnabled());
+    dlg.sbHeight->setEnabled(dlg.gbAsciiArt->isEnabled());
+    dlg.lblWidth->setEnabled(dlg.gbAsciiArt->isEnabled());
+    dlg.sbWidth->setEnabled(dlg.gbAsciiArt->isEnabled());
 }
 
 ansifilter::OutputType MyDialog::getOutputType()
@@ -214,6 +227,7 @@ void MyDialog::on_pbSaveAs_clicked()
         return;
     }
 
+
     QString outFileSuffix = getOutFileSuffix();
 
     QString outFileName =QFileDialog::getSaveFileName(this, tr("Save File"), outputFileName,
@@ -224,8 +238,13 @@ void MyDialog::on_pbSaveAs_clicked()
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(dlg.cbFragment->isChecked());
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
-    generator->setParseCodePage437(dlg.cbCodepage437->isChecked());
-    generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
+
+    if (dlg.cbParseAsciiArt->isChecked()){
+        generator->setParseCodePage437(dlg.rbAsciiCP437->isChecked());
+        generator->setParseAsciiBin(dlg.rbAsciiBin->isChecked());
+        generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
+    }
+
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt"); //TODO TeX?
@@ -236,7 +255,8 @@ void MyDialog::on_pbSaveAs_clicked()
             return;
         }
     }
-    
+
+    this->setCursor(Qt::WaitCursor);
     ansifilter::ParseError result= generator->generateFile( inputFileName.toStdString (), outFileName.toStdString () ) ;
     if (result==ansifilter::BAD_OUTPUT) {
         QMessageBox::warning(this, "IO Error", "Could not write output file");
@@ -245,6 +265,8 @@ void MyDialog::on_pbSaveAs_clicked()
     } else {
         outputFileName = outFileName;
     }
+    this->setCursor(Qt::ArrowCursor);
+
 }
 
 
@@ -290,6 +312,7 @@ void MyDialog::showFile()
 {
     if (inputFileName.isEmpty()) return;
 
+
     dlg.lblInFilePath->setText(inputFileName);
 
     unique_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::HTML));
@@ -297,21 +320,32 @@ void MyDialog::showFile()
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(false);
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
-    generator->setParseCodePage437(dlg.cbCodepage437->isChecked());
-    generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
+
+    if (dlg.cbParseAsciiArt->isChecked()){
+        generator->setParseCodePage437(dlg.rbAsciiCP437->isChecked());
+        generator->setParseAsciiBin(dlg.rbAsciiBin->isChecked());
+        generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
+    }
+
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt");
-    if (!dlg.leColorMapPath->text().isEmpty())
-        generator->setColorMap(dlg.leColorMapPath->text().toStdString());
+    if (!dlg.leColorMapPath->text().isEmpty()) {
+        if (!generator->setColorMap(dlg.leColorMapPath->text().toStdString())){
+            QMessageBox::warning(this, "Color Mapping Error", "Could not read color map");
+            return;
+        }
+    }
+
+    this->setCursor(Qt::WaitCursor);
 
     string htmlStdString=generator->generateStringFromFile(inputFileName.toStdString ());
-    //std::cerr<<"STR: "<<htmlStdString<<"\n";
     QString htmlString( htmlStdString.c_str() );
     if (!htmlString.isEmpty()) {
         dlg.textEdit->setText(htmlString);
         this->setWindowTitle("ANSIFilter - " + inputFileName);
     }
+    this->setCursor(Qt::ArrowCursor);
 }
 
 void MyDialog::on_pbAbout_clicked()
@@ -332,9 +366,19 @@ void MyDialog::on_cbIgnoreSequences_stateChanged()
     showFile();
 }
 
-void MyDialog::on_cbCodepage437_stateChanged()
+void MyDialog::on_cbParseAsciiArt_clicked()
 {
-    dlg.artSizeFrame->setEnabled(dlg.cbCodepage437->isChecked());
+    plausibility();
+    showFile();
+}
+
+void MyDialog::on_rbAsciiCP437_toggled()
+{
+    showFile();
+}
+
+void MyDialog::on_rbAsciiBin_toggled()
+{
     showFile();
 }
 

@@ -750,6 +750,9 @@ void CodeGenerator::processInput()
               }
               
               if (parseAsciiBin) {
+                //line contains the whole file
+                // TBD: https://github.com/ansilove/ansilove/blob/master/src/loaders/xbin.c  
+                
                   //Character attribute
                   next = line[i+1]&0xff;
                  
@@ -761,10 +764,10 @@ void CodeGenerator::processInput()
                     colBg -= 8;
                   }
                   
-                  
                   elementStyle.setFgColour(rgb2html(basic16[colFg]));
                   elementStyle.setBgColour(rgb2html(basic16[colBg]));
                   
+                  //FIXME:
                   elementStyle.setBold(cur >= 0x20 && cur <= 0x7a);
                   
                   if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
@@ -869,8 +872,7 @@ void CodeGenerator::processInput()
        
         for (int x=0;x<asciiArtWidth;x++) {
           if (termBuffer[x + y* asciiArtWidth].c=='\r' ) {           
-          
-           break;
+            break;
          }
          elementStyle = termBuffer[x + y* asciiArtWidth].style;
         
@@ -890,12 +892,10 @@ void CodeGenerator::processInput()
          }
        }
        *out<<newLineTag;  
-     }
-     delete [] termBuffer;
+      }
+      delete [] termBuffer;
     }
-    
     out->flush();
-
 }
 
 

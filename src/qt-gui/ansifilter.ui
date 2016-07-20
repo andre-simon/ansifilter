@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>784</width>
-    <height>738</height>
+    <height>791</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,7 +29,7 @@
    <iconset resource="ansifilter.qrc">
     <normaloff>:/ansifilter.xpm</normaloff>:/ansifilter.xpm</iconset>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_2">
+  <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="sizePolicy">
@@ -248,121 +248,169 @@
        </layout>
       </item>
       <item>
-       <widget class="QCheckBox" name="cbIgnoreSequences">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QCheckBox" name="cbIgnoreSequences">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Show and save files ignoring the contained ANSI formatting information.</string>
+          </property>
+          <property name="text">
+           <string>Omit styling in output</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbFragment">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Save HTML without header and footer to paste it into existing documents.</string>
+          </property>
+          <property name="text">
+           <string>Omit header and footer</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbParseAsciiArt">
         <property name="toolTip">
-         <string>Show and save files ignoring the contained ANSI formatting information.</string>
+         <string>Enable parsing of ASCII art files.</string>
         </property>
         <property name="text">
-         <string>Omit styling in output</string>
+         <string>Enable ASCII art</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="cbFragment">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Save HTML without header and footer to paste it into existing documents.</string>
-        </property>
-        <property name="text">
-         <string>Omit header and footer</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="cbCodepage437">
-        <property name="toolTip">
-         <string>Enable support for codepage 437 symbols and ANSI.SYS sequences.</string>
-        </property>
-        <property name="text">
-         <string>Codepage 437 (ASCII art)</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QFrame" name="artSizeFrame">
+       <widget class="QGroupBox" name="gbAsciiArt">
         <property name="enabled">
          <bool>false</bool>
         </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+        <property name="title">
+         <string>ASCII art options</string>
         </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
-         <item>
-          <widget class="QLabel" name="lblWidth">
-           <property name="text">
-            <string>Width</string>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="1" column="0" colspan="2">
+          <widget class="QFrame" name="artSizeFrame">
+           <property name="enabled">
+            <bool>false</bool>
            </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QLabel" name="lblWidth">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Width</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="sbWidth">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>Set the ASCII art image width (default: 80)</string>
+              </property>
+              <property name="minimum">
+               <number>60</number>
+              </property>
+              <property name="maximum">
+               <number>320</number>
+              </property>
+              <property name="singleStep">
+               <number>5</number>
+              </property>
+              <property name="value">
+               <number>80</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>18</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="lblHeight">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Height</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="sbHeight">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>Set the ASCII art image height (default: 150)</string>
+              </property>
+              <property name="minimum">
+               <number>80</number>
+              </property>
+              <property name="maximum">
+               <number>200</number>
+              </property>
+              <property name="singleStep">
+               <number>5</number>
+              </property>
+              <property name="value">
+               <number>150</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
-         <item>
-          <widget class="QSpinBox" name="sbWidth">
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="rbAsciiCP437">
            <property name="toolTip">
-            <string>Set the ASCII art image width (default: 80)</string>
+            <string>Enable support for codepage 437 symbols and ANSI.SYS sequences.</string>
            </property>
-           <property name="minimum">
-            <number>60</number>
-           </property>
-           <property name="maximum">
-            <number>240</number>
-           </property>
-           <property name="singleStep">
-            <number>5</number>
-           </property>
-           <property name="value">
-            <number>80</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>18</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QLabel" name="lblHeight">
            <property name="text">
-            <string>Height</string>
+            <string>Codepage &amp;437</string>
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QSpinBox" name="sbHeight">
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="rbAsciiBin">
            <property name="toolTip">
-            <string>Set the ASCII art image height (default: 150)</string>
+            <string>Enable support for ASCII BIN files.</string>
            </property>
-           <property name="minimum">
-            <number>80</number>
-           </property>
-           <property name="maximum">
-            <number>200</number>
-           </property>
-           <property name="singleStep">
-            <number>5</number>
-           </property>
-           <property name="value">
-            <number>150</number>
+           <property name="text">
+            <string>BIN fo&amp;rmat</string>
            </property>
           </widget>
          </item>
@@ -538,14 +586,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Color map file:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Color map file:</string>
+          </property>
+         </widget>
+        </item>
         <item>
          <widget class="QLineEdit" name="leColorMapPath">
           <property name="sizePolicy">

@@ -25,6 +25,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QTextEdit>
@@ -35,7 +36,7 @@ QT_BEGIN_NAMESPACE
 class Ui_Dialog
 {
 public:
-    QHBoxLayout *horizontalLayout_2;
+    QHBoxLayout *horizontalLayout_3;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout;
     QPushButton *pbFileOpen;
@@ -52,9 +53,12 @@ public:
     QHBoxLayout *horizontalLayout_6;
     QLabel *label_4;
     QComboBox *comboFormat;
+    QHBoxLayout *horizontalLayout_2;
     QCheckBox *cbIgnoreSequences;
     QCheckBox *cbFragment;
-    QCheckBox *cbCodepage437;
+    QCheckBox *cbParseAsciiArt;
+    QGroupBox *gbAsciiArt;
+    QGridLayout *gridLayout_4;
     QFrame *artSizeFrame;
     QHBoxLayout *horizontalLayout_7;
     QLabel *lblWidth;
@@ -62,6 +66,8 @@ public:
     QSpacerItem *horizontalSpacer;
     QLabel *lblHeight;
     QSpinBox *sbHeight;
+    QRadioButton *rbAsciiCP437;
+    QRadioButton *rbAsciiBin;
     QGridLayout *gridLayout_3;
     QLabel *label_2;
     QLineEdit *leTitle;
@@ -71,8 +77,8 @@ public:
     QSpinBox *spinBoxWrap;
     QFontComboBox *comboFont;
     QFrame *line_3;
-    QLabel *label_5;
     QHBoxLayout *horizontalLayout;
+    QLabel *label_5;
     QLineEdit *leColorMapPath;
     QPushButton *pbSelectMapFile;
     QSpacerItem *verticalSpacer;
@@ -89,7 +95,7 @@ public:
         if (Dialog->objectName().isEmpty())
             Dialog->setObjectName(QStringLiteral("Dialog"));
         Dialog->setWindowModality(Qt::NonModal);
-        Dialog->resize(784, 738);
+        Dialog->resize(784, 791);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -99,8 +105,8 @@ public:
         QIcon icon;
         icon.addFile(QStringLiteral(":/ansifilter.xpm"), QSize(), QIcon::Normal, QIcon::Off);
         Dialog->setWindowIcon(icon);
-        horizontalLayout_2 = new QHBoxLayout(Dialog);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        horizontalLayout_3 = new QHBoxLayout(Dialog);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         groupBox = new QGroupBox(Dialog);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         QSizePolicy sizePolicy1(QSizePolicy::Maximum, QSizePolicy::Preferred);
@@ -198,6 +204,8 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_6);
 
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         cbIgnoreSequences = new QCheckBox(groupBox);
         cbIgnoreSequences->setObjectName(QStringLiteral("cbIgnoreSequences"));
         QSizePolicy sizePolicy4(QSizePolicy::Maximum, QSizePolicy::Fixed);
@@ -206,21 +214,29 @@ public:
         sizePolicy4.setHeightForWidth(cbIgnoreSequences->sizePolicy().hasHeightForWidth());
         cbIgnoreSequences->setSizePolicy(sizePolicy4);
 
-        verticalLayout->addWidget(cbIgnoreSequences);
+        horizontalLayout_2->addWidget(cbIgnoreSequences);
 
         cbFragment = new QCheckBox(groupBox);
         cbFragment->setObjectName(QStringLiteral("cbFragment"));
         sizePolicy4.setHeightForWidth(cbFragment->sizePolicy().hasHeightForWidth());
         cbFragment->setSizePolicy(sizePolicy4);
 
-        verticalLayout->addWidget(cbFragment);
+        horizontalLayout_2->addWidget(cbFragment);
 
-        cbCodepage437 = new QCheckBox(groupBox);
-        cbCodepage437->setObjectName(QStringLiteral("cbCodepage437"));
 
-        verticalLayout->addWidget(cbCodepage437);
+        verticalLayout->addLayout(horizontalLayout_2);
 
-        artSizeFrame = new QFrame(groupBox);
+        cbParseAsciiArt = new QCheckBox(groupBox);
+        cbParseAsciiArt->setObjectName(QStringLiteral("cbParseAsciiArt"));
+
+        verticalLayout->addWidget(cbParseAsciiArt);
+
+        gbAsciiArt = new QGroupBox(groupBox);
+        gbAsciiArt->setObjectName(QStringLiteral("gbAsciiArt"));
+        gbAsciiArt->setEnabled(false);
+        gridLayout_4 = new QGridLayout(gbAsciiArt);
+        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
+        artSizeFrame = new QFrame(gbAsciiArt);
         artSizeFrame->setObjectName(QStringLiteral("artSizeFrame"));
         artSizeFrame->setEnabled(false);
         artSizeFrame->setFrameShape(QFrame::StyledPanel);
@@ -229,13 +245,15 @@ public:
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
         lblWidth = new QLabel(artSizeFrame);
         lblWidth->setObjectName(QStringLiteral("lblWidth"));
+        lblWidth->setEnabled(false);
 
         horizontalLayout_7->addWidget(lblWidth);
 
         sbWidth = new QSpinBox(artSizeFrame);
         sbWidth->setObjectName(QStringLiteral("sbWidth"));
+        sbWidth->setEnabled(false);
         sbWidth->setMinimum(60);
-        sbWidth->setMaximum(240);
+        sbWidth->setMaximum(320);
         sbWidth->setSingleStep(5);
         sbWidth->setValue(80);
 
@@ -247,11 +265,13 @@ public:
 
         lblHeight = new QLabel(artSizeFrame);
         lblHeight->setObjectName(QStringLiteral("lblHeight"));
+        lblHeight->setEnabled(false);
 
         horizontalLayout_7->addWidget(lblHeight);
 
         sbHeight = new QSpinBox(artSizeFrame);
         sbHeight->setObjectName(QStringLiteral("sbHeight"));
+        sbHeight->setEnabled(false);
         sbHeight->setMinimum(80);
         sbHeight->setMaximum(200);
         sbHeight->setSingleStep(5);
@@ -260,7 +280,20 @@ public:
         horizontalLayout_7->addWidget(sbHeight);
 
 
-        verticalLayout->addWidget(artSizeFrame);
+        gridLayout_4->addWidget(artSizeFrame, 1, 0, 1, 2);
+
+        rbAsciiCP437 = new QRadioButton(gbAsciiArt);
+        rbAsciiCP437->setObjectName(QStringLiteral("rbAsciiCP437"));
+
+        gridLayout_4->addWidget(rbAsciiCP437, 0, 0, 1, 1);
+
+        rbAsciiBin = new QRadioButton(gbAsciiArt);
+        rbAsciiBin->setObjectName(QStringLiteral("rbAsciiBin"));
+
+        gridLayout_4->addWidget(rbAsciiBin, 0, 1, 1, 1);
+
+
+        verticalLayout->addWidget(gbAsciiArt);
 
         gridLayout_3 = new QGridLayout();
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
@@ -327,13 +360,13 @@ public:
 
         verticalLayout->addWidget(line_3);
 
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         label_5 = new QLabel(groupBox);
         label_5->setObjectName(QStringLiteral("label_5"));
 
-        verticalLayout->addWidget(label_5);
+        horizontalLayout->addWidget(label_5);
 
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         leColorMapPath = new QLineEdit(groupBox);
         leColorMapPath->setObjectName(QStringLiteral("leColorMapPath"));
         QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Maximum);
@@ -387,7 +420,7 @@ public:
         verticalLayout->addLayout(horizontalLayout_5);
 
 
-        horizontalLayout_2->addWidget(groupBox);
+        horizontalLayout_3->addWidget(groupBox);
 
         gridLayout_2 = new QGridLayout();
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
@@ -419,7 +452,7 @@ public:
         gridLayout_2->addWidget(cbWatchFile, 2, 0, 1, 1);
 
 
-        horizontalLayout_2->addLayout(gridLayout_2);
+        horizontalLayout_3->addLayout(gridLayout_2);
 
 #ifndef QT_NO_SHORTCUT
         label_2->setBuddy(leTitle);
@@ -477,9 +510,10 @@ public:
 #endif // QT_NO_TOOLTIP
         cbFragment->setText(QApplication::translate("Dialog", "Omit header and footer", 0));
 #ifndef QT_NO_TOOLTIP
-        cbCodepage437->setToolTip(QApplication::translate("Dialog", "Enable support for codepage 437 symbols and ANSI.SYS sequences.", 0));
+        cbParseAsciiArt->setToolTip(QApplication::translate("Dialog", "Enable parsing of ASCII art files.", 0));
 #endif // QT_NO_TOOLTIP
-        cbCodepage437->setText(QApplication::translate("Dialog", "Codepage 437 (ASCII art)", 0));
+        cbParseAsciiArt->setText(QApplication::translate("Dialog", "Enable ASCII art", 0));
+        gbAsciiArt->setTitle(QApplication::translate("Dialog", "ASCII art options", 0));
         lblWidth->setText(QApplication::translate("Dialog", "Width", 0));
 #ifndef QT_NO_TOOLTIP
         sbWidth->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image width (default: 80)", 0));
@@ -488,6 +522,14 @@ public:
 #ifndef QT_NO_TOOLTIP
         sbHeight->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image height (default: 150)", 0));
 #endif // QT_NO_TOOLTIP
+#ifndef QT_NO_TOOLTIP
+        rbAsciiCP437->setToolTip(QApplication::translate("Dialog", "Enable support for codepage 437 symbols and ANSI.SYS sequences.", 0));
+#endif // QT_NO_TOOLTIP
+        rbAsciiCP437->setText(QApplication::translate("Dialog", "Codepage &437", 0));
+#ifndef QT_NO_TOOLTIP
+        rbAsciiBin->setToolTip(QApplication::translate("Dialog", "Enable support for ASCII BIN files.", 0));
+#endif // QT_NO_TOOLTIP
+        rbAsciiBin->setText(QApplication::translate("Dialog", "BIN fo&rmat", 0));
         label_2->setText(QApplication::translate("Dialog", "Tit&le:", 0));
 #ifndef QT_NO_TOOLTIP
         leTitle->setToolTip(QApplication::translate("Dialog", "Set the output document title.", 0));

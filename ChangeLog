@@ -1,14 +1,14 @@
 Ansifilter ChangeLog
 
 
-18.07.2016
+20.07.2016
 
-ansifilter 1.19
+ansifilter 2.0
 
 -new CSI parser
--CLI: new --cp437 option to parse ANSI sequences used for ASCII art 
-  (suggested by Phillip Li)
--GUI: added codepage 437 checkbox
+-CLI: new --art* options to parse ANSI and BIN sequences used for ASCII art 
+  (suggested by Phillip Li)  
+-GUI: added ASCII art options
 
 ---
 29.06.2016
