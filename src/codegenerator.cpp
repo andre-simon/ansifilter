@@ -507,7 +507,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         // Set RTF color index
         // 8 default colours followed by bright colors see rtfgenerator.cpp
         if (ansiCode>=30 and ansiCode <=37)
-          elementStyle.setFgColourID(ansiCode-30 + elementStyle.isBold()? 8 : 0 );
+          elementStyle.setFgColourID(ansiCode-30 + (elementStyle.isBold()? 8 : 0) );
         else if (ansiCode>=90 and ansiCode <98)
             elementStyle.setFgColourID(ansiCode-90+8);
 
@@ -633,271 +633,269 @@ void CodeGenerator::insertLineNumber ()
 
 void CodeGenerator::processInput()
 {
-
-    if (readAfterEOF && in!=&cin) {
-        in->seekg (0, ios::end);
-        // output the last few lines or the complete file if not too big
-        if (in->tellg()>51200) {
-            in->seekg (-512, ios::end);
-            // output complete lines, ignore first line fragment
-            in->ignore(512, '\n');
-        } else {
-            in->seekg (0, ios::beg); // output complete file
-        }
+  
+  if (readAfterEOF && in!=&cin) {
+    in->seekg (0, ios::end);
+    // output the last few lines or the complete file if not too big
+    if (in->tellg()>51200) {
+      in->seekg (-512, ios::end);
+      // output complete lines, ignore first line fragment
+      in->ignore(512, '\n');
+    } else {
+      in->seekg (0, ios::beg); // output complete file
     }
-
-    string line;
-    size_t i=0;
-    bool tagOpen=false;
-    bool isGrepOutput=false;
+  }
+  
+  string line;
+  size_t i=0;
+  bool tagOpen=false;
+  bool isGrepOutput=false;
+  
+  //hack to read whole file for BIN ascii art
+  char lineDelim = (parseAsciiBin) ? '\xff' :  '\n';
+  
+  TDChar* termBuffer = NULL;
+  curX = curY = memX = memY = 0;
+  
+  if (parseCP437 || parseAsciiBin){
+    elementStyle.setReset(false);
+    termBuffer = new TDChar[asciiArtWidth*asciiArtHeight];
+    for (int i=0; i<asciiArtWidth*asciiArtHeight; i++){
+      termBuffer[i].c=0;
+    }
     
-    //read whole file for BIN ascii art
-    char lineDelim = (parseAsciiBin) ? '\xff' :  '\n';
+  }
+  while (true) {
     
-    TDChar* termBuffer = NULL;
-    curX = curY = memX = memY = 0;
-
-    if (parseCP437 || parseAsciiBin){
-        elementStyle.setReset(false);
-        termBuffer = new TDChar[asciiArtWidth*asciiArtHeight];
-        for (int i=0; i<asciiArtWidth*asciiArtHeight; i++){
-            termBuffer[i].c=0;
+    bool eof=false;
+    if ( preFormatter.isEnabled() ) {
+      if ( !preFormatter.hasMoreLines() ) {
+        eof=!getline(*in, line);
+        preFormatter.setLine ( line );
+        ++lineNumber;
+        numberCurrentLine = true;
+      } else {
+        if(numberWrappedLines)
+          ++lineNumber;
+        numberCurrentLine = numberWrappedLines;
+      }
+      
+      line = preFormatter.getNextLine();
+    } else {
+      eof=!getline(*in, line, lineDelim);
+      ++lineNumber;
+      numberCurrentLine = true;
+    }
+    
+    if (eof) {
+      // imitate tail bahaviour, continue to read after EOF
+      if (readAfterEOF) {
+        out->flush();
+        in->clear();
+        #ifdef WIN32
+        Sleep(250);
+        #else
+        sleep(1);
+        #endif
+      } else {
+        break;
+      }
+    } else {
+      
+      insertLineNumber();
+      i=0;
+      size_t seqEnd=string::npos;
+      int cur=0;
+      int next=0;
+      
+      while (i <line.length() ) {
+        // CSI ?
+        cur = line[i]&0xff;
+        
+        if (parseCP437){
+          
+          if (cur==0x1b && line.length() - i > 2){
+            next = line[i+1]&0xff;
+            if (next==0x5b) {
+              i+=2;
+              seqEnd = i;
+              //find sequence end
+              while (   seqEnd<line.length() 
+                && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
+                ++seqEnd;
+                }
+                
+                if ( line[seqEnd]=='m' ) {  
+                  parseSGRParameters(line, i, seqEnd);
+                } else {
+                  parseCodePage437Seq(line, i, seqEnd);  
+                }
+                i=seqEnd+1;  
+            }
+          } else {
+            if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
+              termBuffer[curX + curY*asciiArtWidth].c = line[i];
+              termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
+              curX++;
+            } 
+            
+            if (line[i]=='\r' ) {
+              curY++;  
+              if (maxY<curY && curY<asciiArtHeight) maxY=curY;
+              curX=0;
+              i=line.length();
+            }
+            ++i;
+          }  
         }
         
-    }
-    while (true) {
-
-        bool eof=false;
-        if ( preFormatter.isEnabled() ) {
-            if ( !preFormatter.hasMoreLines() ) {
-                eof=!getline(*in, line);
-                preFormatter.setLine ( line );
-                ++lineNumber;
-                numberCurrentLine = true;
-            } else {
-                if(numberWrappedLines)
-                    ++lineNumber;
-                numberCurrentLine = numberWrappedLines;
-            }
-
-            line = preFormatter.getNextLine();
-        } else {
-          eof=!getline(*in, line, lineDelim);
-            ++lineNumber;
-            numberCurrentLine = true;
-        }
-
-        if (eof) {
-            // imitate tail bahaviour, continue to read after EOF
-            if (readAfterEOF) {
-                out->flush();
-                in->clear();
-#ifdef WIN32
-                Sleep(250);
-#else
-                sleep(1);
-#endif
-            } else {
-                break;
-            }
-        } else {
-
-            insertLineNumber();
-            i=0;
-            size_t seqEnd=string::npos;
-            int cur=0;
-            int next=0;
-            
-            while (i <line.length() ) {
-              // CSI ?
-              cur = line[i]&0xff;
-             
-              if (parseCP437){
-                
-                if (cur==0x1b && line.length() - i > 2){
-                  next = line[i+1]&0xff;
-                  if (next==0x5b) {
-                     i+=2;
-                     seqEnd = i;
-                     //find sequence end
-                     while (   seqEnd<line.length() 
-                       && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
-                       ++seqEnd;
-                     }
-                     
-                     if ( line[seqEnd]=='m' ) {  
-                       parseSGRParameters(line, i, seqEnd);
-                     } else {
-                       parseCodePage437Seq(line, i, seqEnd);  
-                    }
-                    i=seqEnd+1;  
-                  }
-                } else {
-                  if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
-                    termBuffer[curX + curY*asciiArtWidth].c = line[i];
-                    termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
-                    curX++;
-                    } 
-                  
-                  if (line[i]=='\r' ) {
-                    curY++;  
-                    if (maxY<curY && curY<asciiArtHeight) maxY=curY;
-                    curX=0;
-                    i=line.length();
-                   }
-                  ++i;
-                }  
-              }
-              
-              if (parseAsciiBin) {
-                //line contains the whole file
-                // TBD: https://github.com/ansilove/ansilove/blob/master/src/loaders/xbin.c  
-                
-                  //Character attribute
-                  next = line[i+1]&0xff;
-                 
-                  int colBg = (next & 240) >> 4;
-                  int colFg = (next & 15);
-                  
-                  if (colBg > 8)
-                  {
-                    colBg -= 8;
-                  }
-                  
-                  elementStyle.setFgColour(rgb2html(basic16[colFg]));
-                  elementStyle.setBgColour(rgb2html(basic16[colBg]));
-                  
-                  //FIXME:
-                  elementStyle.setBold(cur >= 0x20 && cur <= 0x7a);
-                  
-                  if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
-                    termBuffer[curX + curY*asciiArtWidth].c = cur;
-                    termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
-                    curX++;
-                  } 
-                  if (i % asciiArtWidth == 0 ) {
-                    curY++;  
-                    if (maxY<curY && curY<asciiArtHeight) maxY=curY;
-                    curX=0;
-                  }
-                  i+=1;
-                }
+        if (parseAsciiBin) {
+          //line contains the whole file
+          // TBD: https://github.com/ansilove/ansilove/blob/master/src/loaders/xbin.c  
           
+          //Character attribute
+          next = line[i+1]&0xff;
+          
+          int colBg = (next & 240) >> 4;
+          int colFg = (next & 15);
+          
+          if (colBg > 8)
+          {
+            colBg -= 8;
+          }
+          
+          elementStyle.setFgColour(rgb2html(basic16[colFg]));
+          elementStyle.setBgColour(rgb2html(basic16[colBg]));
+          
+          //FIXME:
+          elementStyle.setBold(cur >= 0x20 && cur <= 0x7a);
+          
+          if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
+            termBuffer[curX + curY*asciiArtWidth].c = cur;
+            termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
+            curX++;
+          } 
+          if (i % asciiArtWidth == 0 ) {
+            curY++;  
+            if (maxY<curY && curY<asciiArtHeight) maxY=curY;
+            curX=0;
+          }
+          i+=1;
+        }
+        
+        
+        if (!parseCP437){
+          
+          if (cur==0x1b || cur==0x9b || cur==0xc2) {
+            if (line.length() - i > 2){
               
-              if (!parseCP437){
-              
-              if (cur==0x1b || cur==0x9b || cur==0xc2) {
-                  if (line.length() - i > 2){
-              
-                    next = line[i+1]&0xff;
-                    //move index behind CSI
-                    if ( (cur==0x1b && next==0x5b) || ( cur==0xc2 && next==0x9b) ) {
-                      ++i;
+              next = line[i+1]&0xff;
+              //move index behind CSI
+              if ( (cur==0x1b && next==0x5b) || ( cur==0xc2 && next==0x9b) ) {
+                ++i;
+              }
+              ++i;
+              if (line[i-1]==0x5b || (line[i-1]&0xff)==0x9b){
+                seqEnd=i;
+                //find sequence end
+                while (   seqEnd<line.length() 
+                  && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
+                  ++seqEnd;
+                  }
+                  
+                  if (   line[seqEnd]=='m' && !ignoreFormatting ) {
+                    if (!elementStyle.isReset()) {
+                      *out <<getCloseTag();
+                      tagOpen=false;
                     }
-                    ++i;
-                    if (line[i-1]==0x5b || (line[i-1]&0xff)==0x9b){
-                      seqEnd=i;
-                      //find sequence end
-                      while (   seqEnd<line.length() 
-                             && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
-                          ++seqEnd;
-                      }
-                                            
-                      if (   line[seqEnd]=='m' && !ignoreFormatting ) {
-                        if (!elementStyle.isReset()) {
-                          *out <<getCloseTag();
-                          tagOpen=false;
-                        }
-                        parseSGRParameters(line, i, seqEnd);
-                        if (!elementStyle.isReset()) {
-                          *out <<getOpenTag();
-                          tagOpen=true;
-                        }
-                      }
-                      
-                      isGrepOutput = line[seqEnd]=='K' && line[seqEnd-3] == 'm';
-                      // fix grep special K
-                      if (   line[seqEnd]=='s' || line[seqEnd]=='u'
-                          || (line[seqEnd]=='K' && !isGrepOutput) )
-                        i=line.length();
-                      else
-                        i =   // ((line[seqEnd]=='m' || line[seqEnd]=='C'|| isGrepOutput) ?  1 : 0 )
-                             1 + ((seqEnd!=line.length())?seqEnd:i);
-                    } else {
-                      cur= line[i-1]&0xff;
-                      next = line[i]&0xff;
-                                            
-                      //ignore content of two and single byte sequences (no CSI)
-                      if (cur==0x1b && (  next==0x50 || next==0x5d || next==0x58
-                                        ||next==0x5e||next==0x5f) )
-                      {
-                        seqEnd=i;
-                        //find string end
-                        while ( seqEnd<line.length() && (line[seqEnd]&0xff)!=0x9e 
-                                && line[seqEnd]!=0x07 ) {
-                          ++seqEnd;
-                        }
-                        i=seqEnd+1;
-                      }
+                    parseSGRParameters(line, i, seqEnd);
+                    if (!elementStyle.isReset()) {
+                      *out <<getOpenTag();
+                      tagOpen=true;
                     }
                   }
-                } 
-                else if (cur==0x90 || cur==0x9d || cur==0x98 || cur==0x9e ||cur==0x9f) {
-                    seqEnd=i;
-                    //find string end
-                    while (   seqEnd<line.length() && (line[seqEnd]&0xff)!=0x9e
-                           && line[seqEnd]!=0x07 ) {
-                      ++seqEnd;
+                  
+                  isGrepOutput = line[seqEnd]=='K' && line[seqEnd-3] == 'm';
+                  // fix grep special K
+                  if (   line[seqEnd]=='s' || line[seqEnd]=='u'
+                    || (line[seqEnd]=='K' && !isGrepOutput) )
+                    i=line.length();
+                  else
+                    i =   // ((line[seqEnd]=='m' || line[seqEnd]=='C'|| isGrepOutput) ?  1 : 0 )
+                    1 + ((seqEnd!=line.length())?seqEnd:i);
+              } else {
+                cur= line[i-1]&0xff;
+                next = line[i]&0xff;
+                
+                //ignore content of two and single byte sequences (no CSI)
+                if (cur==0x1b && (  next==0x50 || next==0x5d || next==0x58
+                  ||next==0x5e||next==0x5f) )
+                {
+                  seqEnd=i;
+                  //find string end
+                  while ( seqEnd<line.length() && (line[seqEnd]&0xff)!=0x9e 
+                    && line[seqEnd]!=0x07 ) {
+                    ++seqEnd;
                     }
                     i=seqEnd+1;
-                } else {
-                    // output printable character
-                    *out << maskCharacter(line[i]);
-                    ++i;
                 }
-                
+              }
             }
-                
-            }
-            if (!parseCP437 && !parseAsciiBin) *out << newLineTag;
+          } else if (cur==0x90 || cur==0x9d || cur==0x98 || cur==0x9e ||cur==0x9f) {
+            seqEnd=i;
+            //find string end
+            while (   seqEnd<line.length() && (line[seqEnd]&0xff)!=0x9e
+              && line[seqEnd]!=0x07 ) {
+              ++seqEnd;
+              }
+              i=seqEnd+1;
+          } else {
+            // output printable character
+            *out << maskCharacter(line[i]);
+            ++i;
+          }
+          
         }
-    }
-    if (tagOpen) {
-        *out <<getCloseTag();
-    }
-    
-    if (parseCP437 || parseAsciiBin){
-     
-      for (int y=0;y<=maxY;y++) {
-       
-        for (int x=0;x<asciiArtWidth;x++) {
-          if (termBuffer[x + y* asciiArtWidth].c=='\r' ) {           
-            break;
-         }
-         elementStyle = termBuffer[x + y* asciiArtWidth].style;
         
-         //full block
-         if (termBuffer[x + y* asciiArtWidth].c == 0xdb){
-           elementStyle.setBgColour(elementStyle.getFgColour());
-         }
-         
-         if (!elementStyle.isReset()) {
-           *out <<getOpenTag();
-         }
-  
-        *out << maskCP437Character(termBuffer[x + y* asciiArtWidth].c);
-  
-         if (!elementStyle.isReset()) {
-           *out <<getCloseTag();
-         }
-       }
-       *out<<newLineTag;  
       }
-      delete [] termBuffer;
+      if (!parseCP437 && !parseAsciiBin) *out << newLineTag;
     }
-    out->flush();
+  }
+  if (tagOpen) {
+    *out <<getCloseTag();
+  }
+  
+  if (parseCP437 || parseAsciiBin){
+    
+    for (int y=0;y<=maxY;y++) {
+      
+      for (int x=0;x<asciiArtWidth;x++) {
+        if (termBuffer[x + y* asciiArtWidth].c=='\r') {           
+          break;
+        }
+        elementStyle = termBuffer[x + y* asciiArtWidth].style;
+        
+        //full block
+        if (termBuffer[x + y* asciiArtWidth].c == 0xdb){
+          elementStyle.setBgColour(elementStyle.getFgColour());
+        }
+        
+        if (!elementStyle.isReset()) {
+          *out <<getOpenTag();
+        }
+        
+        *out << maskCP437Character(termBuffer[x + y* asciiArtWidth].c);
+        
+        if (!elementStyle.isReset()) {
+          *out <<getCloseTag();
+        }
+      }
+      *out<<newLineTag;  
+    }
+    delete [] termBuffer;
+  }
+  out->flush();
 }
-
 
 /* the following functions are based on Wolfgang Frischs xterm256 converter utility:
    http://frexx.de/xterm-256-notes/
@@ -920,7 +918,7 @@ void CodeGenerator::xterm2rgb(unsigned char color, unsigned char* rgb)
     }
 
     // gray tone
-    if(color>232 /* && color<255*/) {
+    if(color>232) {
         rgb[0]=rgb[1]=rgb[2] = 8+(color-232)*0x0a;
     }
 }

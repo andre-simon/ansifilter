@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
----  ANSIFILTER MANUAL - Version 1.19  -------------------------- July 2016 ---
+---  ANSIFILTER MANUAL - Version 2.0  --------------------------- July 2016 ---
 -------------------------------------------------------------------------------
 
 OSI Certified Open Source Software
@@ -58,6 +58,12 @@ Format options:
       --cp437            parse codepage 437 ASCII art (HTML output only)
       --wrap-no-numbers  omit line numbers of wrapped lines (assumes -l)
 
+ASCII art options:
+      --art-cp437        Parse codepage 437 ASCII art (HTML, RTF output only)
+      --art-bin          Parse BIN ASCII art (HTML, RTF output only)
+      --art-width        Set ASCII art width (default 80)
+      --art-height       Set ASCII art height (default 150)
+
 Other options:
   -h, --help             Print help
   -v, --version          Print version and license info
@@ -88,10 +94,11 @@ Ansifilter is currently available for Linux and Win32 platforms.
 3.  Features
 -------------------------------------------------------------------------------
 
-Ansifilter understands most CSI sequences. Support for ASCII art files based on 
-codepage 437 and ANSI.SYS commands is enabled with the --cp437 option.
+Ansifilter understands most CSI sequences. Support for ASCII art files (based on
+codepage 437 and ANSI.SYS sequences or BIN files) is enabled with the --art-cp437
+and --art-bin options.
 
-Supported SGR paramters:
+Supported SGR parameters:
 
 Formatting: Bold, Underline, Italic, Blink
 Colors:     Black, Red, Green, Yellow, Blue, Magenta, Cyan, White
@@ -119,8 +126,21 @@ File format:
 
 Example file content:
 
-0 = #0000dd -- set black value to dark blue
-1 = #ffff00 -- set red value to yellow
+1= #0000aa
+2= #00aa00
+3= #00aaaa
+4= #aa0000
+5= #aa00aa
+6= #aa5500
+7= #aaaaaa
+8= #555555
+9= #5555ff
+10= #55ff55
+11= #55ffff
+12= #ff5555
+13= #ff55ff
+14= #ffff55
+15= #ffffff
 
 
 5.  Contact

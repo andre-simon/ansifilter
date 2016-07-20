@@ -46,8 +46,7 @@ string  RtfGenerator::getOpenTag()
 {
     ostringstream s;
     if (elementStyle.getFgColourID()>=0) {
-    //  std::cerr <<"elementStyle.getFgColourID():"<<elementStyle.getFgColourID()<<"\n";
-        s << "{\\cf"<<(elementStyle.getFgColourID()+ (parseCP437)? 9 : 1); // FIXME Bug?
+        s << "{\\cf"<<(elementStyle.getFgColourID()+ 1);
     }
     if (elementStyle.getBgColourID()>=0) {
         s <<  "\\chcbpat"<<(elementStyle.getBgColourID()+1);
