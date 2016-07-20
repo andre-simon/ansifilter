@@ -45,6 +45,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     opt_wrapNoNum(false),
     opt_anchors(false),
     opt_cp437(false),
+    opt_asciiBin(false),
     encodingName("ISO-8859-1"),
     font("Courier New"),
     fontSize("10pt"),
@@ -79,9 +80,10 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         { 'v', "version",   Arg_parser::no  },
         { 'V', "version",   Arg_parser::no  },
         { 'W', "wrap-no-numbers",   Arg_parser::no  },
-        { 'X', "cp437",     Arg_parser::no  },
-        { 'Y', "width",     Arg_parser::yes  },
-        { 'Z', "height",     Arg_parser::yes  },
+        { 'X', "art-cp437", Arg_parser::no  },
+        { 'U', "art-bin",   Arg_parser::no  },
+        { 'Y', "art-width",     Arg_parser::yes  },
+        { 'Z', "art-height",    Arg_parser::yes  },
 	{ 'm', "map",       Arg_parser::yes },
         {  0,  0,           Arg_parser::no  }
     };
@@ -203,6 +205,9 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         case 'X':
           opt_cp437=true;
           break;
+        case 'U':
+          opt_asciiBin=true;
+          break;
         case 'Y':
           asciiArtWidth=atoi(arg.c_str());
           break;
@@ -286,11 +291,14 @@ bool CmdLineOptions::showLineNumbers()const
     return opt_linenum;
 }
 
-bool CmdLineOptions::useCP437() const
+bool CmdLineOptions::parseCP437() const
 {
   return opt_cp437;
 }
 
+bool CmdLineOptions::parseAsciiBin() const{
+  return opt_asciiBin;
+}
 
 int CmdLineOptions::getAsciiArtWidth() const {
   return asciiArtWidth;   

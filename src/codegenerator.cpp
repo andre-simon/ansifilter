@@ -95,6 +95,7 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      numberCurrentLine(false),
      addAnchors(false),
      parseCP437(false),
+     parseAsciiBin(false),
      
      outputType(type),
      ignoreFormatting(false),
@@ -129,10 +130,13 @@ void CodeGenerator::setWrapNoNumbers(bool flag)
     numberWrappedLines = flag;
 }
 
-void CodeGenerator::setCodePage437(bool flag){
+void CodeGenerator::setParseCodePage437(bool flag){
  parseCP437 = flag; 
 }
 
+void CodeGenerator::setParseAsciiBin(bool flag){
+  parseAsciiBin = flag; 
+}
 void CodeGenerator::setAsciiArtSize(int width, int height){
   if (width>0) asciiArtWidth = width;
   if (height>0) asciiArtHeight = height;
@@ -647,14 +651,19 @@ void CodeGenerator::processInput()
     bool tagOpen=false;
     bool isGrepOutput=false;
     
+    //read whole file for BIN ascii art
+    char lineDelim = (parseAsciiBin) ? '\xff' :  '\n';
+    
     TDChar* termBuffer = NULL;
     curX = curY = memX = memY = 0;
 
-    if (parseCP437){
+    if (parseCP437 || parseAsciiBin){
+        elementStyle.setReset(false);
         termBuffer = new TDChar[asciiArtWidth*asciiArtHeight];
         for (int i=0; i<asciiArtWidth*asciiArtHeight; i++){
             termBuffer[i].c=0;
         }
+        
     }
     while (true) {
 
@@ -673,7 +682,7 @@ void CodeGenerator::processInput()
 
             line = preFormatter.getNextLine();
         } else {
-            eof=!getline(*in, line);
+          eof=!getline(*in, line, lineDelim);
             ++lineNumber;
             numberCurrentLine = true;
         }
@@ -739,6 +748,38 @@ void CodeGenerator::processInput()
                   ++i;
                 }  
               }
+              
+              if (parseAsciiBin) {
+                  //Character attribute
+                  next = line[i+1]&0xff;
+                 
+                  int colBg = (next & 240) >> 4;
+                  int colFg = (next & 15);
+                  
+                  if (colBg > 8)
+                  {
+                    colBg -= 8;
+                  }
+                  
+                  
+                  elementStyle.setFgColour(rgb2html(basic16[colFg]));
+                  elementStyle.setBgColour(rgb2html(basic16[colBg]));
+                  
+                  elementStyle.setBold(cur >= 0x20 && cur <= 0x7a);
+                  
+                  if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
+                    termBuffer[curX + curY*asciiArtWidth].c = cur;
+                    termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
+                    curX++;
+                  } 
+                  if (i % asciiArtWidth == 0 ) {
+                    curY++;  
+                    if (maxY<curY && curY<asciiArtHeight) maxY=curY;
+                    curX=0;
+                  }
+                  i+=1;
+                }
+          
               
               if (!parseCP437){
               
@@ -815,14 +856,14 @@ void CodeGenerator::processInput()
             }
                 
             }
-            if (!parseCP437) *out << newLineTag;
+            if (!parseCP437 && !parseAsciiBin) *out << newLineTag;
         }
     }
     if (tagOpen) {
         *out <<getCloseTag();
     }
     
-    if (parseCP437){
+    if (parseCP437 || parseAsciiBin){
      
       for (int y=0;y<=maxY;y++) {
        

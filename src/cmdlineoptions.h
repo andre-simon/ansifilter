@@ -105,7 +105,10 @@ public:
     bool wrapNoNumbers() const;
 
     /** \return True if input should be treated as codepage 437 ASCII art */
-    bool useCP437() const;
+    bool parseCP437() const;
+    
+    /** \return True if input should be treated as BIN ASCII art */
+    bool parseAsciiBin() const;
     
     /** \return Document title */
     string getDocumentTitle() const ;
@@ -133,6 +136,7 @@ private:
     bool opt_wrapNoNum;
     bool opt_anchors;
     bool opt_cp437;
+    bool opt_asciiBin;
 
     // name of single output file
     string outFilename;

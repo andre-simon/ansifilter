@@ -202,8 +202,11 @@ public:
     /** \param b set to true if line numbers of wrapped lines should be omitted */
     void setWrapNoNumbers(bool flag);
 
-    /** \param b set to true if input is codepage 437 ASCII art  */
-    void setCodePage437(bool flag);
+    /** \param b set to true if input is ASCII art codepage 437 file  */
+    void setParseCodePage437(bool flag);
+
+    /** \param b set to true if input is an ASCII art BIN file*/
+    void setParseAsciiBin(bool flag);
     
     void setAsciiArtSize(int width, int height);
     
@@ -265,6 +268,7 @@ protected:
          addAnchors;          ///< add HTML anchor to line number
 
     bool parseCP437;
+    bool parseAsciiBin;
          
     /** Processes input data */
     void processInput();

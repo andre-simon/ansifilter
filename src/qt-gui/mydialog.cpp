@@ -224,7 +224,7 @@ void MyDialog::on_pbSaveAs_clicked()
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(dlg.cbFragment->isChecked());
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
-    generator->setCodePage437(dlg.cbCodepage437->isChecked());
+    generator->setParseCodePage437(dlg.cbCodepage437->isChecked());
     generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
@@ -297,7 +297,7 @@ void MyDialog::showFile()
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(false);
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
-    generator->setCodePage437(dlg.cbCodepage437->isChecked());
+    generator->setParseCodePage437(dlg.cbCodepage437->isChecked());
     generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
