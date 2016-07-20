@@ -19,10 +19,9 @@ SOURCES += ../stringtools.cpp ../stylecolour.cpp ../preformatter.cpp
 
 RESOURCES += ansifilter.qrc
 win32 {
-CONFIG += static
-DEFINES += _WIN32
-QMAKE_CXXFLAGS += -std=c++11
-RC_FILE = icon.rc
-DESTDIR = ../../
-QMAKE_POST_LINK = D:\Devel\upx391w\upx.exe --best ../../ansifilter-gui.exe
+    CONFIG += static
+    DEFINES += _WIN32
+    RC_FILE = icon.rc
+    DESTDIR = ../../
+    QMAKE_POST_LINK = D:\Devel\upx391w\upx.exe --best ../../ansifilter-gui.exe
 }

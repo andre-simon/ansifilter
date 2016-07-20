@@ -279,6 +279,7 @@ string CodeGenerator::generateStringFromFile(const string &inFileName)
         *out << getFooter();
     }
 
+
     string result = static_cast<ostringstream*>(out)->str();
 
     delete out;
@@ -519,9 +520,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
 
 
 void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
-  
- // std::cerr <<"SEA "<<curX << " "<<curY<<"\n";
-  
+    
   string codes=line.substr(begin, end-begin);
   vector<string> codeVector = StringTools::splitString(codes, ',');
   
@@ -535,11 +534,7 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
      curY = atoi(codeVector[0].c_str());
      curX = atoi(codeVector[1].c_str()); 
     }     
-    if (curX>asciiArtWidth && curY<asciiArtHeight){
-      //std::cerr<<"fix overflow2\n";
-      curX-=asciiArtWidth;
-      curY++;
-    }
+
     if (maxY<curY && curY<asciiArtHeight) maxY=curY;
   }
   
@@ -567,8 +562,9 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
     } else {
       curX++;
     }
+
+    //handle coloumn overflow
     if (curX>asciiArtWidth && curY<asciiArtHeight){
-      //std::cerr<<"fix overflow1 "<<curX<<"\n";
       curX-=asciiArtWidth;
       curY++;
       if (maxY<curY && curY<asciiArtHeight) maxY=curY;
@@ -610,8 +606,6 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
     elementStyle=memStyle;
   }
   
-  
-  //std::cerr <<"SEE "<<curX << " "<<curY<<"\n";
 }
 
 void CodeGenerator::insertLineNumber ()
@@ -654,10 +648,14 @@ void CodeGenerator::processInput()
     bool isGrepOutput=false;
     
     TDChar* termBuffer = NULL;
+    curX = curY = memX = memY = 0;
 
-    if (parseCP437)
+    if (parseCP437){
         termBuffer = new TDChar[asciiArtWidth*asciiArtHeight];
-
+        for (int i=0; i<asciiArtWidth*asciiArtHeight; i++){
+            termBuffer[i].c=0;
+        }
+    }
     while (true) {
 
         bool eof=false;
@@ -705,7 +703,6 @@ void CodeGenerator::processInput()
               // CSI ?
               cur = line[i]&0xff;
              
-              // http://www.syaross.org/thedraw/ : make this optional
               if (parseCP437){
                 
                 if (cur==0x1b && line.length() - i > 2){

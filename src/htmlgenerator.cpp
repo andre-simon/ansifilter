@@ -700,7 +700,7 @@ string HtmlGenerator::maskCP437Character(unsigned char c)
         if (c>0x1f && c<0x7f) { // printable?          
             return string( 1, c );
         } else {
-          std::cerr<<"Unknown: "<<(int)c<<"\n";
+          // std::cerr<<"Unknown: "<<(int)c<<"\n";
           return "";
         }
   }

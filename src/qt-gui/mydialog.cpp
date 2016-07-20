@@ -60,6 +60,8 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
     dlg.comboFont->setCurrentIndex(settings.value("font").toInt());
     dlg.comboFormat->setCurrentIndex(settings.value("format").toInt());
     dlg.spinBoxWrap->setValue(settings.value("linewrap").toInt());
+    dlg.sbWidth->setValue(settings.value("width").toInt());
+    dlg.sbHeight->setValue(settings.value("height").toInt());
     settings.endGroup();
     settings.beginGroup("paths");
     inputFileName = settings.value("infile").toString();
@@ -81,7 +83,6 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
     plausibility();
 }
 
-
 void MyDialog::closeEvent(QCloseEvent *event)
 {
     QSettings settings("andre-simon.de", "ansifilter-gui");
@@ -95,7 +96,8 @@ void MyDialog::closeEvent(QCloseEvent *event)
     settings.setValue("format", dlg.comboFormat->currentIndex());
     settings.setValue("font", dlg.comboFont->currentIndex());
     settings.setValue("linewrap", dlg.spinBoxWrap->value());
-
+    settings.setValue("width", dlg.sbWidth->value());
+    settings.setValue("height", dlg.sbHeight->value());
     settings.endGroup();
     settings.beginGroup("paths");
     settings.setValue("infile", inputFileName);
@@ -139,7 +141,6 @@ void MyDialog::dropEvent(QDropEvent* event)
     }
 }
 
-
 void MyDialog::onFileChanged(const QString & path)
 {
     inputFileName  = path;
@@ -159,7 +160,6 @@ void MyDialog::plausibility()
     dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
     dlg.comboFont->setEnabled(selIdx==1||selIdx==2||selIdx==6);
 }
-
 
 ansifilter::OutputType MyDialog::getOutputType()
 {
@@ -199,7 +199,6 @@ QString MyDialog::getOutFileSuffix()
     }
     return ".txt";
 }
-
 
 void MyDialog::on_pbSaveAs_clicked()
 {
@@ -306,7 +305,9 @@ void MyDialog::showFile()
     if (!dlg.leColorMapPath->text().isEmpty())
         generator->setColorMap(dlg.leColorMapPath->text().toStdString());
 
-    QString htmlString( generator->generateStringFromFile(inputFileName.toStdString ()).c_str() );
+    string htmlStdString=generator->generateStringFromFile(inputFileName.toStdString ());
+    //std::cerr<<"STR: "<<htmlStdString<<"\n";
+    QString htmlString( htmlStdString.c_str() );
     if (!htmlString.isEmpty()) {
         dlg.textEdit->setText(htmlString);
         this->setWindowTitle("ANSIFilter - " + inputFileName);

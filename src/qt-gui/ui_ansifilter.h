@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 class Ui_Dialog
 {
 public:
-    QGridLayout *gridLayout_3;
+    QHBoxLayout *horizontalLayout_2;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout;
     QPushButton *pbFileOpen;
@@ -62,13 +62,11 @@ public:
     QSpacerItem *horizontalSpacer;
     QLabel *lblHeight;
     QSpinBox *sbHeight;
-    QHBoxLayout *horizontalLayout_2;
+    QGridLayout *gridLayout_3;
     QLabel *label_2;
     QLineEdit *leTitle;
-    QHBoxLayout *horizontalLayout_3;
     QLabel *lblEncoding;
     QComboBox *comboEncoding;
-    QHBoxLayout *horizontalLayout_4;
     QLabel *label_3;
     QSpinBox *spinBoxWrap;
     QFontComboBox *comboFont;
@@ -101,8 +99,8 @@ public:
         QIcon icon;
         icon.addFile(QStringLiteral(":/ansifilter.xpm"), QSize(), QIcon::Normal, QIcon::Off);
         Dialog->setWindowIcon(icon);
-        gridLayout_3 = new QGridLayout(Dialog);
-        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
+        horizontalLayout_2 = new QHBoxLayout(Dialog);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         groupBox = new QGroupBox(Dialog);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         QSizePolicy sizePolicy1(QSizePolicy::Maximum, QSizePolicy::Preferred);
@@ -264,8 +262,8 @@ public:
 
         verticalLayout->addWidget(artSizeFrame);
 
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        gridLayout_3 = new QGridLayout();
+        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
         label_2 = new QLabel(groupBox);
         label_2->setObjectName(QStringLiteral("label_2"));
         QSizePolicy sizePolicy5(QSizePolicy::Maximum, QSizePolicy::Minimum);
@@ -274,7 +272,7 @@ public:
         sizePolicy5.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
         label_2->setSizePolicy(sizePolicy5);
 
-        horizontalLayout_2->addWidget(label_2);
+        gridLayout_3->addWidget(label_2, 0, 0, 1, 1);
 
         leTitle = new QLineEdit(groupBox);
         leTitle->setObjectName(QStringLiteral("leTitle"));
@@ -284,19 +282,14 @@ public:
         sizePolicy6.setHeightForWidth(leTitle->sizePolicy().hasHeightForWidth());
         leTitle->setSizePolicy(sizePolicy6);
 
-        horizontalLayout_2->addWidget(leTitle);
+        gridLayout_3->addWidget(leTitle, 0, 1, 1, 2);
 
-
-        verticalLayout->addLayout(horizontalLayout_2);
-
-        horizontalLayout_3 = new QHBoxLayout();
-        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         lblEncoding = new QLabel(groupBox);
         lblEncoding->setObjectName(QStringLiteral("lblEncoding"));
         sizePolicy1.setHeightForWidth(lblEncoding->sizePolicy().hasHeightForWidth());
         lblEncoding->setSizePolicy(sizePolicy1);
 
-        horizontalLayout_3->addWidget(lblEncoding);
+        gridLayout_3->addWidget(lblEncoding, 1, 0, 1, 2);
 
         comboEncoding = new QComboBox(groupBox);
         comboEncoding->setObjectName(QStringLiteral("comboEncoding"));
@@ -304,25 +297,17 @@ public:
         comboEncoding->setSizePolicy(sizePolicy6);
         comboEncoding->setEditable(true);
 
-        horizontalLayout_3->addWidget(comboEncoding);
+        gridLayout_3->addWidget(comboEncoding, 1, 2, 1, 1);
 
-
-        verticalLayout->addLayout(horizontalLayout_3);
-
-        horizontalLayout_4 = new QHBoxLayout();
-        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
         label_3 = new QLabel(groupBox);
         label_3->setObjectName(QStringLiteral("label_3"));
 
-        horizontalLayout_4->addWidget(label_3);
+        gridLayout_3->addWidget(label_3, 2, 0, 1, 2);
 
         spinBoxWrap = new QSpinBox(groupBox);
         spinBoxWrap->setObjectName(QStringLiteral("spinBoxWrap"));
 
-        horizontalLayout_4->addWidget(spinBoxWrap);
-
-
-        verticalLayout->addLayout(horizontalLayout_4);
+        gridLayout_3->addWidget(spinBoxWrap, 2, 2, 1, 1);
 
         comboFont = new QFontComboBox(groupBox);
         comboFont->setObjectName(QStringLiteral("comboFont"));
@@ -330,7 +315,10 @@ public:
         font.setFamily(QStringLiteral("Courier New"));
         comboFont->setCurrentFont(font);
 
-        verticalLayout->addWidget(comboFont);
+        gridLayout_3->addWidget(comboFont, 3, 0, 1, 3);
+
+
+        verticalLayout->addLayout(gridLayout_3);
 
         line_3 = new QFrame(groupBox);
         line_3->setObjectName(QStringLiteral("line_3"));
@@ -399,7 +387,7 @@ public:
         verticalLayout->addLayout(horizontalLayout_5);
 
 
-        gridLayout_3->addWidget(groupBox, 0, 0, 1, 1);
+        horizontalLayout_2->addWidget(groupBox);
 
         gridLayout_2 = new QGridLayout();
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
@@ -431,7 +419,7 @@ public:
         gridLayout_2->addWidget(cbWatchFile, 2, 0, 1, 1);
 
 
-        gridLayout_3->addLayout(gridLayout_2, 0, 1, 1, 1);
+        horizontalLayout_2->addLayout(gridLayout_2);
 
 #ifndef QT_NO_SHORTCUT
         label_2->setBuddy(leTitle);
@@ -489,11 +477,17 @@ public:
 #endif // QT_NO_TOOLTIP
         cbFragment->setText(QApplication::translate("Dialog", "Omit header and footer", 0));
 #ifndef QT_NO_TOOLTIP
-        cbCodepage437->setToolTip(QApplication::translate("Dialog", "Enable support for codepage 437 symbols and ANSI.SYS commands.", 0));
+        cbCodepage437->setToolTip(QApplication::translate("Dialog", "Enable support for codepage 437 symbols and ANSI.SYS sequences.", 0));
 #endif // QT_NO_TOOLTIP
         cbCodepage437->setText(QApplication::translate("Dialog", "Codepage 437 (ASCII art)", 0));
         lblWidth->setText(QApplication::translate("Dialog", "Width", 0));
+#ifndef QT_NO_TOOLTIP
+        sbWidth->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image width (default: 80)", 0));
+#endif // QT_NO_TOOLTIP
         lblHeight->setText(QApplication::translate("Dialog", "Height", 0));
+#ifndef QT_NO_TOOLTIP
+        sbHeight->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image height (default: 150)", 0));
+#endif // QT_NO_TOOLTIP
         label_2->setText(QApplication::translate("Dialog", "Tit&le:", 0));
 #ifndef QT_NO_TOOLTIP
         leTitle->setToolTip(QApplication::translate("Dialog", "Set the output document title.", 0));

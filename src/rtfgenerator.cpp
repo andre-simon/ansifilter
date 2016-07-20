@@ -524,7 +524,6 @@ string RtfGenerator::maskCP437Character(unsigned char c)
         return string( 1, c );
         //char hexVal[3]={ 0 };
         //sprintf(hexVal, "%02X", c);
-      //  std::cerr<<"HEX "<<hexVal<<"\n";
         //return "\\'" + string(hexVal); 
       } else {
         return "";

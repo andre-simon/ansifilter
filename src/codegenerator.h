@@ -211,13 +211,14 @@ protected:
 
     /** \param type Output type */
     CodeGenerator(ansifilter::OutputType type);
-    CodeGenerator() {};
+
+    CodeGenerator() {}
 
     /** \param c Character to be masked
         \return Escape sequence of output format */
     virtual string maskCharacter(unsigned char c) = 0;
 
-    virtual string maskCP437Character(unsigned char c) { return maskCharacter(c); };
+    virtual string maskCP437Character(unsigned char c) { return maskCharacter(c); }
     
     /** Tag for inserting line feeds*/
     string newLineTag;
