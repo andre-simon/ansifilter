@@ -67,7 +67,7 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
     dlg.sbHeight->setValue(settings.value("height").toInt());
     settings.endGroup();
     settings.beginGroup("paths");
-    inputFileName = settings.value("infile").toString();
+    //inputFileName = settings.value("infile").toString();
     outputFileName = settings.value("outfile").toString();
     settings.endGroup();
     settings.beginGroup("window");
@@ -279,7 +279,7 @@ void MyDialog::on_pbClipboard_clicked()
         QMessageBox::information(this, "Note", "Please select an input file.");
         return;
     }
-    
+	
     unique_ptr<ansifilter::CodeGenerator> generator(ansifilter::CodeGenerator::getInstance(ansifilter::TEXT));
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     QString outString = QString(generator->generateStringFromFile( inputFileName.toStdString ()).c_str() ) ;

@@ -290,23 +290,6 @@ string RtfGenerator::maskCharacter(unsigned char c)
     case SZLIG:
         return "\\'df";
         break;
-        
-        
-    case 0xdb:
-      return "\\u221e?";
-      break;
-    case 0xdc:
-      return "\\u221e?";
-      break;
-    case 0xdd:
-      return "\\u221e?";
-      break;
-    case 0xde:
-      return "\\u221e?";
-      break;      
-    case 0xdf:
-      return "\\u221e?";
-      break;      
 
     default : {
         if (c>0x1f ) {

@@ -198,7 +198,7 @@ ParseError CodeGenerator::generateFile (const string &inFileName,
 
     ParseError error=PARSE_OK;
 
-    in = (inFileName.empty()? &cin :new ifstream (inFileName.c_str()));
+    in = (inFileName.empty()? &cin :new ifstream (inFileName.c_str(), std::ios::binary));
 
 
     if (!in->fail() && error==PARSE_OK) {
@@ -267,7 +267,7 @@ string CodeGenerator::generateString(const string &input)
 string CodeGenerator::generateStringFromFile(const string &inFileName)
 {
 
-    in = new ifstream (inFileName.c_str());
+    in = new ifstream (inFileName.c_str(), std::ios::binary);
     out = new ostringstream ();
 
     if ( in->fail() || out->fail()) {
@@ -632,9 +632,9 @@ void CodeGenerator::insertLineNumber ()
 
 void CodeGenerator::printTermBuffer() {
   for (int y=0;y<=maxY;y++) {
-    
+
     for (int x=0;x<asciiArtWidth;x++) {
-      if (termBuffer[x + y* asciiArtWidth].c=='\r') {           
+      if (termBuffer[x + y* asciiArtWidth].c=='\r') {
         break;
       }
       elementStyle = termBuffer[x + y* asciiArtWidth].style;
@@ -701,22 +701,22 @@ void CodeGenerator::parseBinFile(){
 }
 
 void CodeGenerator::parseXBinFile(){
-  
+
     char header [11] = {0};
     char palette [48] = {0};
-    
+
     if (in->read(header, 11)){
       
       asciiArtWidth = 0xff & ((header[ 6 ] << 8) + header[ 5 ]);
       asciiArtHeight = 0xff & ((header[ 8 ] << 8) + header[ 7 ]);
       int fontSize = header[ 9 ];
       int flags = header[ 10 ];
-    /*
+/*
       std::cerr<<"XBIN width:"<<asciiArtWidth<<"\n";
       std::cerr<<"XBIN height:"<<asciiArtHeight<<"\n";
       std::cerr<<"XBIN fontsize:"<<fontSize<<"\n";
       std::cerr<<"XBIN flags:"<<flags<<"\n";
-      */
+*/
       allocateTermBuffer();
           
       if( (flags & 1) == 1 && in->read(palette, 48)) {
@@ -814,7 +814,7 @@ void CodeGenerator::parseXBinFile(){
      // std::cerr<<"FLAT--- starting at "<<in->tellg()<<"\n";
       parseBinFile();
     } 
-  }  
+  }
 }
 
 void CodeGenerator::allocateTermBuffer(){
@@ -848,7 +848,7 @@ void CodeGenerator::processInput()
   if (parseCP437 || parseAsciiBin){
     elementStyle.setReset(false);
   }
-  
+
   // deal with BIN/XBIN without file watching, reformatting and line numbering distractions
   if (parseAsciiBin){
     
@@ -856,7 +856,7 @@ void CodeGenerator::processInput()
       parseXBinFile();
     else
       parseBinFile();
-    
+
     printTermBuffer();
     return; 
   }
@@ -935,7 +935,7 @@ void CodeGenerator::processInput()
         cur = line[i]&0xff;
         
         if (parseCP437){
-          
+
           if (cur==0x1b && line.length() - i > 2){
             next = line[i+1]&0xff;
             if (next==0x5b) {
@@ -952,7 +952,13 @@ void CodeGenerator::processInput()
                 } else {
                   parseCodePage437Seq(line, i, seqEnd);  
                 }
-                i=seqEnd+1;  
+                i=seqEnd+1;
+            } else {
+             //++i;
+            }
+          } else  if (cur==0x1a && line.length() - i > 6){
+            if (line.substr(i+1, 5)=="SAUCE"){
+               break;
             }
           } else {
             if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
@@ -1050,7 +1056,6 @@ void CodeGenerator::processInput()
   
   if (parseCP437){
     printTermBuffer();
-    
   }
   out->flush();
 }
