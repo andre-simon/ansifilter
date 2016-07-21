@@ -318,9 +318,23 @@ string RtfGenerator::maskCharacter(unsigned char c)
   }
 }
 
+string RtfGenerator::unicodeFromHTML(const string &htmlEntity){
+  if (htmlEntity.length()!=8) return "";
+  
+  string decCode = "\\u", hexCode = htmlEntity.substr(3,4);
+  
+  int x=0;
+  std::istringstream iss(hexCode);
+
+  iss >> std::hex >> x;    
+  decCode += to_string(x);
+  decCode +="?";
+  
+  return decCode;
+}
+
 string RtfGenerator::maskCP437Character(unsigned char c)
 {
-  
   switch (c) {
     case 0:
    // case ' ' :
@@ -356,6 +370,237 @@ string RtfGenerator::maskCP437Character(unsigned char c)
       return m;
     }
     break;
+    
+    case 0x01:  
+      return unicodeFromHTML("&#x263a;");
+      break;
+    case 0x02:  
+      return unicodeFromHTML("&#x263b;");
+      break;
+    case 0x03:  
+      return unicodeFromHTML("&#x2665;");
+      break;
+    case 0x04:  
+      return unicodeFromHTML("&#x2666;");
+      break;
+    case 0x05:  
+      return unicodeFromHTML("&#x2663;");
+      break;
+    case 0x06:  
+      return unicodeFromHTML("&#x2660;");
+      break;
+    case 0x08:  
+      return unicodeFromHTML("&#x25d8;");
+      break;  
+      
+    case 0x0a:  
+      return unicodeFromHTML("&#x25d9;");
+      break;
+    case 0x0b:  
+      return unicodeFromHTML("&#x2642;");
+      break;
+    case 0x0c:  
+      return unicodeFromHTML("&#x2640;");
+      break;
+      
+    case 0x10:  
+      return unicodeFromHTML("&#x25BA;");
+      break;  
+    case 0x11:  
+      return unicodeFromHTML("&#x25C4;");
+      break;
+    case 0x12:  
+      return unicodeFromHTML("&#x2195;");
+      break;  
+    case 0x13:  
+      return unicodeFromHTML("&#x203C;");
+      break;  
+    case 0x14:  
+      return unicodeFromHTML("&#x00b6;");
+      break;  
+    case 0x15:  
+      return unicodeFromHTML("&#x00a7;");
+      break;  
+    case 0x16:  
+      return unicodeFromHTML("&#x25ac;");
+      break;  
+    case 0x17:  
+      return unicodeFromHTML("&#x21A8;");
+      break;  
+    case 0x18:  
+      return unicodeFromHTML("&#x2191;");
+      break;  
+    case 0x19:  
+      return unicodeFromHTML("&#x2193;");
+      break; 
+    case 0x1a:  
+      return unicodeFromHTML("&#x2192;");
+      break; 
+    case 0x1b:  
+      return unicodeFromHTML("&#x2190;");
+      break; 
+    case 0x1c:  
+      return unicodeFromHTML("&#x221F;");
+      break; 
+    case 0x1d:  
+      return unicodeFromHTML("&#x2194;");
+      break; 
+    case 0x1e:  
+      return unicodeFromHTML("&#x25B2;");
+      break; 
+    case 0x1f:  
+      return unicodeFromHTML("&#x25BC;");
+      break; 
+      
+    case 0x80:  
+      return unicodeFromHTML("&#x00c7;");
+      break;  
+    case 0x81:  
+      return unicodeFromHTML("&#x00fc;");
+      break;  
+    case 0x82:  
+      return unicodeFromHTML("&#x00e9;");
+      break;  
+    case 0x83:  
+      return unicodeFromHTML("&#x00e2;");
+      break;  
+    case 0x84:  
+      return unicodeFromHTML("&#x00e4;");
+      break;  
+    case 0x85:  
+      return unicodeFromHTML("&#x00e0;");
+      break;  
+    case 0x86:  
+      return unicodeFromHTML("&#x00e5;");
+      break;  
+    case 0x87:  
+      return unicodeFromHTML("&#x00e7;");
+      break;  
+    case 0x88:  
+      return unicodeFromHTML("&#x00ea;");
+      break;  
+    case 0x89:  
+      return unicodeFromHTML("&#x00eb;");
+      break;  
+    case 0x8a:  
+      return unicodeFromHTML("&#x00e8;");
+      break;  
+    case 0x8b:  
+      return unicodeFromHTML("&#x00ef;");
+      break;  
+    case 0x8c:  
+      return unicodeFromHTML("&#x00ee;");
+      break;  
+    case 0x8d:  
+      return unicodeFromHTML("&#x00ec;");
+      break;  
+    case 0x8e:  
+      return unicodeFromHTML("&#x00c4;");
+      break;  
+    case 0x8f:  
+      return unicodeFromHTML("&#x00c5;");
+      break;  
+      
+    case 0x90:  
+      return unicodeFromHTML("&#x00c9;");
+      break;  
+    case 0x91:  
+      return unicodeFromHTML("&#x00e6;");
+      break;  
+    case 0x92:  
+      return unicodeFromHTML("&#x00c6;");
+      break;  
+    case 0x93:  
+      return unicodeFromHTML("&#x00f4;");
+      break;  
+    case 0x94:  
+      return unicodeFromHTML("&#x00f6;");
+      break;  
+    case 0x95:  
+      return unicodeFromHTML("&#x00f2;");
+      break;  
+    case 0x96:  
+      return unicodeFromHTML("&#x00fb;");
+      break;  
+    case 0x97:  
+      return unicodeFromHTML("&#x00f9;");
+      break;  
+    case 0x98:  
+      return unicodeFromHTML("&#x00ff;");
+      break;  
+    case 0x99:  
+      return unicodeFromHTML("&#x00d6;");
+      break;  
+    case 0x9a:  
+      return unicodeFromHTML("&#x00dc;");
+      break;  
+    case 0x9b:  
+      return unicodeFromHTML("&#x00a2;");
+      break;  
+    case 0x9c:  
+      return unicodeFromHTML("&#x00a3;");
+      break;  
+    case 0x9d:  
+      return unicodeFromHTML("&#x00a5;");
+      break;  
+    case 0x9e:  
+      return unicodeFromHTML("&#x20a7;");
+      break;  
+    case 0x9f:  
+      return unicodeFromHTML("&#x0192;");
+      break;  
+      
+      
+    case 0xa0:  
+      return unicodeFromHTML("&#x00e1;");
+      break;
+    case 0xa1:  
+      return unicodeFromHTML("&#x00ed;");
+      break;
+    case 0xa2:  
+      return unicodeFromHTML("&#x00f3;");
+      break;
+    case 0xa3:  
+      return unicodeFromHTML("&#x00fa;");
+      break;
+    case 0xa4:  
+      return unicodeFromHTML("&#x00f1;");
+      break;
+    case 0xa5:  
+      return unicodeFromHTML("&#x00d1;");
+      break;
+    case 0xa6:  
+      return unicodeFromHTML("&#x00aa;");
+      break;
+    case 0xa7:  
+      return unicodeFromHTML("&#x00ba;");
+      break;
+    case 0xa8:  
+      return unicodeFromHTML("&#x00bf;");
+      break;
+    case 0xa9:  
+      return unicodeFromHTML("&#x2310;");
+      break;
+    case 0xaa:  
+      return unicodeFromHTML("&#x00ac;");
+      break;
+    case 0xab:  
+      return unicodeFromHTML("&#x00bd;");
+      break;
+    case 0xac:  
+      return unicodeFromHTML("&#x00bc;");
+      break;
+    case 0xad:  
+      return unicodeFromHTML("&#x00a1;");
+      break;
+    case 0xae:  
+      return unicodeFromHTML("&#x00ab;");
+      break;
+    case 0xaf:  
+      return unicodeFromHTML("&#x00bb;");
+      break;
+      
+    
     
       //shades
     case 0xb0:   
@@ -508,13 +753,109 @@ string RtfGenerator::maskCP437Character(unsigned char c)
     case 0xdf:
       return "\\u9600?";
       break;
-
+      
+    case 0xe0:
+      return unicodeFromHTML("&#x03b1;");
+      break;
+    case 0xe1:
+      return unicodeFromHTML("&#x00df;");
+      break;
+    case 0xe2:
+      return unicodeFromHTML("&#x0393;");
+      break;
+    case 0xe3:
+      return unicodeFromHTML("&#x03c0;");
+      break;
+    case 0xe4:
+      return unicodeFromHTML("&#x03a3;");
+      break;
+    case 0xe5:
+      return unicodeFromHTML("&#x03c3;");
+      break;
+    case 0xe6:
+      return unicodeFromHTML("&#x00b5;");
+      break;
+    case 0xe7:
+      return unicodeFromHTML("&#x03c4;");
+      break;
+    case 0xe8:
+      return unicodeFromHTML("&#x03a6;");
+      break;
+    case 0xe9:
+      return unicodeFromHTML("&#x0398;");
+      break;
+    case 0xea:
+      return unicodeFromHTML("&#x03a9;");
+      break;
+    case 0xeb:
+      return unicodeFromHTML("&#x03b4;");
+      break;
+      
+    case 0xec:
+      return unicodeFromHTML("&#x221e;");
+      break;
+    case 0xed:
+      return unicodeFromHTML("&#x03c6;");
+      break;
+    case 0xee:
+      return unicodeFromHTML("&#x03b5;");
+      break;
+    case 0xef:
+      return unicodeFromHTML("&#x2229;");
+      break;
+      
+    case 0xf0:
+      return unicodeFromHTML("&#x2261;");
+      break;
+      
+    case 0xf1:
+      return unicodeFromHTML("&#x00b1;");
+      break;
+    case 0xf2:
+      return unicodeFromHTML("&#x2265;");
+      break;
+    case 0xf3:
+      return unicodeFromHTML("&#x2264;");
+      break;
+    case 0xf4:
+      return unicodeFromHTML("&#x2320;");
+      break;
+    case 0xf5:
+      return unicodeFromHTML("&#x2321;");
+      break;
+    case 0xf6:
+      return unicodeFromHTML("&#x00f7;");
+      break;
+    case 0xf7:
+      return unicodeFromHTML("&#x2248;");
+      break;
+    case 0xf8:
+      return unicodeFromHTML("&#x00b0;");
+      break;
+      
     case 0xf9:
-      return "\\u8729?";
+      return unicodeFromHTML("&#x2219;");
       break;
     case 0xfa:
-      return "\\u8729?";
+      return unicodeFromHTML("&#x00b7;");
       break;
+    case 0xfb:
+      return unicodeFromHTML("&#x221a;");
+      break;
+    case 0xfc:
+      return unicodeFromHTML("&#x207F;");
+      break;
+    case 0xfd:
+      return unicodeFromHTML("&#x20b2;");
+      break;
+    case 0xfe:
+      return unicodeFromHTML("&#x25a0;");
+      break; 
+      
+    case 0xff:
+      return " ";
+      break;  
+      
       
       
       

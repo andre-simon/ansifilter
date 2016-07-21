@@ -115,27 +115,30 @@ string HtmlGenerator::getHeader()
            << encoding
            << "\">\n";
     }
+   
+   os << "<style type=\"text/css\">\n";
+   os << "pre {\n";
+   os << "  font-family:"<< font << ";\n";
+   os << "  font-size:"<< fontSize << ";\n";
+   
+   if (parseCP437) {
+     os << "  color: #e5e5e5;\n";
+   }
+   os << "}\n\n";
+   
+   if (parseCP437||parseAsciiBin) {
+     
+     os << "body {  background-color: black; } \n";
+   }
+   os << "</style>\n";
+    
+   
     if (!styleSheetPath.empty()) {
         os << "<link rel=\"stylesheet\" type=\"text/css\" href=\""
            << styleSheetPath << "\">\n";
     }
     os << "<title>" << docTitle << "</title>\n";
-    os << "</head>\n<body>\n";
-
-    if (!styleSheetPath.empty()) {
-        os << "<pre>";
-    } else {
-        os << "<pre style=\"";
-        
-        if (parseCP437) {
-          os << "color: #e5e5e5;";
-          os << "background-color: black;";
-        }
-        
-        os << "font-family:"<< font << ";";
-        os << "font-size:"<< fontSize << ";";
-        os << "\">";
-    }
+    os << "</head>\n<body>\n<pre>";
 
     return os.str();
 }

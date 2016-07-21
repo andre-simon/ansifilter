@@ -81,7 +81,7 @@ void ANSIFilterApp::printHelp()
     
     cout << "\nASCII art options:\n";
     cout << "      --art-cp437        Parse codepage 437 ASCII art (HTML, RTF output only)\n";
-    cout << "      --art-bin          Parse BIN ASCII art (HTML, RTF output only)\n";
+    cout << "      --art-bin          Parse BIN/XBIN ASCII art (HTML, RTF output only)\n";
     cout << "      --art-width        Set ASCII art width (default 80)\n";
     cout << "      --art-height       Set ASCII art height (default 150)\n";
     
@@ -91,7 +91,8 @@ void ANSIFilterApp::printHelp()
     cout << "\nExamples:\n";
     cout << "ansifilter -i input.ansi -o output.txt\n";
     cout << "ansifilter *.txt\n";
-    cout << "tail -f server.log | ansifilter\n";
+    cout << "tail -f server.log | ansifilter\n\n";
+    cout << "Parsing XBIN files overrides --art-width, --art-height and --map options.\n";
     cout << "\nPlease report bugs to " ANSIFILTER_EMAIL "\n";
     cout << "For updates see " ANSIFILTER_URL "\n";
 }

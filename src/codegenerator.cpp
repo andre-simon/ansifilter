@@ -100,6 +100,7 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      outputType(type),
      ignoreFormatting(false),
      readAfterEOF(false),
+     termBuffer(NULL),
      curX(0),
      curY(0),
      memX(0),
@@ -629,11 +630,238 @@ void CodeGenerator::insertLineNumber ()
     }
 }
 
+void CodeGenerator::printTermBuffer() {
+  for (int y=0;y<=maxY;y++) {
+    
+    for (int x=0;x<asciiArtWidth;x++) {
+      if (termBuffer[x + y* asciiArtWidth].c=='\r') {           
+        break;
+      }
+      elementStyle = termBuffer[x + y* asciiArtWidth].style;
+      
+      //full block
+      if (termBuffer[x + y* asciiArtWidth].c == 0xdb){
+        elementStyle.setBgColour(elementStyle.getFgColour());
+      }
+      
+      if (!elementStyle.isReset()) {
+        *out <<getOpenTag();
+      }
+      
+      *out << maskCP437Character(termBuffer[x + y* asciiArtWidth].c);
+      
+      if (!elementStyle.isReset()) {
+        *out <<getCloseTag();
+      }
+    }
+    *out<<newLineTag;  
+  }
+  out->flush();
+  delete [] termBuffer;
+}
+
+
+void CodeGenerator::parseBinFile(){
+  char * buffer = new char [2];
+  int cur=0;
+  int next=0;
+  int count=0;
+  allocateTermBuffer();
+  while (in->read (buffer, 2)){
+    
+    cur = buffer[0]&0xff;
+    next = buffer[1]&0xff;
+    
+    int colBg = (next & 240) >> 4;
+    int colFg = (next & 15);
+    
+    if (colBg > 8)
+    {
+      colBg -= 8;
+    }
+    
+    elementStyle.setFgColour(rgb2html(basic16[colFg]));
+    elementStyle.setBgColour(rgb2html(basic16[colBg]));
+    
+    //FIXME:
+    elementStyle.setBold(cur >= 0x20 && cur <= 0x7a);
+    
+    if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
+      termBuffer[curX + curY*asciiArtWidth].c = cur;
+      termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
+      curX++;
+    } 
+    if (count % asciiArtWidth == 0 ) {
+      curY++;  
+      if (maxY<curY && curY<asciiArtHeight) maxY=curY;
+      curX=0;
+    }
+    count+=2; 
+  } 
+}
+
+void CodeGenerator::parseXBinFile(){
+  
+    char header [11] = {0};
+    char palette [48] = {0};
+    
+    if (in->read(header, 11)){
+      
+      asciiArtWidth = 0xff & ((header[ 6 ] << 8) + header[ 5 ]);
+      asciiArtHeight = 0xff & ((header[ 8 ] << 8) + header[ 7 ]);
+      int fontSize = header[ 9 ];
+      int flags = header[ 10 ];
+    /*
+      std::cerr<<"XBIN width:"<<asciiArtWidth<<"\n";
+      std::cerr<<"XBIN height:"<<asciiArtHeight<<"\n";
+      std::cerr<<"XBIN fontsize:"<<fontSize<<"\n";
+      std::cerr<<"XBIN flags:"<<flags<<"\n";
+      */
+      allocateTermBuffer();
+          
+      if( (flags & 1) == 1 && in->read(palette, 48)) {
+        int loop;
+        int index;
+        
+        //override default palette
+        for (loop = 0; loop < 16; loop++)
+        {
+          index = loop * 3;
+          basic16[loop][0] = palette[index] << 2 | palette[index] >> 4;
+          basic16[loop][1] = palette[index+1] << 2 | palette[index+1] >> 4;
+          basic16[loop][2] = palette[index+2] << 2 | palette[index+2] >> 4;
+        }
+      }
+      
+      // skip font
+      if( (flags & 2) == 2 ) {
+        int numchars = ( flags & 0x10 ? 512 : 256 );      
+        in->seekg ( fontSize * numchars, ios::cur);
+      }
+      
+      // decode image
+      if( (flags & 4) == 4) {
+       // std::cerr<<"DECODE--- starting at "<<in->tellg()<<"\n";
+        int c=0;
+        while( in && curY < asciiArtHeight)
+        { 
+          c = in->get();
+          int compression = c & 0xC0;
+          int cnt = ( c & 0x3F ) + 1;
+          
+          int cur = -1;
+          int attr = -1;
+          
+          while( cnt-- ) {
+            // none
+            if( compression == 0 ) {
+              cur = in->get();
+              attr = in->get();
+            }
+            // char
+            else if ( compression == 0x40 ) {
+              if( cur == -1 ) {
+                cur = in->get();
+              }
+              attr = in->get();
+            }
+            // attr
+            else if ( compression == 0x80 ) {
+              if( attr == -1 ) {
+                attr = in->get();
+              }
+              cur = in->get();
+            }
+            // both
+            else {
+              if( cur == -1 ) {
+                cur = in->get();
+              }
+              if( attr == -1 ) {
+                attr = in->get();
+              }
+            }
+            
+            int colBg = (attr & 240) >> 4;
+            int colFg = (attr & 15);
+            
+            if (colBg > 8)
+            {
+              colBg -= 8;
+            }
+            
+            elementStyle.setFgColour(rgb2html(basic16[colFg]));
+            elementStyle.setBgColour(rgb2html(basic16[colBg]));
+            
+            //FIXME:
+            elementStyle.setBold(cur >= 0x20 && cur <= 0x7a);
+            
+            if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
+              termBuffer[curX + curY*asciiArtWidth].c = cur;
+              termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
+              curX++;
+            }
+          
+            if (curX == asciiArtWidth)
+            {
+              curX = 0;
+              curY++;
+              if (maxY<curY && curY<asciiArtHeight) maxY=curY;
+            }
+          }
+        }
+    } else {
+     // std::cerr<<"FLAT--- starting at "<<in->tellg()<<"\n";
+      parseBinFile();
+    } 
+  }  
+}
+
+void CodeGenerator::allocateTermBuffer(){
+  
+  if (termBuffer) delete [] termBuffer;
+  
+  termBuffer = new TDChar[asciiArtWidth*asciiArtHeight];
+  for (int i=0; i<asciiArtWidth*asciiArtHeight; i++){
+    termBuffer[i].c=0;
+  }
+}
+
+bool CodeGenerator::streamIsXBIN() {
+  bool isXBIN = false;
+  char head[5] = {0};
+  if (in->read (head, 4)) {
+    isXBIN = string(head)=="XBIN";
+    in->seekg (0, ios::beg);
+  }
+  return isXBIN;
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 void CodeGenerator::processInput()
 {
+//  curX = curY = memX = memY = 0;
+  int cur=0;
+  int next=0;
   
+  if (parseCP437 || parseAsciiBin){
+    elementStyle.setReset(false);
+  }
+  
+  // deal with BIN/XBIN without file watching, reformatting and line numbering distractions
+  if (parseAsciiBin){
+    
+    if (streamIsXBIN())
+      parseXBinFile();
+    else
+      parseBinFile();
+    
+    printTermBuffer();
+    return; 
+  }
+  
+  // handle normal text files
   if (readAfterEOF && in!=&cin) {
     in->seekg (0, ios::end);
     // output the last few lines or the complete file if not too big
@@ -645,26 +873,21 @@ void CodeGenerator::processInput()
       in->seekg (0, ios::beg); // output complete file
     }
   }
+ 
+  if (streamIsXBIN()) {
+   *out<<"Please apply --art-bin option for XBIN files.";
+   return; 
+  }
   
   string line;
   size_t i=0;
   bool tagOpen=false;
   bool isGrepOutput=false;
-  
-  //hack to read whole file for BIN ascii art
-  char lineDelim = (parseAsciiBin) ? '\xff' :  '\n';
-  
-  TDChar* termBuffer = NULL;
-  curX = curY = memX = memY = 0;
-  
-  if (parseCP437 || parseAsciiBin){
-    elementStyle.setReset(false);
-    termBuffer = new TDChar[asciiArtWidth*asciiArtHeight];
-    for (int i=0; i<asciiArtWidth*asciiArtHeight; i++){
-      termBuffer[i].c=0;
-    }
     
+  if (parseCP437){
+    allocateTermBuffer();
   }
+  
   while (true) {
     
     bool eof=false;
@@ -682,7 +905,7 @@ void CodeGenerator::processInput()
       
       line = preFormatter.getNextLine();
     } else {
-      eof=!getline(*in, line, lineDelim);
+      eof=!getline(*in, line);
       ++lineNumber;
       numberCurrentLine = true;
     }
@@ -705,8 +928,7 @@ void CodeGenerator::processInput()
       insertLineNumber();
       i=0;
       size_t seqEnd=string::npos;
-      int cur=0;
-      int next=0;
+      
       
       while (i <line.length() ) {
         // CSI ?
@@ -747,44 +969,7 @@ void CodeGenerator::processInput()
             }
             ++i;
           }  
-        }
-        
-        if (parseAsciiBin) {
-          //line contains the whole file
-          // TBD: https://github.com/ansilove/ansilove/blob/master/src/loaders/xbin.c  
-          
-          //Character attribute
-          next = line[i+1]&0xff;
-          
-          int colBg = (next & 240) >> 4;
-          int colFg = (next & 15);
-          
-          if (colBg > 8)
-          {
-            colBg -= 8;
-          }
-          
-          elementStyle.setFgColour(rgb2html(basic16[colFg]));
-          elementStyle.setBgColour(rgb2html(basic16[colBg]));
-          
-          //FIXME:
-          elementStyle.setBold(cur >= 0x20 && cur <= 0x7a);
-          
-          if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
-            termBuffer[curX + curY*asciiArtWidth].c = cur;
-            termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
-            curX++;
-          } 
-          if (i % asciiArtWidth == 0 ) {
-            curY++;  
-            if (maxY<curY && curY<asciiArtHeight) maxY=curY;
-            curX=0;
-          }
-          i+=1;
-        }
-        
-        
-        if (!parseCP437){
+        } else {
           
           if (cur==0x1b || cur==0x9b || cur==0xc2) {
             if (line.length() - i > 2){
@@ -854,45 +1039,18 @@ void CodeGenerator::processInput()
             *out << maskCharacter(line[i]);
             ++i;
           }
-          
         }
-        
       }
-      if (!parseCP437 && !parseAsciiBin) *out << newLineTag;
+      if (!parseCP437) *out << newLineTag;
     }
   }
   if (tagOpen) {
     *out <<getCloseTag();
   }
   
-  if (parseCP437 || parseAsciiBin){
+  if (parseCP437){
+    printTermBuffer();
     
-    for (int y=0;y<=maxY;y++) {
-      
-      for (int x=0;x<asciiArtWidth;x++) {
-        if (termBuffer[x + y* asciiArtWidth].c=='\r') {           
-          break;
-        }
-        elementStyle = termBuffer[x + y* asciiArtWidth].style;
-        
-        //full block
-        if (termBuffer[x + y* asciiArtWidth].c == 0xdb){
-          elementStyle.setBgColour(elementStyle.getFgColour());
-        }
-        
-        if (!elementStyle.isReset()) {
-          *out <<getOpenTag();
-        }
-        
-        *out << maskCP437Character(termBuffer[x + y* asciiArtWidth].c);
-        
-        if (!elementStyle.isReset()) {
-          *out <<getCloseTag();
-        }
-      }
-      *out<<newLineTag;  
-    }
-    delete [] termBuffer;
   }
   out->flush();
 }

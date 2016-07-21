@@ -516,20 +516,20 @@ public:
         gbAsciiArt->setTitle(QApplication::translate("Dialog", "ASCII art options", 0));
         lblWidth->setText(QApplication::translate("Dialog", "Width", 0));
 #ifndef QT_NO_TOOLTIP
-        sbWidth->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image width (default: 80)", 0));
+        sbWidth->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image width (default: 80). This setting is ignored with XBIN input.", 0));
 #endif // QT_NO_TOOLTIP
         lblHeight->setText(QApplication::translate("Dialog", "Height", 0));
 #ifndef QT_NO_TOOLTIP
-        sbHeight->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image height (default: 150)", 0));
+        sbHeight->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image height (default: 150). This setting is ignored with XBIN input.", 0));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
         rbAsciiCP437->setToolTip(QApplication::translate("Dialog", "Enable support for codepage 437 symbols and ANSI.SYS sequences.", 0));
 #endif // QT_NO_TOOLTIP
         rbAsciiCP437->setText(QApplication::translate("Dialog", "Codepage &437", 0));
 #ifndef QT_NO_TOOLTIP
-        rbAsciiBin->setToolTip(QApplication::translate("Dialog", "Enable support for ASCII BIN files.", 0));
+        rbAsciiBin->setToolTip(QApplication::translate("Dialog", "Enable support for ASCII BIN and XBIN files.", 0));
 #endif // QT_NO_TOOLTIP
-        rbAsciiBin->setText(QApplication::translate("Dialog", "BIN fo&rmat", 0));
+        rbAsciiBin->setText(QApplication::translate("Dialog", "BIN/XBIN fo&rmat", 0));
         label_2->setText(QApplication::translate("Dialog", "Tit&le:", 0));
 #ifndef QT_NO_TOOLTIP
         leTitle->setToolTip(QApplication::translate("Dialog", "Set the output document title.", 0));
@@ -564,7 +564,7 @@ public:
 #endif // QT_NO_TOOLTIP
         label_5->setText(QApplication::translate("Dialog", "Color map file:", 0));
 #ifndef QT_NO_TOOLTIP
-        leColorMapPath->setToolTip(QApplication::translate("Dialog", "Color map file (see README for details).", 0));
+        leColorMapPath->setToolTip(QApplication::translate("Dialog", "Color map file (see README for details). This setting is ignored with XBIN input.", 0));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
         pbSelectMapFile->setToolTip(QApplication::translate("Dialog", "Select a color map configuration file. ", 0));

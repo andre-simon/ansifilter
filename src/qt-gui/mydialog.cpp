@@ -172,6 +172,8 @@ void MyDialog::plausibility()
     dlg.sbHeight->setEnabled(dlg.gbAsciiArt->isEnabled());
     dlg.lblWidth->setEnabled(dlg.gbAsciiArt->isEnabled());
     dlg.sbWidth->setEnabled(dlg.gbAsciiArt->isEnabled());
+    dlg.cbIgnoreSequences->setEnabled(!dlg.cbParseAsciiArt->isChecked());
+    dlg.cbWatchFile->setEnabled(!dlg.cbParseAsciiArt->isChecked());
 }
 
 ansifilter::OutputType MyDialog::getOutputType()

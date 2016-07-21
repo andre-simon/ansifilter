@@ -123,6 +123,8 @@ private:
 
 
     void insertLineNumber ();
+    string unicodeFromHTML(const string &);
+    
 };
 
 }

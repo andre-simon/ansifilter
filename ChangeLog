@@ -6,7 +6,7 @@ Ansifilter ChangeLog
 ansifilter 2.0
 
 -new CSI parser
--CLI: new --art* options to parse ANSI and BIN sequences used for ASCII art 
+-CLI: new --art* options to parse ANSI and BIN/XBIN sequences used for ASCII art 
   (suggested by Phillip Li)  
 -GUI: added ASCII art options
 

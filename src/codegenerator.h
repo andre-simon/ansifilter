@@ -208,6 +208,7 @@ public:
     /** \param b set to true if input is an ASCII art BIN file*/
     void setParseAsciiBin(bool flag);
     
+    /** \param b set dimensions of ASCII art virtual console */
     void setAsciiArtSize(int width, int height);
     
 protected:
@@ -221,6 +222,8 @@ protected:
         \return Escape sequence of output format */
     virtual string maskCharacter(unsigned char c) = 0;
 
+    /** \param c Character to be masked
+     \return Codepage 437 escape sequence of output format */
     virtual string maskCP437Character(unsigned char c) { return maskCharacter(c); }
     
     /** Tag for inserting line feeds*/
@@ -232,7 +235,7 @@ protected:
     /** file output*/
     ostream *out;
 
-    bool tagIsOpen;
+    bool tagIsOpen; ///< a reminder to close an open tag
 
     string styleCommentOpen,  ///< open comment delimiter
            styleCommentClose; ///< close comment delimiter
@@ -267,8 +270,8 @@ protected:
          numberCurrentLine,   ///< output number of current line
          addAnchors;          ///< add HTML anchor to line number
 
-    bool parseCP437;
-    bool parseAsciiBin;
+    bool parseCP437; ///< treat input as CP437 file
+    bool parseAsciiBin; ///< treat input as BIN or XBIN file
          
     /** Processes input data */
     void processInput();
@@ -281,10 +284,10 @@ protected:
         return StringTools::lowerCase(encoding)!="none";
     }
     
-        /** convert a rgb triple to HTML color notation
-        @param rgb RGB input values 
-        @return HTML color string
-        */
+    /** convert a rgb triple to HTML color notation
+    @param rgb RGB input values 
+    @return HTML color string
+    */
     string rgb2html(unsigned char* rgb);
     
         /// 16 basic colors
@@ -294,8 +297,7 @@ protected:
 
     /** Class for line wrapping and tab replacement*/
     PreFormatter preFormatter;
-
-
+    
 private:
 
     CodeGenerator(const CodeGenerator&) {}
@@ -305,7 +307,7 @@ private:
         return *this;
     }
 
-    /** parses string to extract sequence information
+    /** parses string to extract ANSI sequence information
         @param line text line
         @param begin starting position within line
         @param end ending position within line
@@ -344,9 +346,10 @@ private:
     bool ignoreFormatting; ///< ignore color and font face information
     bool readAfterEOF;     ///< continue reading after EOF occoured
     
+    TDChar* termBuffer;
     int curX, curY, memX, memY, maxY; ///< cursor position for Codepage 437 sequences
-    int asciiArtWidth;
-    int asciiArtHeight;
+    int asciiArtWidth;  ///< virtual console column count
+    int asciiArtHeight; ///< virtual console line count
     
     ElementStyle memStyle;
     
@@ -354,6 +357,21 @@ private:
         @param color xterm color
         @param rgb RGB output values */
     void xterm2rgb(unsigned char color, unsigned char* rgb);
+    
+    /**Print content of virtual terminal buffer. Deletes buffer. */
+    void printTermBuffer();
+    
+    /**Parses BIN ASCII art file */
+    void parseBinFile();
+    
+    /**Parses XBIN ASCII art file */
+    void parseXBinFile();
+    
+    /**allocate virtual terminal buffer */
+    void allocateTermBuffer();
+    
+    /** @return true if stream begins with XBIN id  */
+    bool streamIsXBIN();
     
     /// the 6 value iterations in the xterm color cube
     static const unsigned char valuerange[] ;
