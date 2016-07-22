@@ -118,7 +118,7 @@ public:
                                        const string &title);
     
     /**
-     Overrides default colours by user defined values
+     Overrides default colours by user defined values; resets palette to default if mapPath is empty
      \param mapPath path of map file
      \return true if parsing was successfull
     */
@@ -291,8 +291,9 @@ protected:
     string rgb2html(unsigned char* rgb);
     
         /// 16 basic colors
-    static unsigned char basic16[16][3];
-
+    static unsigned char workingPalette[16][3];
+    static unsigned char defaultPalette[16][3];
+    
     ElementStyle elementStyle;
 
     /** Class for line wrapping and tab replacement*/

@@ -117,7 +117,7 @@ void RtfGenerator::printBody()
          << "{\\colortbl;";
 
     for (int i=0;i<16;i++){
-      *out << getAttributes(StyleColour(rgb2html(basic16[i])));
+      *out << getAttributes(StyleColour(rgb2html(workingPalette[i])));
     }
 
     *out << "}\n";

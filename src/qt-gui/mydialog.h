@@ -40,13 +40,13 @@ public:
                 MyDialog(QWidget * parent = 0, Qt::WindowFlags f = 0);
 
 
-				void setInputFileName(const char* fName) {
-				   inputFileName=QString(fName);
-                   showFile();
-				}
+                void setInputFileName(const char* fName) {
+                  inputFileName=QString(fName);
+                  showFile();
+                }
 
                 virtual ~MyDialog() {}
-				
+                
 protected:
                 void closeEvent(QCloseEvent *event);
 
@@ -58,6 +58,7 @@ private:
 
                 QString getOutFileSuffix();
                 ansifilter::OutputType getOutputType();
+                void openFile(const QString & path);
                 void showFile();
 
                 void dropEvent(QDropEvent* event);
@@ -68,14 +69,14 @@ public slots:
                 //This is a slot like the ones we used in our last tutorial
                 // The difference here that it gets automatically connect
                 // If you use on_objectname_signalname it's like connect(pushButton,SIGNAL(clicked()),this,SLOT(on_pushButton_clicked()))
-				void on_pbSaveAs_clicked();
-				void on_pbFileOpen_clicked();
-				void on_pbAbout_clicked();
-				void on_pbClipboard_clicked();
+                void on_pbSaveAs_clicked();
+                void on_pbFileOpen_clicked();
+                void on_pbAbout_clicked();
+                void on_pbClipboard_clicked();
                 void on_pbSelectMapFile_clicked();
                 void on_cbParseAsciiArt_clicked();
 
-				void on_cbIgnoreSequences_stateChanged();
+                void on_cbIgnoreSequences_stateChanged();
                 void on_rbAsciiCP437_toggled();
                 void on_rbAsciiBin_toggled();
                 void on_cbWatchFile_stateChanged();

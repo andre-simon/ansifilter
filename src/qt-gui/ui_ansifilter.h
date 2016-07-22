@@ -49,10 +49,10 @@ public:
     QSpacerItem *verticalSpacer_2;
     QSpacerItem *horizontalSpacer_2;
     QLabel *lblDrop;
-    QFrame *line;
     QHBoxLayout *horizontalLayout_6;
     QLabel *label_4;
     QComboBox *comboFormat;
+    QSpacerItem *verticalSpacer_4;
     QHBoxLayout *horizontalLayout_2;
     QCheckBox *cbIgnoreSequences;
     QCheckBox *cbFragment;
@@ -181,13 +181,6 @@ public:
 
         verticalLayout->addLayout(gridLayout);
 
-        line = new QFrame(groupBox);
-        line->setObjectName(QStringLiteral("line"));
-        line->setFrameShape(QFrame::HLine);
-        line->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout->addWidget(line);
-
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
         label_4 = new QLabel(groupBox);
@@ -203,6 +196,10 @@ public:
 
 
         verticalLayout->addLayout(horizontalLayout_6);
+
+        verticalSpacer_4 = new QSpacerItem(20, 5, QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+        verticalLayout->addItem(verticalSpacer_4);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));

@@ -137,12 +137,16 @@ void MyDialog::dropEvent(QDropEvent* event)
     QList<QUrl> urls = event->mimeData()->urls();
     if (urls.isEmpty())
         return;
+    openFile(urls.first().toLocalFile());
+}
 
-    QString fileName = urls.first().toLocalFile();
-    if (!fileName.isEmpty()) {
-        inputFileName=fileName;
-        dlg.cbWatchFile->setEnabled(true);
-        dlg.cbWatchFile->setChecked(false);
+void MyDialog::openFile(const QString & path){
+    if (!path.isEmpty()) {
+        inputFileName=path;
+        if (!dlg.cbParseAsciiArt->isChecked()){
+            dlg.cbWatchFile->setEnabled(true);
+            dlg.cbWatchFile->setChecked(false);
+        }
         showFile();
     }
 }
@@ -229,7 +233,6 @@ void MyDialog::on_pbSaveAs_clicked()
         return;
     }
 
-
     QString outFileSuffix = getOutFileSuffix();
 
     QString outFileName =QFileDialog::getSaveFileName(this, tr("Save File"), outputFileName,
@@ -251,11 +254,9 @@ void MyDialog::on_pbSaveAs_clicked()
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt"); //TODO TeX?
 
-    if (!dlg.leColorMapPath->text().isEmpty()) {
-        if (!generator->setColorMap(dlg.leColorMapPath->text().toStdString())){
-            QMessageBox::warning(this, "Color Mapping Error", "Could not read color map");
-            return;
-        }
+    if (!generator->setColorMap(dlg.leColorMapPath->text().toStdString())){
+        QMessageBox::warning(this, "Color Mapping Error", "Could not read color map");
+        return;
     }
 
     this->setCursor(Qt::WaitCursor);
@@ -301,19 +302,12 @@ void MyDialog::on_pbSelectMapFile_clicked()
 
 void MyDialog::on_pbFileOpen_clicked()
 {
-    QString openFile = QFileDialog::getOpenFileName(this, tr("Open File"), inputFileName, tr("Text files (*.*)"));
-    if (!openFile.isEmpty()) {
-        inputFileName = openFile;
-        dlg.cbWatchFile->setEnabled(true);
-        dlg.cbWatchFile->setChecked(false);
-        showFile();
-    }
+    openFile (QFileDialog::getOpenFileName(this, tr("Open File"), inputFileName, tr("Text files (*.*)")));
 }
 
 void MyDialog::showFile()
 {
     if (inputFileName.isEmpty()) return;
-
 
     dlg.lblInFilePath->setText(inputFileName);
 
@@ -332,11 +326,9 @@ void MyDialog::showFile()
     generator->setFont(dlg.comboFont->currentFont().family().toStdString());
     generator->setPreformatting ( ansifilter::WRAP_SIMPLE, dlg.spinBoxWrap->value());
     generator->setFontSize("10pt");
-    if (!dlg.leColorMapPath->text().isEmpty()) {
-        if (!generator->setColorMap(dlg.leColorMapPath->text().toStdString())){
-            QMessageBox::warning(this, "Color Mapping Error", "Could not read color map");
-            return;
-        }
+    if (!generator->setColorMap(dlg.leColorMapPath->text().toStdString())){
+        QMessageBox::warning(this, "Color Mapping Error", "Could not read color map");
+        return;
     }
 
     this->setCursor(Qt::WaitCursor);

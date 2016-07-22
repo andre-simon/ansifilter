@@ -123,12 +123,12 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
     string mapPath = options.getMapPath();
     bool failure=false;
 
-    if (mapPath.size()){
+   // if (mapPath.size()){
       if (!generator->setColorMap(mapPath)){
         std::cerr <<"could not read map file: " << mapPath << "\n";
         return EXIT_FAILURE;
       }
-    }
+    //}
     
     while (i < fileCount && !failure) {
 

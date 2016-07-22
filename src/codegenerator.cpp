@@ -32,6 +32,7 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #include <cstdlib> 
+#include <cstring>
 #include <fstream>
 #include "version.h"
 
@@ -109,7 +110,7 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      asciiArtWidth(80),
      asciiArtHeight(150)
 {
-    elementStyle.setFgColour(rgb2html(basic16[0]));
+    elementStyle.setFgColour(rgb2html(workingPalette[0]));
 }
 
 CodeGenerator::~CodeGenerator()
@@ -132,15 +133,15 @@ void CodeGenerator::setWrapNoNumbers(bool flag)
 }
 
 void CodeGenerator::setParseCodePage437(bool flag){
- parseCP437 = flag; 
+    parseCP437 = flag; 
 }
 
 void CodeGenerator::setParseAsciiBin(bool flag){
-  parseAsciiBin = flag; 
+    parseAsciiBin = flag; 
 }
 void CodeGenerator::setAsciiArtSize(int width, int height){
-  if (width>0) asciiArtWidth = width;
-  if (height>0) asciiArtHeight = height;
+    if (width>0) asciiArtWidth = width;
+    if (height>0) asciiArtHeight = height;
 }
 
 bool CodeGenerator::getFragmentCode()
@@ -370,7 +371,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
             break;   
         case 1:
             elementStyle.setBold(true);
-            elementStyle.setFgColour(rgb2html(basic16[8]));
+            elementStyle.setFgColour(rgb2html(workingPalette[8]));
             break;
         case 2: //Faint
             break;
@@ -426,9 +427,9 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 36:
         case 37:
             if (elementStyle.isBold()){              
-              elementStyle.setFgColour(rgb2html(basic16[ansiCode-30+8]));
+              elementStyle.setFgColour(rgb2html(workingPalette[ansiCode-30+8]));
             } else
-              elementStyle.setFgColour(rgb2html(basic16[ansiCode-30]));
+              elementStyle.setFgColour(rgb2html(workingPalette[ansiCode-30]));
             break;
             
         case 38: // xterm 256 foreground color mode \033[38;5;<color>
@@ -458,7 +459,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 45:
         case 46:
         case 47:
-            elementStyle.setBgColour(rgb2html(basic16[ansiCode-40]));
+            elementStyle.setBgColour(rgb2html(workingPalette[ansiCode-40]));
             break;
 
         case 48:  // xterm 256 background color mode \033[48;5;<color>
@@ -489,7 +490,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 95:
         case 96:
         case 97:
-            elementStyle.setFgColour(rgb2html(basic16[ansiCode-90+8]));
+            elementStyle.setFgColour(rgb2html(workingPalette[ansiCode-90+8]));
             break;
     
         case 100:
@@ -500,7 +501,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 105:
         case 106:
         case 107:
-            elementStyle.setBgColour(rgb2html(basic16[ansiCode-100+8]));
+            elementStyle.setBgColour(rgb2html(workingPalette[ansiCode-100+8]));
             break;
 
         }
@@ -596,7 +597,7 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
   
   if (line[end]=='K'){
   //  std::cerr<<"K!!!\n";
-      //for (int i=*curX;i<80;i++) *termBuffer[i]->c =0;
+    //    for (int i=curX;i<asciiArtWidth;i++) termBuffer[curY*asciiArtWidth + i]->c =0;
      
   }
   
@@ -680,8 +681,8 @@ void CodeGenerator::parseBinFile(){
       colBg -= 8;
     }
     
-    elementStyle.setFgColour(rgb2html(basic16[colFg]));
-    elementStyle.setBgColour(rgb2html(basic16[colBg]));
+    elementStyle.setFgColour(rgb2html(workingPalette[colFg]));
+    elementStyle.setBgColour(rgb2html(workingPalette[colBg]));
     
     //FIXME:
     elementStyle.setBold(cur >= 0x20 && cur <= 0x7a);
@@ -700,6 +701,8 @@ void CodeGenerator::parseBinFile(){
   } 
 }
 
+// the XBIN decoding function is based on AnsiLove:
+// https://github.com/ansilove/
 void CodeGenerator::parseXBinFile(){
 
     char header [11] = {0};
@@ -727,9 +730,9 @@ void CodeGenerator::parseXBinFile(){
         for (loop = 0; loop < 16; loop++)
         {
           index = loop * 3;
-          basic16[loop][0] = palette[index] << 2 | palette[index] >> 4;
-          basic16[loop][1] = palette[index+1] << 2 | palette[index+1] >> 4;
-          basic16[loop][2] = palette[index+2] << 2 | palette[index+2] >> 4;
+          workingPalette[loop][0] = palette[index] << 2 | palette[index] >> 4;
+          workingPalette[loop][1] = palette[index+1] << 2 | palette[index+1] >> 4;
+          workingPalette[loop][2] = palette[index+2] << 2 | palette[index+2] >> 4;
         }
       }
       
@@ -741,7 +744,7 @@ void CodeGenerator::parseXBinFile(){
       
       // decode image
       if( (flags & 4) == 4) {
-       // std::cerr<<"DECODE--- starting at "<<in->tellg()<<"\n";
+     //   std::cerr<<"DECODE--- starting at "<<in->tellg()<<"\n";
         int c=0;
         while( in && curY < asciiArtHeight)
         { 
@@ -790,8 +793,8 @@ void CodeGenerator::parseXBinFile(){
               colBg -= 8;
             }
             
-            elementStyle.setFgColour(rgb2html(basic16[colFg]));
-            elementStyle.setBgColour(rgb2html(basic16[colBg]));
+            elementStyle.setFgColour(rgb2html(workingPalette[colFg]));
+            elementStyle.setBgColour(rgb2html(workingPalette[colBg]));
             
             //FIXME:
             elementStyle.setBold(cur >= 0x20 && cur <= 0x7a);
@@ -841,7 +844,6 @@ bool CodeGenerator::streamIsXBIN() {
 
 void CodeGenerator::processInput()
 {
-//  curX = curY = memX = memY = 0;
   int cur=0;
   int next=0;
   
@@ -929,7 +931,6 @@ void CodeGenerator::processInput()
       i=0;
       size_t seqEnd=string::npos;
       
-      
       while (i <line.length() ) {
         // CSI ?
         cur = line[i]&0xff;
@@ -954,11 +955,13 @@ void CodeGenerator::processInput()
                 }
                 i=seqEnd+1;
             } else {
-             //++i;
+             ++i;
             }
           } else  if (cur==0x1a && line.length() - i > 6){
-            if (line.substr(i+1, 5)=="SAUCE"){
-               break;
+            // skip SAUCE info section
+            while (line[i]==0x1a || !line[i]) ++i;
+            if (line.substr(i, 5)=="SAUCE"){
+              break; 
             }
           } else {
             if (curX>=0 && curX<asciiArtWidth && curY>=0 && curY<asciiArtHeight){
@@ -966,7 +969,6 @@ void CodeGenerator::processInput()
               termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
               curX++;
             } 
-            
             if (line[i]=='\r' ) {
               curY++;  
               if (maxY<curY && curY<asciiArtHeight) maxY=curY;
@@ -1049,7 +1051,8 @@ void CodeGenerator::processInput()
       }
       if (!parseCP437) *out << newLineTag;
     }
-  }
+  } // while (true)
+  
   if (tagOpen) {
     *out <<getCloseTag();
   }
@@ -1067,9 +1070,9 @@ void CodeGenerator::xterm2rgb(unsigned char color, unsigned char* rgb)
 {
     // 16 basic colors
     if(color<16) {
-        rgb[0] = basic16[color][0];
-        rgb[1] = basic16[color][1];
-        rgb[2] = basic16[color][2];
+        rgb[0] = workingPalette[color][0];
+        rgb[1] = workingPalette[color][1];
+        rgb[2] = workingPalette[color][2];
     }
 
     // color cube color
@@ -1094,7 +1097,26 @@ string CodeGenerator::rgb2html(unsigned char* rgb){
 
 const unsigned char CodeGenerator::valuerange[] = { 0x00, 0x5F, 0x87, 0xAF, 0xD7, 0xFF };
 
-unsigned char CodeGenerator::basic16[16][3] = {
+unsigned char CodeGenerator::defaultPalette[16][3] = {
+  { 0x00, 0x00, 0x00 }, // 0 ColorBlack
+  { 0xCD, 0x00, 0x00 }, // 1 ColorRed
+  { 0x00, 0xCD, 0x00 }, // 2 ColorGreen
+  { 0xCD, 0xCD, 0x00 }, // 3 ColorYellow
+  { 0x00, 0x00, 0xEE }, // 4 ColorBlue
+  { 0xCD, 0x00, 0xCD }, // 5 ColorMagenta
+  { 0x00, 0xCD, 0xCD }, // 6 ColorCyan
+  { 0xE5, 0xE5, 0xE5 }, // 7 ColorGray
+  { 0x7F, 0x7F, 0x7F }, // 8 ColorDarkGray
+  { 0xFF, 0x00, 0x00 }, // 9 ColorBrightRed
+  { 0x00, 0xFF, 0x00 }, // 10 ColorBrightGreen
+  { 0xFF, 0xFF, 0x00 }, // 11 ColorBrightYellow
+  { 0x5C, 0x5C, 0xFF }, // 12 ColorBrightBlue
+  { 0xFF, 0x00, 0xFF }, // 13 ColorBrightMagenta
+  { 0x00, 0xFF, 0xFF }, // 14 ColorBrightCyan
+  { 0xFF, 0xFF, 0xFF }  // 15 ColorBrightWhite
+}; 
+
+unsigned char CodeGenerator::workingPalette[16][3] = {
     { 0x00, 0x00, 0x00 }, // 0 ColorBlack
     { 0xCD, 0x00, 0x00 }, // 1 ColorRed
     { 0x00, 0xCD, 0x00 }, // 2 ColorGreen
@@ -1114,6 +1136,13 @@ unsigned char CodeGenerator::basic16[16][3] = {
 }; 
 
 bool CodeGenerator::setColorMap(const string& mapPath){
+  
+  //restore default colors
+  if (mapPath.length()==0){
+   memcpy(workingPalette, defaultPalette, sizeof defaultPalette);
+   return true;
+  }
+  
   ifstream mapFile ( mapPath.c_str() );
   if ( mapFile ) {
 
@@ -1134,9 +1163,9 @@ bool CodeGenerator::setColorMap(const string& mapPath){
 
         s>>colorCode;
         if (colorCode.size()>=7 && colorCode[0]=='#' ) {  
-          basic16[idx][0] = (char)std::strtol(colorCode.substr ( 1, 2 ).c_str(), NULL, 16);
-          basic16[idx][1] = (char)std::strtol(colorCode.substr ( 3, 2 ).c_str(), NULL, 16);
-          basic16[idx][2] = (char)std::strtol(colorCode.substr ( 5, 2 ).c_str(), NULL, 16);  
+          workingPalette[idx][0] = (char)std::strtol(colorCode.substr ( 1, 2 ).c_str(), NULL, 16);
+          workingPalette[idx][1] = (char)std::strtol(colorCode.substr ( 3, 2 ).c_str(), NULL, 16);
+          workingPalette[idx][2] = (char)std::strtol(colorCode.substr ( 5, 2 ).c_str(), NULL, 16);  
         } else {
           return false;
         }
