@@ -611,7 +611,7 @@ void CodeGenerator::parseCodePage437Seq(string line, size_t begin, size_t end){
     curY = memY;
     elementStyle=memStyle;
   }
-  
+ 
 }
 
 void CodeGenerator::insertLineNumber ()
@@ -632,7 +632,9 @@ void CodeGenerator::insertLineNumber ()
 }
 
 void CodeGenerator::printTermBuffer() {
-  for (int y=0;y<=maxY;y++) {
+
+    
+    for (int y=0;y<=maxY;y++) {
 
     for (int x=0;x<asciiArtWidth;x++) {
       if (termBuffer[x + y* asciiArtWidth].c=='\r') {
@@ -969,12 +971,20 @@ void CodeGenerator::processInput()
               termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
               curX++;
             } 
-            if (line[i]=='\r' ) {
+            
+            if (curX==asciiArtWidth || line[i]=='\r' ) {
               curY++;  
               if (maxY<curY && curY<asciiArtHeight) maxY=curY;
               curX=0;
-              i=line.length();
+              if (line[i]=='\r') i=line.length();
             }
+            
+            
+             /*if (line[i]=='\t'){
+                curX += 8;
+                std::cerr<<"tab\n";
+             }*/
+            
             ++i;
           }  
         } else {

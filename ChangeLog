@@ -1,6 +1,13 @@
 Ansifilter ChangeLog
 
 
+12.09.2016
+
+ansifilter 2.1
+
+-fixed output height of some CP437 ASCII art files
+
+---
 20.07.2016
 
 ansifilter 2.0

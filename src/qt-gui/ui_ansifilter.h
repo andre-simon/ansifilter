@@ -270,7 +270,7 @@ public:
         sbHeight->setObjectName(QStringLiteral("sbHeight"));
         sbHeight->setEnabled(false);
         sbHeight->setMinimum(80);
-        sbHeight->setMaximum(200);
+        sbHeight->setMaximum(500);
         sbHeight->setSingleStep(5);
         sbHeight->setValue(150);
 

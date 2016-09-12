@@ -162,7 +162,7 @@ void MyDialog::onFileChanged(const QString & path)
 void MyDialog::plausibility()
 {
     int selIdx = dlg.comboFormat->currentIndex();
-    dlg.cbIgnoreSequences->setEnabled(selIdx!=0);
+    dlg.cbIgnoreSequences->setEnabled(selIdx>0 && ! ((selIdx==1|| selIdx==2) && dlg.cbParseAsciiArt->isChecked() ));
     dlg.cbFragment->setEnabled(selIdx==1 || selIdx==3 || selIdx==4|| selIdx==6);
     dlg.cbParseAsciiArt->setEnabled(selIdx==1 || selIdx==2);
 
@@ -176,7 +176,6 @@ void MyDialog::plausibility()
     dlg.sbHeight->setEnabled(dlg.gbAsciiArt->isEnabled());
     dlg.lblWidth->setEnabled(dlg.gbAsciiArt->isEnabled());
     dlg.sbWidth->setEnabled(dlg.gbAsciiArt->isEnabled());
-    dlg.cbIgnoreSequences->setEnabled(!dlg.cbParseAsciiArt->isChecked());
     dlg.cbWatchFile->setEnabled(!dlg.cbParseAsciiArt->isChecked());
 }
 
