@@ -29,5 +29,6 @@ clean:
 	@rm -f *.o
 	@rm -f ./ansifilter
 	@rm -f ./qt-gui/*.o
+	@rm -f ./qt-gui/.qmake.stash
 	@rm -f ./qt-gui/ansifilter-gui
 	@rm -f ./.deps/*

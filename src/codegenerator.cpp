@@ -199,7 +199,7 @@ ParseError CodeGenerator::generateFile (const string &inFileName,
 
     ParseError error=PARSE_OK;
 
-    in = (inFileName.empty()? &cin :new ifstream (inFileName.c_str(), std::ios::binary));
+    in = (inFileName.empty()? &cin :new ifstream (inFileName.c_str() , std::ios::binary));
 
 
     if (!in->fail() && error==PARSE_OK) {
@@ -212,7 +212,6 @@ ParseError CodeGenerator::generateFile (const string &inFileName,
     if ( in->fail()) {
         error=BAD_INPUT;
     }
-
     if (error==PARSE_OK) {
         if (! fragmentOutput) {
             *out << getHeader();
@@ -268,7 +267,7 @@ string CodeGenerator::generateString(const string &input)
 string CodeGenerator::generateStringFromFile(const string &inFileName)
 {
 
-    in = new ifstream (inFileName.c_str(), std::ios::binary);
+    in = new ifstream (inFileName.c_str() , std::ios::binary);
     out = new ostringstream ();
 
     if ( in->fail() || out->fail()) {
@@ -835,7 +834,7 @@ void CodeGenerator::allocateTermBuffer(){
 bool CodeGenerator::streamIsXBIN() {
   bool isXBIN = false;
   char head[5] = {0};
-  if (in->read (head, 4)) {
+  if (in!=&cin && in->read (head, 4) ) {
     isXBIN = string(head)=="XBIN";
     in->seekg (0, ios::beg);
   }
@@ -864,7 +863,7 @@ void CodeGenerator::processInput()
     printTermBuffer();
     return; 
   }
-  
+
   // handle normal text files
   if (readAfterEOF && in!=&cin) {
     in->seekg (0, ios::end);
@@ -891,7 +890,7 @@ void CodeGenerator::processInput()
   if (parseCP437){
     allocateTermBuffer();
   }
-  
+
   while (true) {
     
     bool eof=false;
@@ -913,7 +912,6 @@ void CodeGenerator::processInput()
       ++lineNumber;
       numberCurrentLine = true;
     }
-    
     if (eof) {
       // imitate tail bahaviour, continue to read after EOF
       if (readAfterEOF) {
@@ -928,7 +926,6 @@ void CodeGenerator::processInput()
         break;
       }
     } else {
-      
       insertLineNumber();
       i=0;
       size_t seqEnd=string::npos;
