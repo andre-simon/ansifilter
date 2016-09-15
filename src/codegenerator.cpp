@@ -992,7 +992,11 @@ void CodeGenerator::processInput()
               next = line[i+1]&0xff;
               //move index behind CSI
               if ( (cur==0x1b && next==0x5b) || ( cur==0xc2 && next==0x9b) ) {
-                ++i;
+                  ++i;
+              } else {
+                  // restore a unicode sequence if the two digit CSI is not matched
+                  if (cur==0xc2) *out << '\xc2';
+                  if (cur==0x1b) *out << '\x1b';
               }
               ++i;
               if (line[i-1]==0x5b || (line[i-1]&0xff)==0x9b){
@@ -1048,7 +1052,13 @@ void CodeGenerator::processInput()
               && line[seqEnd]!=0x07 ) {
               ++seqEnd;
               }
-              i=seqEnd+1;
+              // handle false positives in unicode sequences
+              if (seqEnd<line.length() ) {
+                  i=seqEnd+1;
+              } else {
+                *out << maskCharacter(line[i]);
+                ++i;
+              }
           } else {
             // output printable character
             *out << maskCharacter(line[i]);

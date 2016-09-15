@@ -1,9 +1,10 @@
 Ansifilter ChangeLog
 
-14.09.2016
+15.09.2016
 
 ansifilter 2.2
 
+-fixed wrong recognition of CSI delimiters within unicode characters
 -CLI: fixed reading from stdin (thanks to Jens Schleusener)
 
 ---
