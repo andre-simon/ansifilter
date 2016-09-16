@@ -918,7 +918,7 @@ moc_mydialog.cpp: ui_ansifilter.h \
 		../stringtools.h \
 		mydialog.h \
 		/usr/lib/qt/bin/moc
-	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/andre/Projekte/ansifilter-code/src/qt-gui -I/home/andre/Projekte/ansifilter-code/src/qt-gui -I/home/andre/Projekte/ansifilter-code/src -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/6.1.1 -I/usr/include/c++/6.1.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.1.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.1.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.1.1/include-fixed -I/usr/include mydialog.h -o moc_mydialog.cpp
+	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/andre/Projekte/ansifilter-code/src/qt-gui -I/home/andre/Projekte/ansifilter-code/src/qt-gui -I/home/andre/Projekte/ansifilter-code/src -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/6.2.1 -I/usr/include/c++/6.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.2.1/include-fixed -I/usr/include mydialog.h -o moc_mydialog.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:

@@ -995,8 +995,8 @@ void CodeGenerator::processInput()
                   ++i;
               } else {
                   // restore a unicode sequence if the two digit CSI is not matched
-                  if (cur==0xc2) *out << '\xc2';
-                  if (cur==0x1b) *out << '\x1b';
+                  // ansiweather -l Berlin,DE | ansifilter -T
+                  if (cur==0xc2 || cur==0x1b) *out << maskCharacter(cur);
               }
               ++i;
               if (line[i-1]==0x5b || (line[i-1]&0xff)==0x9b){
@@ -1053,6 +1053,7 @@ void CodeGenerator::processInput()
               ++seqEnd;
               }
               // handle false positives in unicode sequences
+              // TODO fix set terminal title CSI (testansi.py)
               if (seqEnd<line.length() ) {
                   i=seqEnd+1;
               } else {
