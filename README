@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
----  ANSIFILTER MANUAL - Version 2.1  ---------------------- September 2016 ---
+---  ANSIFILTER MANUAL - Version 2.2  ---------------------- September 2016 ---
 -------------------------------------------------------------------------------
 
 OSI Certified Open Source Software
@@ -94,7 +94,7 @@ Ansifilter is currently available for Linux and Win32 platforms.
 3.  Features
 -------------------------------------------------------------------------------
 
-Ansifilter understands most CSI sequences. Support for ASCII art files (based on
+Ansifilter understands most CSI sequences. Support for ANSI art files (based on
 codepage 437 and ANSI.SYS sequences or BIN/XBIN files) is enabled with the 
 --art-cp437 and --art-bin options.
 Parsing XBIN files overrides --art-width, --art-height and --map options.
@@ -102,8 +102,9 @@ Parsing XBIN files overrides --art-width, --art-height and --map options.
 Supported SGR parameters:
 
 Formatting: Bold, Underline, Italic, Blink
-Colors:     Black, Red, Green, Yellow, Blue, Magenta, Cyan, White
-            xterm 256 color modes
+Colors:     Black, Red, Green, Yellow, Blue, Magenta, Cyan, White;
+            xterm 256 color modes;
+            16m true color modes
 Other:      Conceal/Reveal, Image positive/negative
 
 All commands which issue the listed formatting options are supported.

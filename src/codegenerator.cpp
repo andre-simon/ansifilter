@@ -436,14 +436,32 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
             itVectorData++;
             if (itVectorData == codeVector.end()) break;
 
-            if(*(itVectorData)!="5") break;
+            if (*(itVectorData)=="5") {
+                itVectorData++;
+                if (itVectorData == codeVector.end()) break;
 
-            itVectorData++;
-            if (itVectorData == codeVector.end()) break;
-
-            StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
-            xterm2rgb((unsigned char)colorCode, colorValues);
-            elementStyle.setFgColour(rgb2html(colorValues));
+                StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
+                xterm2rgb((unsigned char)colorCode, colorValues);
+                elementStyle.setFgColour(rgb2html(colorValues));
+            } else if (*(itVectorData)=="2") {
+                
+                itVectorData++;
+                if (itVectorData == codeVector.end()) break;
+                StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
+                colorValues[0] = colorCode & 0xff;
+                itVectorData++;
+                
+                if (itVectorData == codeVector.end()) break;
+                StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
+                colorValues[1] = colorCode & 0xff;
+                
+                itVectorData++;
+                if (itVectorData == codeVector.end()) break;
+                StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
+                colorValues[2] = colorCode & 0xff;
+                
+                elementStyle.setFgColour(rgb2html(colorValues));
+            }
             break;
 
         case 39:
@@ -466,14 +484,34 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
             itVectorData++;
             if (itVectorData == codeVector.end()) break;
 
-            if(*(itVectorData)!="5") break;
+            if(*(itVectorData)=="5") {
 
-            itVectorData++;
-            if (itVectorData == codeVector.end()) break;
+                itVectorData++;
+                if (itVectorData == codeVector.end()) break;
 
-            StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
-            xterm2rgb((unsigned char)colorCode, colorValues);
-            elementStyle.setBgColour(rgb2html(colorValues));
+                StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
+                xterm2rgb((unsigned char)colorCode, colorValues);
+                elementStyle.setBgColour(rgb2html(colorValues));
+            } else if (*(itVectorData)=="2") {
+                
+                itVectorData++;
+                if (itVectorData == codeVector.end()) break;
+                StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
+                colorValues[0] = colorCode & 0xff;
+                itVectorData++;
+                
+                if (itVectorData == codeVector.end()) break;
+                StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
+                colorValues[1] = colorCode & 0xff;
+                
+                itVectorData++;
+                if (itVectorData == codeVector.end()) break;
+                StringTools::str2num<int>(colorCode, *(itVectorData), std::dec);
+                colorValues[2] = colorCode & 0xff;
+                
+                elementStyle.setBgColour(rgb2html(colorValues));
+            }
+
             break;
 
         case 49:

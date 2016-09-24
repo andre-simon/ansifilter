@@ -106,7 +106,7 @@ void RtfGenerator::printBody()
     *out << "{\\rtf1";
     
     if (parseCP437) 
-      *out<< "\\cpg437"; // \\cpg437
+      *out<< "\\cpg437";
     else 
       *out<< "\\ansi";
     
@@ -125,17 +125,18 @@ void RtfGenerator::printBody()
     *out  << "\\paperw"<< psMap[pageSize].width <<"\\paperh"<< psMap[pageSize].height
           << "\\margl1134\\margr1134\\margt1134\\margb1134\\sectd" // page margins
           << "\\plain\\f1\\fs" ;  // Font formatting
+          
     int fontSizeRTF=0;
     StringTools::str2num<int>(fontSizeRTF, fontSize, std::dec);
     *out << ((fontSizeRTF)? fontSizeRTF*2: 20);  // RTF needs double amount
     *out << "\n\\pard";
-    if (parseCP437)
-      *out << "\\cbpat1{";
+    
+    if (parseCP437) *out << "\\cbpat1{";
 
     processInput();
 
-    if (parseCP437)
-      *out << "}";
+    if (parseCP437) *out << "}";
+    
     *out << "}"<<endl;
 }
 
@@ -375,7 +376,6 @@ string RtfGenerator::maskCP437Character(unsigned char c)
     case 0x08:  
       return unicodeFromHTML("&#x25d8;");
       break;  
-      
     case 0x0a:  
       return unicodeFromHTML("&#x25d9;");
       break;
@@ -533,7 +533,6 @@ string RtfGenerator::maskCP437Character(unsigned char c)
       return unicodeFromHTML("&#x0192;");
       break;  
       
-      
     case 0xa0:  
       return unicodeFromHTML("&#x00e1;");
       break;
@@ -582,8 +581,6 @@ string RtfGenerator::maskCP437Character(unsigned char c)
     case 0xaf:  
       return unicodeFromHTML("&#x00bb;");
       break;
-      
-    
     
       //shades
     case 0xb0:   
@@ -839,15 +836,9 @@ string RtfGenerator::maskCP437Character(unsigned char c)
       return " ";
       break;  
       
-      
-      
-      
     default : {
       if (c ) {
         return string( 1, c );
-        //char hexVal[3]={ 0 };
-        //sprintf(hexVal, "%02X", c);
-        //return "\\'" + string(hexVal); 
       } else {
         return "";
       }

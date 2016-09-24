@@ -1,5 +1,12 @@
 Ansifilter ChangeLog
 
+24.09.2016
+
+ansifilter 2.3
+
+-added support for true color escape codes
+
+---
 15.09.2016
 
 ansifilter 2.2

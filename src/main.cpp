@@ -79,11 +79,11 @@ void ANSIFilterApp::printHelp()
     cout << "  -w, --wrap=<len>       Wrap long lines\n";
     cout << "      --wrap-no-numbers  Omit line numbers of wrapped lines (assumes -l)\n";
     
-    cout << "\nASCII art options:\n";
-    cout << "      --art-cp437        Parse codepage 437 ASCII art (HTML, RTF output only)\n";
-    cout << "      --art-bin          Parse BIN/XBIN ASCII art (HTML, RTF output only)\n";
-    cout << "      --art-width        Set ASCII art width (default 80)\n";
-    cout << "      --art-height       Set ASCII art height (default 150)\n";
+    cout << "\nANSI art options:\n";
+    cout << "      --art-cp437        Parse codepage 437 ANSI art (HTML, RTF output only)\n";
+    cout << "      --art-bin          Parse BIN/XBIN ANSI art (HTML, RTF output only)\n";
+    cout << "      --art-width        Set ANSI art width (default 80)\n";
+    cout << "      --art-height       Set ANSI art height (default 150)\n";
     
     cout << "\nOther options:\n";
     cout << "  -h, --help             Print help\n";
