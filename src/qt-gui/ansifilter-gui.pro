@@ -25,3 +25,6 @@ win32 {
     DESTDIR = ../../
     QMAKE_POST_LINK = D:\Devel\upx391w\upx.exe --best ../../ansifilter-gui.exe
 }
+
+macx-clang:ICON = $${PWD}/ansifilter.icns
+macx:ICON = $${PWD}/ansifilter.icns

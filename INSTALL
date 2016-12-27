@@ -64,5 +64,5 @@ g) Ship Ansifilter with libgcc_s_dw2-1.dll (32 bit) libgcc_s_seh-1.dll (64 bit) 
 2. Known compiler issues
 ========================
 
-Ansifilter was tested with gcc > 4.8. It will not compile with gcc 2.x.
+Ansifilter was tested with gcc > 4.8 and clang 3.9.0. It will not compile with gcc 2.x.
 For gcc versions < 4.7, unique_ptr needs to be replaced by auto_ptr.

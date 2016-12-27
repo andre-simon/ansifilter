@@ -1,5 +1,13 @@
 Ansifilter ChangeLog
 
+
+27.12.2016
+
+ansifilter 2.4
+
+-fixed crash reading irregular escape codes (thanks to Jens Schleusener)
+
+---
 24.09.2016
 
 ansifilter 2.3

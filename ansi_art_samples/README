@@ -1,0 +1,33 @@
+
+Run these commands to generate HTML files from ANSI art input:
+
+ansifilter -H misfit_LetsGoCrazy.xb --art-bin > misfit_LetsGoCrazy.xb.html
+
+ansifilter -H 2013-16-TCF-16-Colors.bin --art-bin --art-width=320 --art-height 190 --map=bin.map > 2013-16-TCF-16-Colors.bin.html
+
+ansifilter -H Luciano-6-FreedomTrainGameCities.ans --art-cp437 --art-width 80 --art-height 106 > Luciano-6-FreedomTrainGameCities.ans.html
+
+Content of the color map:
+
+cat bin.map
+1= #0000aa
+2= #00aa00
+3= #00aaaa
+4= #aa0000
+5= #aa00aa
+6= #aa5500
+7= #aaaaaa
+8= #555555
+9= #5555ff
+10= #55ff55
+11= #55ffff
+12= #ff5555
+13= #ff55ff
+14= #ffff55
+15= #ffffff
+
+
+More resources:
+
+https://sixteencolors.net/pack/blocktronics_block_n_roll
+http://sixteencolors.net/pack/tcf20/2013%20-%2016%20-%20TCF%20-%2016%20-%20Colors.bin

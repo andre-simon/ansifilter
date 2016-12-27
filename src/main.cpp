@@ -123,19 +123,17 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
     string mapPath = options.getMapPath();
     bool failure=false;
 
-   // if (mapPath.size()){
-      if (!generator->setColorMap(mapPath)){
+    if (!generator->setColorMap(mapPath)){
         std::cerr <<"could not read map file: " << mapPath << "\n";
         return EXIT_FAILURE;
-      }
-    //}
+    }
+    
     
     while (i < fileCount && !failure) {
 
-        pos=(inFileList[i]).find_last_of(Platform::pathSeparator);
-        inFileName = inFileList[i].substr(pos+1);
-
         if (fileCount>1) {
+            pos=(inFileList[i]).find_last_of(Platform::pathSeparator);
+            inFileName = inFileList[i].substr(pos+1);
             outFilePath = outDirectory;
             outFilePath += inFileName;
             outFilePath += options.getOutFileSuffix();
@@ -161,7 +159,6 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
         generator->setParseAsciiBin(options.parseAsciiBin());
         generator->setAsciiArtSize(options.getAsciiArtWidth(), options.getAsciiArtHeight());
         
-        
         ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
 
         if (error==ansifilter::BAD_INPUT) {
@@ -173,7 +170,7 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
         }
         ++i;
     }
-    return (failure)?EXIT_FAILURE:EXIT_SUCCESS;
+    return (failure) ? EXIT_FAILURE : EXIT_SUCCESS;
 }
 
 int main( const int argc, const char *argv[] )

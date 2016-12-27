@@ -766,6 +766,7 @@ void CodeGenerator::parseXBinFile(){
         int index;
         
         //override default palette
+        //TODO allow user to override this with a map?
         for (loop = 0; loop < 16; loop++)
         {
           index = loop * 3;
@@ -1025,8 +1026,7 @@ void CodeGenerator::processInput()
         } else {
           
           if (cur==0x1b || cur==0x9b || cur==0xc2) {
-            if (line.length() - i > 2){
-              
+            if (line.length() - i > 2){              
               next = line[i+1]&0xff;
               //move index behind CSI
               if ( (cur==0x1b && next==0x5b) || ( cur==0xc2 && next==0x9b) ) {
@@ -1037,6 +1037,7 @@ void CodeGenerator::processInput()
                   if (cur==0xc2 || cur==0x1b) *out << maskCharacter(cur);
               }
               ++i;
+
               if (line[i-1]==0x5b || (line[i-1]&0xff)==0x9b){
                 seqEnd=i;
                 //find sequence end
@@ -1082,6 +1083,8 @@ void CodeGenerator::processInput()
                     i=seqEnd+1;
                 }
               }
+            } else {
+                ++i;
             }
           } else if (cur==0x90 || cur==0x9d || cur==0x98 || cur==0x9e ||cur==0x9f) {
             seqEnd=i;
