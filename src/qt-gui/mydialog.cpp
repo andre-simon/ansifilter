@@ -83,6 +83,12 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
         showFile();
         dlg.cbWatchFile->setEnabled(true);
     }
+
+//avoid ugly buttons in MacOS
+#ifndef Q_OS_MACOS
+    dlg.pbSelectMapFile->setMaximumWidth(30);
+#endif
+
     plausibility();
 }
 

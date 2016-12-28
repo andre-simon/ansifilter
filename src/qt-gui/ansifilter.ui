@@ -295,10 +295,10 @@
       <item>
        <widget class="QCheckBox" name="cbParseAsciiArt">
         <property name="toolTip">
-         <string>Enable parsing of ASCII art files.</string>
+         <string>Enable parsing of ANSI art files.</string>
         </property>
         <property name="text">
-         <string>Enable ASCII art</string>
+         <string>Enable ANSI art</string>
         </property>
        </widget>
       </item>
@@ -308,7 +308,7 @@
          <bool>false</bool>
         </property>
         <property name="title">
-         <string>ASCII art options</string>
+         <string>ANSI art options</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="1" column="0" colspan="2">
@@ -416,7 +416,7 @@
          <item row="0" column="1">
           <widget class="QRadioButton" name="rbAsciiBin">
            <property name="toolTip">
-            <string>Enable support for ASCII BIN and XBIN files.</string>
+            <string>Enable support for ANSI BIN and XBIN files.</string>
            </property>
            <property name="text">
             <string>BIN/XBIN fo&amp;rmat</string>
@@ -630,12 +630,6 @@
             <height>0</height>
            </size>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>30</width>
-            <height>16777215</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Select a color map configuration file. </string>
           </property>
@@ -734,7 +728,7 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Courier New'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;Please open a file.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Noto Sans,Courier New';&quot;&gt;Please open a file.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
