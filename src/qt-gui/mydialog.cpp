@@ -1,7 +1,7 @@
 /***************************************************************************
                         mydialog.h  -  description
                              -------------------
-    copyright            : (C) 2007-2016 by Andre Simon
+    copyright            : (C) 2007-2017 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -352,7 +352,7 @@ void MyDialog::on_pbAbout_clicked()
     QMessageBox::about(this,
                        "ANSIFilter Information", 
                        QString("ANSIFilter GUI %1\n" 
-                       "(c) 2007-2016 Andre Simon\n\n"
+                       "(c) 2007-2017 Andre Simon\n\n"
                        "Built with Qt version %2\n\n"
                        "Released under the terms of the GNU GPL license.\n\n"
                        "andre dot simon1 at gmx dot de\n"

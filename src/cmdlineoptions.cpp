@@ -26,6 +26,7 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include <cstring>
 #include <string>
 #include <vector>
+#include <list>
 
 #include "arg_parser.h"
 #include "cmdlineoptions.h"
@@ -34,26 +35,8 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
-    outputType (ansifilter::TEXT),
-    opt_help(false),
-    opt_version(false),
-    opt_fragment(false),
-    opt_plain(false),
-    opt_ignoreEOF(false),
-    opt_linenum(false),
-    opt_wrapNoNum(false),
-    opt_anchors(false),
-    opt_cp437(false),
-    opt_asciiBin(false),
-    encodingName("ISO-8859-1"),
-    font("Courier New"),
-    fontSize("10pt"),
-    wrapLineLen(0),
-    asciiArtWidth(80),
-    asciiArtHeight(100)
-{
-
+  
+    
     const Arg_parser::Option options[] = {
         { 'a', "anchors",   Arg_parser::no },
         { 'd', "doc-title", Arg_parser::yes },
@@ -88,7 +71,52 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         {  0,  0,           Arg_parser::no  }
     };
 
-    Arg_parser parser( argc, argv, options );
+
+CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
+    outputType (ansifilter::TEXT),
+    opt_help(false),
+    opt_version(false),
+    opt_fragment(false),
+    opt_plain(false),
+    opt_ignoreEOF(false),
+    opt_linenum(false),
+    opt_wrapNoNum(false),
+    opt_anchors(false),
+    opt_cp437(false),
+    opt_asciiBin(false),
+    encodingName("ISO-8859-1"),
+    font("Courier New"),
+    fontSize("10pt"),
+    wrapLineLen(0),
+    asciiArtWidth(80),
+    asciiArtHeight(100)
+{
+
+      char* hlEnvOptions=getenv("ANSIFILTER_OPTIONS");
+    if (hlEnvOptions!=NULL) {
+        std::ostringstream envos;
+        envos<<argv[0]<<" "<<hlEnvOptions;
+        std::istringstream ss( envos.str());
+        std::string arg;
+        std::list<std::string> ls;
+        std::vector<char*> options;
+        while (ss >> arg)
+        {
+            ls.push_back(arg); 
+            options.push_back(const_cast<char*>(ls.back().c_str()));
+        }
+        options.push_back(0); 
+        parseRuntimeOptions(options.size()-1, (const char**) &options[0], false);
+    }
+    
+    parseRuntimeOptions(argc, argv);
+
+}
+
+CmdLineOptions::~CmdLineOptions() {}
+
+void CmdLineOptions::parseRuntimeOptions( const int argc, const char *argv[], bool readInputFilenames) {
+        Arg_parser parser( argc, argv, options );
     if( parser.error().size() ) {			// bad option
         cerr << "ansifilter: "<< parser.error()<<"\n";
         cerr << "Try 'ansifilter --help' for more information.\n";
@@ -219,19 +247,18 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
         }
     }
 
-    if (argind < parser.arguments()) { //still args left
-        if  (inputFileNames.empty()) {
-            while (argind < parser.arguments()) {
-                inputFileNames.push_back( parser.argument( argind++ ) );
+    if (readInputFilenames) {
+        if (argind < parser.arguments()) { //still args left
+            if  (inputFileNames.empty()) {
+                while (argind < parser.arguments()) {
+                    inputFileNames.push_back( parser.argument( argind++ ) );
+                }
             }
+        } else if (inputFileNames.empty()) {
+            inputFileNames.push_back("");
         }
-    } else if (inputFileNames.empty()) {
-        inputFileNames.push_back("");
     }
 }
-
-CmdLineOptions::~CmdLineOptions() {}
-
 
 string CmdLineOptions::validateDirPath(const string & path)
 {

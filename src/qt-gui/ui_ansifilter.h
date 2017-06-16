@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ansifilter.ui'
 **
-** Created by: Qt User Interface Compiler version 5.7.1
+** Created by: Qt User Interface Compiler version 5.9.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -506,10 +506,10 @@ public:
 #endif // QT_NO_TOOLTIP
         cbFragment->setText(QApplication::translate("Dialog", "Omit header and footer", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
-        cbParseAsciiArt->setToolTip(QApplication::translate("Dialog", "Enable parsing of ASCII art files.", Q_NULLPTR));
+        cbParseAsciiArt->setToolTip(QApplication::translate("Dialog", "Enable parsing of ANSI art files.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-        cbParseAsciiArt->setText(QApplication::translate("Dialog", "Enable ASCII art", Q_NULLPTR));
-        gbAsciiArt->setTitle(QApplication::translate("Dialog", "ASCII art options", Q_NULLPTR));
+        cbParseAsciiArt->setText(QApplication::translate("Dialog", "Enable ANSI art", Q_NULLPTR));
+        gbAsciiArt->setTitle(QApplication::translate("Dialog", "ANSI art options", Q_NULLPTR));
         lblWidth->setText(QApplication::translate("Dialog", "Width", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         sbWidth->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image width (default: 80). This setting is ignored with XBIN input.", Q_NULLPTR));
@@ -523,7 +523,7 @@ public:
 #endif // QT_NO_TOOLTIP
         rbAsciiCP437->setText(QApplication::translate("Dialog", "Codepage &437", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
-        rbAsciiBin->setToolTip(QApplication::translate("Dialog", "Enable support for ASCII BIN and XBIN files.", Q_NULLPTR));
+        rbAsciiBin->setToolTip(QApplication::translate("Dialog", "Enable support for ANSI BIN and XBIN files.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         rbAsciiBin->setText(QApplication::translate("Dialog", "BIN/XBIN fo&rmat", Q_NULLPTR));
         label_2->setText(QApplication::translate("Dialog", "Tit&le:", Q_NULLPTR));

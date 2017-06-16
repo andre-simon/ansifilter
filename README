@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
----  ANSIFILTER MANUAL - Version 2.2  ---------------------- September 2016 ---
+---  ANSIFILTER MANUAL - Version 2.5  --------------------------- JUNE 2017 ---
 -------------------------------------------------------------------------------
 
 OSI Certified Open Source Software
@@ -17,8 +17,9 @@ CONTENT:
 1. Quick introduction
 2. Platforms
 3. Features
-4. Color mapping
-5. Contact
+4. Environment variables
+5. Color mapping
+6. Contact
 
 
 1.  Quick introduction
@@ -111,7 +112,15 @@ All commands which issue the listed formatting options are supported.
 Some options like Blink are not supported by all output formats (like RTF).
 
 
-4.  Color mapping
+4.  ENVIRONMENT VARIABLES
+-------------------------------------------------------------------------------
+
+The command line version recognizes these variables:
+
+ANSIFILTER_OPTIONS: may contain command line options, but no input file paths.
+
+
+5.  Color mapping
 -------------------------------------------------------------------------------
 
 The basic ANSI color set can be adjusted with a color map file (--map option). 
@@ -145,7 +154,7 @@ Example file content:
 15= #ffffff
 
 
-5.  Contact
+6.  Contact
 -------------------------------------------------------------------------------
 
 Andre Simon

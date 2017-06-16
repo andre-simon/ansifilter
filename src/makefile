@@ -6,7 +6,7 @@
 CC=g++
 
 # Added -std=c++11 because of auto_ptr to unique_ptr transition
-CFLAGS= -Wall -O2 -DNDEBUG -std=c++11
+CXXFLAGS= -Wall -O2 -DNDEBUG -std=c++11
 
 LDFLAGS=
 
@@ -23,7 +23,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) -o $@
 
 .cpp.o:
-	$(CC) -c $(CFLAGS) $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@
 
 clean:
 	@rm -f *.o

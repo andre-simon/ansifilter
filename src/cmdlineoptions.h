@@ -160,6 +160,9 @@ private:
 
     /** \return directory name of path */
     string getDirName( const string & path);
+    
+    void parseRuntimeOptions( const int argc, const char *argv[], bool readInputFilenames=true);
+
 };
 
 #endif
