@@ -77,6 +77,7 @@ void ANSIFilterApp::printHelp()
     cout << "  -s, --font-size=<fs>   Set HTML/RTF font size\n";
     cout << "  -p, --plain            Ignore ANSI formatting information\n";
     cout << "  -w, --wrap=<len>       Wrap long lines\n";
+    cout << "      --no-trailing-nl   Omit trailing newline\n";
     cout << "      --wrap-no-numbers  Omit line numbers of wrapped lines (assumes -l)\n";
     
     cout << "\nANSI art options:\n";
@@ -158,6 +159,7 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
         generator->setParseCodePage437(options.parseCP437());
         generator->setParseAsciiBin(options.parseAsciiBin());
         generator->setAsciiArtSize(options.getAsciiArtWidth(), options.getAsciiArtHeight());
+        generator->setOmitTrailingCR(options.omitTrailingCR());
         
         ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
 

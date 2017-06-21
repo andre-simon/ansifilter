@@ -1,9 +1,10 @@
 Ansifilter ChangeLog
 
-xx.xx.2017
+21.06.2017
 
 ansifilter 2.5
 
+-CLI: added --no-trailing-nl option
 -CLI: added support for environment variable ANSIFILTER_OPTIONS
 
 ---

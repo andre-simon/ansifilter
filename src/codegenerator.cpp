@@ -284,7 +284,6 @@ string CodeGenerator::generateStringFromFile(const string &inFileName)
         *out << getFooter();
     }
 
-
     string result = static_cast<ostringstream*>(out)->str();
 
     delete out;
@@ -366,7 +365,7 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
 
         switch (ansiCode) {
         case 0:
-          elementStyle.setReset(true);
+            elementStyle.setReset(true);
             break;   
         case 1:
             elementStyle.setBold(true);
@@ -548,12 +547,12 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         if (ansiCode>=30 and ansiCode <=37)
           elementStyle.setFgColourID(ansiCode-30 + (elementStyle.isBold()? 8 : 0) );
         else if (ansiCode>=90 and ansiCode <98)
-            elementStyle.setFgColourID(ansiCode-90+8);
+          elementStyle.setFgColourID(ansiCode-90+8);
 
         else if (ansiCode>=40 and ansiCode <=47)
           elementStyle.setBgColourID(ansiCode-40 /*+ elementStyle.isBold()? 8 : 0 */);
         else if (ansiCode>=100 and ansiCode <108)
-            elementStyle.setBgColourID(ansiCode-100+8);
+          elementStyle.setBgColourID(ansiCode-100+8);
 
         if (itVectorData != codeVector.end()) itVectorData++;
     }
@@ -670,30 +669,29 @@ void CodeGenerator::insertLineNumber ()
 
 void CodeGenerator::printTermBuffer() {
 
-    
     for (int y=0;y<=maxY;y++) {
 
-    for (int x=0;x<asciiArtWidth;x++) {
-      if (termBuffer[x + y* asciiArtWidth].c=='\r') {
-        break;
-      }
-      elementStyle = termBuffer[x + y* asciiArtWidth].style;
-      
-      //full block
-      if (termBuffer[x + y* asciiArtWidth].c == 0xdb){
-        elementStyle.setBgColour(elementStyle.getFgColour());
-      }
-      
-      if (!elementStyle.isReset()) {
-        *out <<getOpenTag();
-      }
-      
-      *out << maskCP437Character(termBuffer[x + y* asciiArtWidth].c);
-      
-      if (!elementStyle.isReset()) {
-        *out <<getCloseTag();
-      }
-    }
+        for (int x=0;x<asciiArtWidth;x++) {
+            if (termBuffer[x + y* asciiArtWidth].c=='\r') {
+                break;
+            }
+            elementStyle = termBuffer[x + y* asciiArtWidth].style;
+            
+            //full block
+            if (termBuffer[x + y* asciiArtWidth].c == 0xdb){
+                elementStyle.setBgColour(elementStyle.getFgColour());
+            }
+            
+            if (!elementStyle.isReset()) {
+                *out <<getOpenTag();
+            }
+            
+            *out << maskCP437Character(termBuffer[x + y* asciiArtWidth].c);
+            
+            if (!elementStyle.isReset()) {
+                *out <<getCloseTag();
+            }
+        }
     *out<<newLineTag;  
   }
   out->flush();
@@ -962,10 +960,15 @@ void CodeGenerator::processInput()
         sleep(1);
         #endif
       } else {
+        if (!parseCP437 && !omitTrailingCR) *out << newLineTag;
         break;
       }
     } else {
+        
+      if (!parseCP437 && lineNumber>1) *out << newLineTag;  
+     
       insertLineNumber();
+      
       i=0;
       size_t seqEnd=string::npos;
       
@@ -1014,7 +1017,6 @@ void CodeGenerator::processInput()
               curX=0;
               if (line[i]=='\r') i=line.length();
             }
-            
             
              /*if (line[i]=='\t'){
                 curX += 8;
@@ -1108,7 +1110,7 @@ void CodeGenerator::processInput()
           }
         }
       }
-      if (!parseCP437) *out << newLineTag;
+      //if (!parseCP437 && !omitTrailingCR) *out << newLineTag;
     }
   } // while (true)
   
@@ -1157,22 +1159,22 @@ string CodeGenerator::rgb2html(unsigned char* rgb){
 const unsigned char CodeGenerator::valuerange[] = { 0x00, 0x5F, 0x87, 0xAF, 0xD7, 0xFF };
 
 unsigned char CodeGenerator::defaultPalette[16][3] = {
-  { 0x00, 0x00, 0x00 }, // 0 ColorBlack
-  { 0xCD, 0x00, 0x00 }, // 1 ColorRed
-  { 0x00, 0xCD, 0x00 }, // 2 ColorGreen
-  { 0xCD, 0xCD, 0x00 }, // 3 ColorYellow
-  { 0x00, 0x00, 0xEE }, // 4 ColorBlue
-  { 0xCD, 0x00, 0xCD }, // 5 ColorMagenta
-  { 0x00, 0xCD, 0xCD }, // 6 ColorCyan
-  { 0xE5, 0xE5, 0xE5 }, // 7 ColorGray
-  { 0x7F, 0x7F, 0x7F }, // 8 ColorDarkGray
-  { 0xFF, 0x00, 0x00 }, // 9 ColorBrightRed
-  { 0x00, 0xFF, 0x00 }, // 10 ColorBrightGreen
-  { 0xFF, 0xFF, 0x00 }, // 11 ColorBrightYellow
-  { 0x5C, 0x5C, 0xFF }, // 12 ColorBrightBlue
-  { 0xFF, 0x00, 0xFF }, // 13 ColorBrightMagenta
-  { 0x00, 0xFF, 0xFF }, // 14 ColorBrightCyan
-  { 0xFF, 0xFF, 0xFF }  // 15 ColorBrightWhite
+    { 0x00, 0x00, 0x00 }, // 0 ColorBlack
+    { 0xCD, 0x00, 0x00 }, // 1 ColorRed
+    { 0x00, 0xCD, 0x00 }, // 2 ColorGreen
+    { 0xCD, 0xCD, 0x00 }, // 3 ColorYellow
+    { 0x00, 0x00, 0xEE }, // 4 ColorBlue
+    { 0xCD, 0x00, 0xCD }, // 5 ColorMagenta
+    { 0x00, 0xCD, 0xCD }, // 6 ColorCyan
+    { 0xE5, 0xE5, 0xE5 }, // 7 ColorGray
+    { 0x7F, 0x7F, 0x7F }, // 8 ColorDarkGray
+    { 0xFF, 0x00, 0x00 }, // 9 ColorBrightRed
+    { 0x00, 0xFF, 0x00 }, // 10 ColorBrightGreen
+    { 0xFF, 0xFF, 0x00 }, // 11 ColorBrightYellow
+    { 0x5C, 0x5C, 0xFF }, // 12 ColorBrightBlue
+    { 0xFF, 0x00, 0xFF }, // 13 ColorBrightMagenta
+    { 0x00, 0xFF, 0xFF }, // 14 ColorBrightCyan
+    { 0xFF, 0xFF, 0xFF }  // 15 ColorBrightWhite
 }; 
 
 unsigned char CodeGenerator::workingPalette[16][3] = {

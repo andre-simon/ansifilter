@@ -180,6 +180,12 @@ public:
         readAfterEOF=b;
     }
 
+     /** \param b set to true if the output should not be terminated with EOL*/
+    void setOmitTrailingCR(bool b)
+    {
+        omitTrailingCR=b;
+    }
+    
     /** \return plain outputting flag */
     bool getPlainOutput()
     {
@@ -346,6 +352,7 @@ private:
 
     bool ignoreFormatting; ///< ignore color and font face information
     bool readAfterEOF;     ///< continue reading after EOF occoured
+    bool omitTrailingCR;   ///< do not print EOL at the end of output
     
     TDChar* termBuffer;
     int curX, curY, memX, memY, maxY; ///< cursor position for Codepage 437 sequences

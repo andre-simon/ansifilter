@@ -68,6 +68,7 @@ using namespace std;
         { 'Y', "art-width",     Arg_parser::yes  },
         { 'Z', "art-height",    Arg_parser::yes  },
 	{ 'm', "map",       Arg_parser::yes },
+        { 'N', "no-trailing-nl",   Arg_parser::no  },
         {  0,  0,           Arg_parser::no  }
     };
 
@@ -84,6 +85,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     opt_anchors(false),
     opt_cp437(false),
     opt_asciiBin(false),
+    opt_omit_trailing_cr(false),
     encodingName("ISO-8859-1"),
     font("Courier New"),
     fontSize("10pt"),
@@ -92,7 +94,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     asciiArtHeight(100)
 {
 
-      char* hlEnvOptions=getenv("ANSIFILTER_OPTIONS");
+    char* hlEnvOptions=getenv("ANSIFILTER_OPTIONS");
     if (hlEnvOptions!=NULL) {
         std::ostringstream envos;
         envos<<argv[0]<<" "<<hlEnvOptions;
@@ -110,7 +112,6 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     }
     
     parseRuntimeOptions(argc, argv);
-
 }
 
 CmdLineOptions::~CmdLineOptions() {}
@@ -182,11 +183,9 @@ void CmdLineOptions::parseRuntimeOptions( const int argc, const char *argv[], bo
         case 'l':
             opt_linenum=true;
             break;
-
         case 'L':
             outputType = ansifilter::LATEX;
             break;
-	    
 	case 'm':
 	    colorMapPath = arg;
 	    break;
@@ -231,17 +230,20 @@ void CmdLineOptions::parseRuntimeOptions( const int argc, const char *argv[], bo
             opt_wrapNoNum=true;
             break;
         case 'X':
-          opt_cp437=true;
-          break;
+            opt_cp437=true;
+            break;
         case 'U':
-          opt_asciiBin=true;
-          break;
+            opt_asciiBin=true;
+            break;
         case 'Y':
-          asciiArtWidth=atoi(arg.c_str());
-          break;
+            asciiArtWidth=atoi(arg.c_str());
+            break;
         case 'Z':
-          asciiArtHeight=atoi(arg.c_str());
-          break;
+            asciiArtHeight=atoi(arg.c_str());
+            break;
+        case 'N':
+            opt_omit_trailing_cr=true;
+            break;
         default:
             cerr << "ansifilter: option parsing failed" << endl;
         }
@@ -397,6 +399,11 @@ bool CmdLineOptions::addAnchors() const
 bool CmdLineOptions::omitEncoding() const
 {
     return StringTools::lowerCase(encodingName)=="none";
+}
+
+bool CmdLineOptions::omitTrailingCR() const
+{
+    return opt_omit_trailing_cr;
 }
 
 string CmdLineOptions::getDocumentTitle() const

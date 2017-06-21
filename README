@@ -30,9 +30,9 @@ Invocation: ansifilter [OPTION]... [FILE]...
 ansifilter handles text files containing ANSI terminal escape codes.
 
 File handling:
-  -i, --input=<file>     name of single input file
-  -o, --output=<file>    name of single output file
-  -O, --outdir=<dir>     name of output directory
+  -i, --input=<file>     Name of input file
+  -o, --output=<file>    Name of output file
+  -O, --outdir=<dir>     Name of output directory
   -t, --tail             Continue reading after end-of-file (like tail -f)
 
 Output text formats:
@@ -45,25 +45,25 @@ Output text formats:
   -B, --bbcode           Output BBCode
 
 Format options:
-  -a, --anchors          add HTML line anchors (assumes -l)
+  -a, --anchors          Add HTML line anchors (assumes -l)
   -d, --doc-title        Set HTML/LaTeX document title
   -e, --encoding         Set HTML/RTF encoding (must match input file encoding)
   -f, --fragment         Omit HTML header and footer
   -F, --font=<font>      Set HTML/RTF font face
-  -l, --line-numbers     print line numbers in output file
-  -m, --map=<path>       read color mapping file (see README)
+  -l, --line-numbers     Print line numbers in output file
+  -m, --map=<path>       Read color mapping file (see README)
   -r, --style-ref=<rf>   Set HTML/TeX/LaTeX stylesheet path
   -s, --font-size=<fs>   Set HTML/RTF font size
   -p, --plain            Ignore ANSI formatting information
-  -w, --wrap=<len>       wrap long lines
-      --cp437            parse codepage 437 ASCII art (HTML output only)
-      --wrap-no-numbers  omit line numbers of wrapped lines (assumes -l)
+  -w, --wrap=<len>       Wrap long lines
+      --no-trailing-nl   Omit trailing newline
+      --wrap-no-numbers  Omit line numbers of wrapped lines (assumes -l)
 
-ASCII art options:
-      --art-cp437        Parse codepage 437 ASCII art (HTML, RTF output only)
-      --art-bin          Parse BIN/XBIN ASCII art (HTML, RTF output only)
-      --art-width        Set ASCII art width (default 80)
-      --art-height       Set ASCII art height (default 150)
+ANSI art options:
+      --art-cp437        Parse codepage 437 ANSI art (HTML, RTF output only)
+      --art-bin          Parse BIN/XBIN ANSI art (HTML, RTF output only)
+      --art-width        Set ANSI art width (default 80)
+      --art-height       Set ANSI art height (default 150)
 
 Other options:
   -h, --help             Print help
@@ -74,13 +74,7 @@ ansifilter -i input.ansi -o output.txt
 ansifilter *.txt
 tail -f server.log | ansifilter
 
-
-Examples:
-
-ansifilter -i text_with_ansi.txt -o text_without_ansi.txt
-ansifilter -i text_with_ansi.txt -o output.html --html
-ansifilter *.txt
-tail -f server.log | ansifilter
+Parsing XBIN files overrides --art-width, --art-height and --map options.
 
 The GUI version (ansifilter-gui) also accepts the first command line argument
 as input file name.

@@ -77,7 +77,7 @@ public:
     /** \return True if help information should be printed*/
     bool printHelp() const;
 
-    /** \return True if output shluld be fragmented*/
+    /** \return True if output should be fragmented*/
     bool fragmentOutput() const;
 
     /** \return output file suffix */
@@ -96,9 +96,9 @@ public:
     bool ignoreInputEOF() const;
 
     /** \return True if line numbers should be printed */
-
     bool showLineNumbers() const;
 
+    /** \return True if anchors should be added to line numbers */
     bool addAnchors() const;
 
     /** \return True if line numbers should be printed */
@@ -109,6 +109,9 @@ public:
     
     /** \return True if input should be treated as BIN ASCII art */
     bool parseAsciiBin() const;
+   
+     /** \return True if output should not be terminated with carriage return */
+    bool omitTrailingCR() const;
     
     /** \return Document title */
     string getDocumentTitle() const ;
@@ -137,6 +140,7 @@ private:
     bool opt_anchors;
     bool opt_cp437;
     bool opt_asciiBin;
+    bool opt_omit_trailing_cr;
 
     // name of single output file
     string outFilename;
