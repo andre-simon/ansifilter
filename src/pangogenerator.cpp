@@ -66,7 +66,7 @@ string PangoGenerator::getOpenTag()
            << "\"";
     }
     if (elementStyle.isBgColorSet()) {
-        fmtStream <<" bgcolor=#\""
+        fmtStream <<" bgcolor=\"#"
            << elementStyle.getBgColour().getRed(HTML)
            << elementStyle.getBgColour().getGreen(HTML)
            << elementStyle.getBgColour().getBlue(HTML)
