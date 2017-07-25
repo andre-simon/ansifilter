@@ -23,7 +23,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) -o $@
 
 .cpp.o:
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $(EXTRA_CXXFLAGS) $< -o $@
 
 clean:
 	@rm -f *.o
