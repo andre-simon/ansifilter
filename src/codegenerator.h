@@ -214,6 +214,10 @@ public:
     /** \param b set to true if input is an ASCII art BIN file*/
     void setParseAsciiBin(bool flag);
     
+    
+    /** \param b set to true if input is an Tundra art BIN file*/
+    void setParseAsciiTundra(bool flag);
+    
     /** \param b set dimensions of ASCII art virtual console */
     void setAsciiArtSize(int width, int height);
     
@@ -278,6 +282,7 @@ protected:
 
     bool parseCP437; ///< treat input as CP437 file
     bool parseAsciiBin; ///< treat input as BIN or XBIN file
+    bool parseAsciiTundra; ///< treat input as Tundra file
          
     /** Processes input data */
     void processInput();
@@ -295,6 +300,8 @@ protected:
     @return HTML color string
     */
     string rgb2html(unsigned char* rgb);
+    
+    string rgb2html(int r, int g, int b);
     
         /// 16 basic colors
     static unsigned char workingPalette[16][3];
@@ -374,12 +381,19 @@ private:
     
     /**Parses XBIN ASCII art file */
     void parseXBinFile();
+
+    /**Parses Tundra ASCII art file */    
+    void parseTundraFile();
     
     /**allocate virtual terminal buffer */
     void allocateTermBuffer();
     
     /** @return true if stream begins with XBIN id  */
     bool streamIsXBIN();
+   
+     /** @return true if stream begins with Tundra id  */
+    bool streamIsTundra();
+   
     
     /// the 6 value iterations in the xterm color cube
     static const unsigned char valuerange[] ;

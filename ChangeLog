@@ -1,5 +1,13 @@
 Ansifilter ChangeLog
 
+25.07.2017
+
+ansifilter 2.6
+
+-added support for Tundra 24bit ANSI art (--art-tundra option)
+-fixed Pango output (patch by VLambret, https://github.com/andre-simon/ansifilter/pull/5)
+
+---
 21.06.2017
 
 ansifilter 2.5

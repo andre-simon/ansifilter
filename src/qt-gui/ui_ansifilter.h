@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ansifilter.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.0
+** Created by: Qt User Interface Compiler version 5.9.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -68,6 +68,7 @@ public:
     QSpinBox *sbHeight;
     QRadioButton *rbAsciiCP437;
     QRadioButton *rbAsciiBin;
+    QRadioButton *rbAsciiTundra;
     QGridLayout *gridLayout_3;
     QLabel *label_2;
     QLineEdit *leTitle;
@@ -277,7 +278,7 @@ public:
         horizontalLayout_7->addWidget(sbHeight);
 
 
-        gridLayout_4->addWidget(artSizeFrame, 1, 0, 1, 2);
+        gridLayout_4->addWidget(artSizeFrame, 2, 0, 1, 2);
 
         rbAsciiCP437 = new QRadioButton(gbAsciiArt);
         rbAsciiCP437->setObjectName(QStringLiteral("rbAsciiCP437"));
@@ -286,8 +287,14 @@ public:
 
         rbAsciiBin = new QRadioButton(gbAsciiArt);
         rbAsciiBin->setObjectName(QStringLiteral("rbAsciiBin"));
+        rbAsciiBin->setToolTipDuration(-5);
 
         gridLayout_4->addWidget(rbAsciiBin, 0, 1, 1, 1);
+
+        rbAsciiTundra = new QRadioButton(gbAsciiArt);
+        rbAsciiTundra->setObjectName(QStringLiteral("rbAsciiTundra"));
+
+        gridLayout_4->addWidget(rbAsciiTundra, 1, 0, 1, 1);
 
 
         verticalLayout->addWidget(gbAsciiArt);
@@ -526,6 +533,10 @@ public:
         rbAsciiBin->setToolTip(QApplication::translate("Dialog", "Enable support for ANSI BIN and XBIN files.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         rbAsciiBin->setText(QApplication::translate("Dialog", "BIN/XBIN fo&rmat", Q_NULLPTR));
+#ifndef QT_NO_TOOLTIP
+        rbAsciiTundra->setToolTip(QApplication::translate("Dialog", "Enable support for Tundra 24 bit ANSI art.", Q_NULLPTR));
+#endif // QT_NO_TOOLTIP
+        rbAsciiTundra->setText(QApplication::translate("Dialog", "Tundra for&mat", Q_NULLPTR));
         label_2->setText(QApplication::translate("Dialog", "Tit&le:", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         leTitle->setToolTip(QApplication::translate("Dialog", "Set the output document title.", Q_NULLPTR));

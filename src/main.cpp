@@ -83,6 +83,7 @@ void ANSIFilterApp::printHelp()
     cout << "\nANSI art options:\n";
     cout << "      --art-cp437        Parse codepage 437 ANSI art (HTML, RTF output only)\n";
     cout << "      --art-bin          Parse BIN/XBIN ANSI art (HTML, RTF output only)\n";
+    cout << "      --art-tundra       Parse Tundra ANSI art (HTML, RTF output only)\n";
     cout << "      --art-width        Set ANSI art width (default 80)\n";
     cout << "      --art-height       Set ANSI art height (default 150)\n";
     
@@ -158,6 +159,8 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
         generator->setAddAnchors(options.addAnchors());
         generator->setParseCodePage437(options.parseCP437());
         generator->setParseAsciiBin(options.parseAsciiBin());
+        generator->setParseAsciiTundra(options.parseAsciiTundra());
+
         generator->setAsciiArtSize(options.getAsciiArtWidth(), options.getAsciiArtHeight());
         generator->setOmitTrailingCR(options.omitTrailingCR());
         

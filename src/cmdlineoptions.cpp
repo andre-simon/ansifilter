@@ -65,6 +65,7 @@ using namespace std;
         { 'W', "wrap-no-numbers",   Arg_parser::no  },
         { 'X', "art-cp437", Arg_parser::no  },
         { 'U', "art-bin",   Arg_parser::no  },
+        { 'D', "art-tundra",   Arg_parser::no  },
         { 'Y', "art-width",     Arg_parser::yes  },
         { 'Z', "art-height",    Arg_parser::yes  },
 	{ 'm', "map",       Arg_parser::yes },
@@ -85,6 +86,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     opt_anchors(false),
     opt_cp437(false),
     opt_asciiBin(false),
+    opt_asciiTundra(false),
     opt_omit_trailing_cr(false),
     encodingName("ISO-8859-1"),
     font("Courier New"),
@@ -235,6 +237,9 @@ void CmdLineOptions::parseRuntimeOptions( const int argc, const char *argv[], bo
         case 'U':
             opt_asciiBin=true;
             break;
+        case 'D':
+            opt_asciiTundra=true;
+            break;
         case 'Y':
             asciiArtWidth=atoi(arg.c_str());
             break;
@@ -329,6 +334,9 @@ bool CmdLineOptions::parseAsciiBin() const{
   return opt_asciiBin;
 }
 
+bool CmdLineOptions::parseAsciiTundra() const{
+  return opt_asciiTundra;
+}
 int CmdLineOptions::getAsciiArtWidth() const {
   return asciiArtWidth;   
 }

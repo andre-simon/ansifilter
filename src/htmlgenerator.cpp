@@ -126,7 +126,7 @@ string HtmlGenerator::getHeader()
    }
    os << "}\n\n";
    
-   if (parseCP437||parseAsciiBin) {
+   if (parseCP437||parseAsciiBin || parseAsciiTundra) {
      
      os << "body {  background-color: black; } \n";
    }

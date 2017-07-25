@@ -1,7 +1,7 @@
 /***************************************************************************
                         mydialog.h  -  description
                              -------------------
-    copyright            : (C) 2007-2017 by Andre Simon
+    copyright            : (C) 2007-2016 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -59,6 +59,7 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
 
     dlg.rbAsciiCP437->setChecked(settings.value("cp437").toBool());
     dlg.rbAsciiBin->setChecked(settings.value("asciibin").toBool());
+    dlg.rbAsciiTundra->setChecked(settings.value("asciitnd").toBool());
     dlg.comboEncoding->setCurrentIndex(settings.value("encoding").toInt());
     dlg.comboFont->setCurrentIndex(settings.value("font").toInt());
     dlg.comboFormat->setCurrentIndex(settings.value("format").toInt());
@@ -85,7 +86,7 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
     }
 
 //avoid ugly buttons in MacOS
-#ifndef Q_OS_MACOS
+#ifndef Q_OS_OSX
     dlg.pbSelectMapFile->setMaximumWidth(30);
 #endif
 
@@ -104,6 +105,7 @@ void MyDialog::closeEvent(QCloseEvent *event)
 
     settings.setValue("cp437", dlg.rbAsciiCP437->isChecked());
     settings.setValue("asciibin", dlg.rbAsciiBin->isChecked());
+    settings.setValue("asciitnd", dlg.rbAsciiTundra->isChecked());
     settings.setValue("encoding", dlg.comboEncoding->currentIndex());
     settings.setValue("format", dlg.comboFormat->currentIndex());
     settings.setValue("font", dlg.comboFont->currentIndex());
@@ -252,6 +254,7 @@ void MyDialog::on_pbSaveAs_clicked()
     if (dlg.cbParseAsciiArt->isChecked()){
         generator->setParseCodePage437(dlg.rbAsciiCP437->isChecked());
         generator->setParseAsciiBin(dlg.rbAsciiBin->isChecked());
+        generator->setParseAsciiTundra(dlg.rbAsciiTundra->isChecked());
         generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
     }
 
@@ -325,6 +328,7 @@ void MyDialog::showFile()
     if (dlg.cbParseAsciiArt->isChecked()){
         generator->setParseCodePage437(dlg.rbAsciiCP437->isChecked());
         generator->setParseAsciiBin(dlg.rbAsciiBin->isChecked());
+        generator->setParseAsciiTundra(dlg.rbAsciiTundra->isChecked());
         generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
     }
 
@@ -381,6 +385,10 @@ void MyDialog::on_rbAsciiBin_toggled()
     showFile();
 }
 
+void MyDialog::on_rbAsciiTundra_toggled()
+{
+    showFile();
+}
 void MyDialog::on_sbWidth_valueChanged(int i)
 {
     showFile();

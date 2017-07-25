@@ -97,6 +97,7 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      addAnchors(false),
      parseCP437(false),
      parseAsciiBin(false),
+     parseAsciiTundra(false),
      
      outputType(type),
      ignoreFormatting(false),
@@ -138,6 +139,10 @@ void CodeGenerator::setParseCodePage437(bool flag){
 
 void CodeGenerator::setParseAsciiBin(bool flag){
     parseAsciiBin = flag; 
+}
+
+void CodeGenerator::setParseAsciiTundra(bool flag){
+    parseAsciiTundra = flag; 
 }
 void CodeGenerator::setAsciiArtSize(int width, int height){
     if (width>0) asciiArtWidth = width;
@@ -858,6 +863,96 @@ void CodeGenerator::parseXBinFile(){
   }
 }
 
+// the TND decoding function is based on AnsiLove:
+// https://github.com/ansilove/
+void CodeGenerator::parseTundraFile(){
+    char buffer  [10] = {0};
+    bool isTundra = false;
+    if ( in->read (buffer, 9) ) {
+        isTundra = string(buffer)=="\x18TUNDRA24";
+    }
+    
+    if (!isTundra) {
+        std::cerr<<"not a Tundra file\n";
+        return;
+    }
+    
+    asciiArtWidth = 80;
+
+    allocateTermBuffer();
+  
+    int fg_red=0, fg_green=0, fg_blue=0;
+    int bg_red=0, bg_green=0, bg_blue=0;
+    while (in->read (buffer, 1)){
+    
+        if (curX >= asciiArtWidth){
+            curX = 0;
+            curY ++;
+        }
+        
+        int cur = buffer[0]&0xff;
+        
+        if (cur==1) {
+            if (!in->read (buffer, 8)) goto GENTLE_EXIT; 
+            
+            curY = ((buffer[0] << 24)& 0xff) + ((buffer[1] << 16)& 0xff) + ((buffer[2] << 8)& 0xff) + (buffer[3]& 0xff);
+            curX = ((buffer[4] << 24)& 0xff) + ((buffer[5] << 16)& 0xff) + ((buffer[6] << 8)& 0xff) + (buffer[7]& 0xff);
+        }    
+    
+        if (cur == 2)
+        {
+            if (!in->read (buffer, 5) ) goto GENTLE_EXIT;
+            
+            fg_red=buffer[2];
+            fg_green=buffer[3];
+            fg_blue=buffer[4]; 
+            cur= buffer[0];
+        }
+
+        if (cur == 4)
+        {
+            if (!in->read (buffer, 5) ) goto GENTLE_EXIT;
+            bg_red=buffer[2];
+            bg_green=buffer[3];
+            bg_blue=buffer[4];
+            cur= buffer[0];
+        }
+        
+        if (cur==6)
+        {
+            if (!in->read (buffer, 10) ) goto GENTLE_EXIT;
+        
+            fg_red=buffer[2];
+            fg_green=buffer[3];
+            fg_blue=buffer[4];
+            
+            bg_red=buffer[6];
+            bg_green=buffer[7];
+            bg_blue=buffer[8];
+            
+            cur = buffer[0];
+            
+        }
+
+        if (cur !=1 && cur !=2 && cur !=4 && cur !=6)
+        {
+            elementStyle.setFgColour(rgb2html( fg_red&0xff, fg_green&0xff, fg_blue&0xff));
+            elementStyle.setBgColour(rgb2html( bg_red&0xff, bg_green&0xff, bg_blue&0xff ));
+  
+            termBuffer[curX + curY*asciiArtWidth].style = elementStyle;
+
+            termBuffer[curX + curY*asciiArtWidth].c  = cur &0xff;
+            curX++;
+        }
+  }
+ 
+GENTLE_EXIT:
+
+  maxY =  curY<asciiArtHeight ?  curY : asciiArtHeight;
+}
+
+
+
 void CodeGenerator::allocateTermBuffer(){
   
   if (termBuffer) delete [] termBuffer;
@@ -878,6 +973,17 @@ bool CodeGenerator::streamIsXBIN() {
   return isXBIN;
 }
 
+
+bool CodeGenerator::streamIsTundra() {
+  bool isTND = false;
+  char head[10] = {0};
+  
+  if (in!=&cin && in->read (head, 9) ) {
+    isTND = string(head)=="\x18TUNDRA24";
+    in->seekg (0, ios::beg);
+  }
+  return isTND;
+}
 ////////////////////////////////////////////////////////////////////////////
 
 void CodeGenerator::processInput()
@@ -885,7 +991,7 @@ void CodeGenerator::processInput()
   int cur=0;
   int next=0;
   
-  if (parseCP437 || parseAsciiBin){
+  if (parseCP437 || parseAsciiBin || parseAsciiTundra){
     elementStyle.setReset(false);
   }
 
@@ -901,13 +1007,21 @@ void CodeGenerator::processInput()
     return; 
   }
 
+  if (parseAsciiTundra && streamIsTundra()){
+    parseTundraFile();
+
+    printTermBuffer();
+    return; 
+  }
+
+  
   // handle normal text files
   if (readAfterEOF && in!=&cin) {
     in->seekg (0, ios::end);
     // output the last few lines or the complete file if not too big
     if (in->tellg()>51200) {
       in->seekg (-512, ios::end);
-      // output complete lines, ignore first line fragment
+      // output complete lines, ignore cur line fragment
       in->ignore(512, '\n');
     } else {
       in->seekg (0, ios::beg); // output complete file
@@ -916,6 +1030,11 @@ void CodeGenerator::processInput()
  
   if (streamIsXBIN()) {
    *out<<"Please apply --art-bin option for XBIN files.";
+   return; 
+  }
+ 
+  if (streamIsTundra()) {
+   *out<<"Please apply --art-tundra option for TND files.";
    return; 
   }
   
@@ -1153,6 +1272,12 @@ void CodeGenerator::xterm2rgb(unsigned char color, unsigned char* rgb)
 string CodeGenerator::rgb2html(unsigned char* rgb){
   char colorString[10]= {0};
   sprintf(colorString, "#%02x%02x%02x", rgb[0], rgb[1], rgb[2]);
+  return string(colorString);
+}
+
+string CodeGenerator::rgb2html(int r, int g, int b){
+  char colorString[10]= {0};
+  sprintf(colorString, "#%02x%02x%02x", r, g, b);
   return string(colorString);
 }
 

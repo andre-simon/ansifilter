@@ -311,7 +311,7 @@
          <string>ANSI art options</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
-         <item row="1" column="0" colspan="2">
+         <item row="2" column="0" colspan="2">
           <widget class="QFrame" name="artSizeFrame">
            <property name="enabled">
             <bool>false</bool>
@@ -418,8 +418,21 @@
            <property name="toolTip">
             <string>Enable support for ANSI BIN and XBIN files.</string>
            </property>
+           <property name="toolTipDuration">
+            <number>-5</number>
+           </property>
            <property name="text">
             <string>BIN/XBIN fo&amp;rmat</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QRadioButton" name="rbAsciiTundra">
+           <property name="toolTip">
+            <string>Enable support for Tundra 24 bit ANSI art.</string>
+           </property>
+           <property name="text">
+            <string>Tundra for&amp;mat</string>
            </property>
           </widget>
          </item>

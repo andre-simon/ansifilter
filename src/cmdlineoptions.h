@@ -109,6 +109,8 @@ public:
     
     /** \return True if input should be treated as BIN ASCII art */
     bool parseAsciiBin() const;
+    
+    bool parseAsciiTundra() const;
    
      /** \return True if output should not be terminated with carriage return */
     bool omitTrailingCR() const;
@@ -140,6 +142,8 @@ private:
     bool opt_anchors;
     bool opt_cp437;
     bool opt_asciiBin;
+    bool opt_asciiTundra;
+
     bool opt_omit_trailing_cr;
 
     // name of single output file

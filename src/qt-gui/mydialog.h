@@ -75,10 +75,11 @@ public slots:
                 void on_pbClipboard_clicked();
                 void on_pbSelectMapFile_clicked();
                 void on_cbParseAsciiArt_clicked();
-
+                
                 void on_cbIgnoreSequences_stateChanged();
                 void on_rbAsciiCP437_toggled();
                 void on_rbAsciiBin_toggled();
+                void on_rbAsciiTundra_toggled(); 
                 void on_cbWatchFile_stateChanged();
                 void on_sbWidth_valueChanged(int i);
                 void on_sbHeight_valueChanged(int i);
