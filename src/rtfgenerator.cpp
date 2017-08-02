@@ -1,7 +1,7 @@
 /***************************************************************************
                           rtfcode.cpp  -  description
                              -------------------
-    copyright            : (C) 2007 by Andre Simon
+    copyright            : (C) 2007-2017 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -131,11 +131,12 @@ void RtfGenerator::printBody()
     *out << ((fontSizeRTF)? fontSizeRTF*2: 20);  // RTF needs double amount
     *out << "\n\\pard";
     
-    if (parseCP437) *out << "\\cbpat1{";
+    //TODO save 24bit colors in RTF
+    if (parseCP437/*||parseAsciiBin||parseAsciiTundra*/) *out << "\\cbpat1{";
 
     processInput();
 
-    if (parseCP437) *out << "}";
+    if (parseCP437/*||parseAsciiBin||parseAsciiTundra*/) *out << "}";
     
     *out << "}"<<endl;
 }
@@ -846,12 +847,10 @@ string RtfGenerator::maskCP437Character(unsigned char c)
   }
 }
 
-
 void RtfGenerator::setPageSize(const string & ps)
 {
     if (psMap.count(ps)) pageSize = ps;
 }
-
 
 void RtfGenerator::insertLineNumber ()
 {

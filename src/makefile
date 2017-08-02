@@ -6,7 +6,7 @@
 CC=g++
 
 # Added -std=c++11 because of auto_ptr to unique_ptr transition
-CXXFLAGS= -Wall -O2 -DNDEBUG -std=c++11
+CXXFLAGS= -Wall -O2 -DNDEBUG -std=c++11 -fPIC
 
 LDFLAGS=
 

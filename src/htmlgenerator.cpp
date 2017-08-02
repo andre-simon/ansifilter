@@ -115,24 +115,22 @@ string HtmlGenerator::getHeader()
            << encoding
            << "\">\n";
     }
-   
-   os << "<style type=\"text/css\">\n";
-   os << "pre {\n";
-   os << "  font-family:"<< font << ";\n";
-   os << "  font-size:"<< fontSize << ";\n";
-   
-   if (parseCP437) {
-     os << "  color: #e5e5e5;\n";
-   }
-   os << "}\n\n";
-   
-   if (parseCP437||parseAsciiBin || parseAsciiTundra) {
-     
-     os << "body {  background-color: black; } \n";
-   }
-   os << "</style>\n";
     
-   
+    os << "<style type=\"text/css\">\n";
+    os << "pre {\n";
+    os << "  font-family:"<< font << ";\n";
+    os << "  font-size:"<< fontSize << ";\n";
+    
+    if (parseCP437) {
+        os << "  color: #e5e5e5;\n";
+    }
+    os << "}\n\n";
+    
+    if (parseCP437||parseAsciiBin || parseAsciiTundra) {
+     os << "body {  background-color: black; } \n";
+    }
+    os << "</style>\n";
+    
     if (!styleSheetPath.empty()) {
         os << "<link rel=\"stylesheet\" type=\"text/css\" href=\""
            << styleSheetPath << "\">\n";
@@ -703,7 +701,6 @@ string HtmlGenerator::maskCP437Character(unsigned char c)
         if (c>0x1f && c<0x7f) { // printable?          
             return string( 1, c );
         } else {
-          // std::cerr<<"Unknown: "<<(int)c<<"\n";
           return "";
         }
   }

@@ -6,6 +6,7 @@ ansifilter 2.6
 
 -added support for Tundra 24bit ANSI art (--art-tundra option)
 -fixed Pango output (patch by VLambret, https://github.com/andre-simon/ansifilter/pull/5)
+-added EXTRA_CXXFLAGS in src/makefile (thanks to Helmut K. C. Tessarek)
 
 ---
 21.06.2017
