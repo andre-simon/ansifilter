@@ -966,9 +966,10 @@ void CodeGenerator::allocateTermBuffer(){
 bool CodeGenerator::streamIsXBIN() {
   bool isXBIN = false;
   char head[5] = {0};
-  if (in!=&cin && in->read (head, 4) ) {
+  if (in!=&cin && in->read (head, sizeof head -1) ) {
     isXBIN = string(head)=="XBIN";
   }
+  in->clear();
   in->seekg (0, ios::beg);
   return isXBIN;
 }
@@ -978,9 +979,11 @@ bool CodeGenerator::streamIsTundra() {
   bool isTND = false;
   char head[10] = {0};
   
-  if (in!=&cin && in->read (head, 9) ) {
+  if (in!=&cin && in->read (head, sizeof head -1) ) {
     isTND = string(head)=="\x18TUNDRA24";
-    }
+  }
+  
+  in->clear();
   in->seekg (0, ios::beg);
   return isTND;
 }
@@ -1028,15 +1031,15 @@ void CodeGenerator::processInput()
     }
   }
  
- /* if (streamIsXBIN()) {
-   *out<<"Please apply --art-bin option for XBIN files.";
+  if (streamIsXBIN()) {
+   *out<<"Please apply --art-bin option for XBIN files.\n";
    return; 
   }
  
   if (streamIsTundra()) {
-   *out<<"Please apply --art-tundra option for TND files.";
+   *out<<"Please apply --art-tundra option for TND files.\n";
    return; 
-  }*/
+  }
   
   string line;
   size_t i=0;

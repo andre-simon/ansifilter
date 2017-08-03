@@ -1,5 +1,13 @@
 Ansifilter ChangeLog
 
+03.08.2017
+
+ansifilter 2.7
+
+-fixed processing of very small input files (https://github.com/andre-simon/ansifilter/issues/7)
+-added -fPIC to CXXFLAGS in src/makefile (https://github.com/andre-simon/ansifilter/issues/6)
+
+---
 25.07.2017
 
 ansifilter 2.6
@@ -145,7 +153,7 @@ ansifilter 1.9
 ansifilter 1.8
 
 -added support for Erase Line, Save and Restore Cursor sequences
-  (thanks to Kov√°cs Zolt√°n)
+  (thanks to Kov·cs Zolt·n)
 
 ---
 04.01.2012
