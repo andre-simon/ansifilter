@@ -18,6 +18,10 @@ man_dir = ${PREFIX}/share/man/man1/
 # Location of the documentation:
 doc_dir = ${PREFIX}/share/doc/ansifilter/
 
+# Location of additional gui files
+desktop_apps = ${PREFIX}/share/applications/
+desktop_pixmaps = ${PREFIX}/share/pixmaps/
+
 # Commands:
 QMAKE=qmake
 
@@ -61,6 +65,10 @@ install:
 	
 install-gui:
 	${INSTALL_PROGRAM} ./src/qt-gui/ansifilter-gui ${DESTDIR}${bin_dir}
+	${MKDIR} ${DESTDIR}${desktop_apps} \
+		${DESTDIR}${desktop_pixmaps}
+	${INSTALL_DATA} ./ansifilter.desktop ${DESTDIR}${desktop_apps}
+	${INSTALL_DATA} ./src/qt-gui/ansifilter.xpm ${DESTDIR}${desktop_pixmaps}
 
 uninstall:
 	@echo "Removing ansifilter files from system..."

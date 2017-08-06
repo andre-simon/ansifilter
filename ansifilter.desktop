@@ -1,0 +1,10 @@
+[Desktop Entry]
+Terminal=false
+TryExec=ansifilter-gui
+Exec=ansifilter-gui %f
+Icon=ansifilter
+Type=Application
+Categories=Utility;TextEditor;
+StartupNotify=false
+Name=Ansifilter
+GenericName=ANSI escape code converter
