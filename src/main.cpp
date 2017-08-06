@@ -81,9 +81,9 @@ void ANSIFilterApp::printHelp()
     cout << "      --wrap-no-numbers  Omit line numbers of wrapped lines (assumes -l)\n";
     
     cout << "\nANSI art options:\n";
-    cout << "      --art-cp437        Parse codepage 437 ANSI art (HTML, RTF output only)\n";
-    cout << "      --art-bin          Parse BIN/XBIN ANSI art (HTML, RTF output only)\n";
-    cout << "      --art-tundra       Parse Tundra ANSI art (HTML, RTF output only)\n";
+    cout << "      --art-cp437        Parse codepage 437 ANSI art (HTML and RTF output)\n";
+    cout << "      --art-bin          Parse BIN/XBIN ANSI art (HTML output, no stdin)\n";
+    cout << "      --art-tundra       Parse Tundra ANSI art (HTML output, no stdin)\n";
     cout << "      --art-width        Set ANSI art width (default 80)\n";
     cout << "      --art-height       Set ANSI art height (default 150)\n";
     
@@ -95,6 +95,7 @@ void ANSIFilterApp::printHelp()
     cout << "ansifilter *.txt\n";
     cout << "tail -f server.log | ansifilter\n\n";
     cout << "Parsing XBIN files overrides --art-width, --art-height and --map options.\n";
+    cout << "The ANSI art file formats BIN, XBIN and TND cannot be read from stdin.\n";
     cout << "\nPlease report bugs to " ANSIFILTER_EMAIL "\n";
     cout << "For updates see " ANSIFILTER_URL "\n";
 }

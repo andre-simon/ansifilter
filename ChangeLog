@@ -1,5 +1,13 @@
 Ansifilter ChangeLog
 
+06.08.2017
+
+ansifilter 2.8
+
+-fixed reading from stdin (https://github.com/andre-simon/ansifilter/issues/8)
+
+---
+
 03.08.2017
 
 ansifilter 2.7

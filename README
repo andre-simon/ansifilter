@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
----  ANSIFILTER MANUAL - Version 2.6  --------------------------- JULY 2017 ---
+---  ANSIFILTER MANUAL - Version 2.8  ------------------------- AUGUST 2017 ---
 -------------------------------------------------------------------------------
 
 OSI Certified Open Source Software
@@ -60,9 +60,9 @@ Format options:
       --wrap-no-numbers  Omit line numbers of wrapped lines (assumes -l)
 
 ANSI art options:
-      --art-cp437        Parse codepage 437 ANSI art (HTML, RTF output only)
-      --art-bin          Parse BIN/XBIN ANSI art (HTML, RTF output only)
-      --art-tundra       Parse Tundra ANSI art (HTML, RTF output only)
+      --art-cp437        Parse codepage 437 ANSI art (HTML, RTF output)
+      --art-bin          Parse BIN/XBIN ANSI art (HTML output, no stdin)
+      --art-tundra       Parse Tundra ANSI art (HTML output, no stdin)
       --art-width        Set ANSI art width (default 80)
       --art-height       Set ANSI art height (default 150)
 
@@ -76,6 +76,7 @@ ansifilter *.txt
 tail -f server.log | ansifilter
 
 Parsing XBIN files overrides --art-width, --art-height and --map options.
+The ANSI art file formats BIN, XBIN and TND cannot be read from stdin.
 
 The GUI version (ansifilter-gui) also accepts the first command line argument
 as input file name.

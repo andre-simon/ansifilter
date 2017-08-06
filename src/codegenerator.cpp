@@ -964,9 +964,11 @@ void CodeGenerator::allocateTermBuffer(){
 }
 
 bool CodeGenerator::streamIsXBIN() {
+  if (in==&cin) return false;
+  
   bool isXBIN = false;
   char head[5] = {0};
-  if (in!=&cin && in->read (head, sizeof head -1) ) {
+  if (in->read (head, sizeof head -1) ) {
     isXBIN = string(head)=="XBIN";
   }
   in->clear();
@@ -976,13 +978,14 @@ bool CodeGenerator::streamIsXBIN() {
 
 
 bool CodeGenerator::streamIsTundra() {
+  if (in==&cin) return false;
+    
   bool isTND = false;
   char head[10] = {0};
   
-  if (in!=&cin && in->read (head, sizeof head -1) ) {
+  if (in->read (head, sizeof head -1) ) {
     isTND = string(head)=="\x18TUNDRA24";
   }
-  
   in->clear();
   in->seekg (0, ios::beg);
   return isTND;
