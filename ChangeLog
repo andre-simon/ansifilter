@@ -1,11 +1,19 @@
 Ansifilter ChangeLog
 
 
+20.11.2017
+
+ansifilter 2.9
+
+-fixed parsing of (B reset sequence (https://github.com/andre-simon/ansifilter/issues/10)
+
+---
+
 07.08.2017
 
 ansifilter 2.8.1
 
--minor version number increase because of packaging error
+-minor version number increase because of 2.8 packaging error
 
 ---
 06.08.2017

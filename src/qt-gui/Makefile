@@ -104,6 +104,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_Attica.pri \
 		/usr/lib/qt/mkspecs/modules/qt_BluezQt.pri \
 		/usr/lib/qt/mkspecs/modules/qt_CalendarSupport.pri \
+		/usr/lib/qt/mkspecs/modules/qt_ContactEditor.pri \
 		/usr/lib/qt/mkspecs/modules/qt_EventViews.pri \
 		/usr/lib/qt/mkspecs/modules/qt_FollowupReminder.pri \
 		/usr/lib/qt/mkspecs/modules/qt_GrantleeTheme.pri \
@@ -336,6 +337,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -401,6 +403,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/modules/qt_Attica.pri \
 		/usr/lib/qt/mkspecs/modules/qt_BluezQt.pri \
 		/usr/lib/qt/mkspecs/modules/qt_CalendarSupport.pri \
+		/usr/lib/qt/mkspecs/modules/qt_ContactEditor.pri \
 		/usr/lib/qt/mkspecs/modules/qt_EventViews.pri \
 		/usr/lib/qt/mkspecs/modules/qt_FollowupReminder.pri \
 		/usr/lib/qt/mkspecs/modules/qt_GrantleeTheme.pri \
@@ -633,6 +636,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -678,6 +682,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/modules/qt_Attica.pri:
 /usr/lib/qt/mkspecs/modules/qt_BluezQt.pri:
 /usr/lib/qt/mkspecs/modules/qt_CalendarSupport.pri:
+/usr/lib/qt/mkspecs/modules/qt_ContactEditor.pri:
 /usr/lib/qt/mkspecs/modules/qt_EventViews.pri:
 /usr/lib/qt/mkspecs/modules/qt_FollowupReminder.pri:
 /usr/lib/qt/mkspecs/modules/qt_GrantleeTheme.pri:
@@ -910,6 +915,7 @@ Makefile: ansifilter-gui.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/q
 /usr/lib/qt/mkspecs/features/qt_config.prf:
 /usr/lib/qt/mkspecs/linux-g++/qmake.conf:
 /usr/lib/qt/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/qt/mkspecs/features/exclusive_builds.prf:
 /usr/lib/qt/mkspecs/features/toolchain.prf:
 /usr/lib/qt/mkspecs/features/default_pre.prf:

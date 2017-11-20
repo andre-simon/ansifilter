@@ -1163,6 +1163,15 @@ void CodeGenerator::processInput()
                   // ansiweather -l Berlin,DE | ansifilter -T
                   if (cur==0xc2 || cur==0x1b) *out << maskCharacter(cur);
               }
+              
+              // http://linuxcommand.org/lc3_adv_tput.php
+              if (next==0x28){ // ( -> maybe need to handle more codes here
+                  if (line[i+2]==0x42) { // B
+                      elementStyle.setReset(false);
+                      i+=2;
+                }
+              }
+              
               ++i;
 
               if (line[i-1]==0x5b || (line[i-1]&0xff)==0x9b){
@@ -1170,7 +1179,7 @@ void CodeGenerator::processInput()
                 //find sequence end
                 while (   seqEnd<line.length() 
                   && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
-                  ++seqEnd;
+                    ++seqEnd;
                   }
                   
                   if (   line[seqEnd]=='m' && !ignoreFormatting ) {
@@ -1184,7 +1193,7 @@ void CodeGenerator::processInput()
                       tagOpen=true;
                     }
                   }
-                  
+
                   isGrepOutput = line[seqEnd]=='K' && line[seqEnd-3] == 'm';
                   // fix grep special K
                   if (   line[seqEnd]=='s' || line[seqEnd]=='u'
