@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ansifilter.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.1
+** Created by: Qt User Interface Compiler version 5.9.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -36,7 +36,7 @@ QT_BEGIN_NAMESPACE
 class Ui_Dialog
 {
 public:
-    QHBoxLayout *horizontalLayout_3;
+    QHBoxLayout *horizontalLayout_2;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout;
     QPushButton *pbFileOpen;
@@ -53,10 +53,11 @@ public:
     QLabel *label_4;
     QComboBox *comboFormat;
     QSpacerItem *verticalSpacer_4;
-    QHBoxLayout *horizontalLayout_2;
+    QGridLayout *gridLayout_5;
     QCheckBox *cbIgnoreSequences;
     QCheckBox *cbFragment;
     QCheckBox *cbParseAsciiArt;
+    QCheckBox *cbOmitVersion;
     QGroupBox *gbAsciiArt;
     QGridLayout *gridLayout_4;
     QFrame *artSizeFrame;
@@ -106,8 +107,8 @@ public:
         QIcon icon;
         icon.addFile(QStringLiteral(":/ansifilter.xpm"), QSize(), QIcon::Normal, QIcon::Off);
         Dialog->setWindowIcon(icon);
-        horizontalLayout_3 = new QHBoxLayout(Dialog);
-        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        horizontalLayout_2 = new QHBoxLayout(Dialog);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         groupBox = new QGroupBox(Dialog);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         QSizePolicy sizePolicy1(QSizePolicy::Maximum, QSizePolicy::Preferred);
@@ -202,8 +203,8 @@ public:
 
         verticalLayout->addItem(verticalSpacer_4);
 
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        gridLayout_5 = new QGridLayout();
+        gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
         cbIgnoreSequences = new QCheckBox(groupBox);
         cbIgnoreSequences->setObjectName(QStringLiteral("cbIgnoreSequences"));
         QSizePolicy sizePolicy4(QSizePolicy::Maximum, QSizePolicy::Fixed);
@@ -212,22 +213,27 @@ public:
         sizePolicy4.setHeightForWidth(cbIgnoreSequences->sizePolicy().hasHeightForWidth());
         cbIgnoreSequences->setSizePolicy(sizePolicy4);
 
-        horizontalLayout_2->addWidget(cbIgnoreSequences);
+        gridLayout_5->addWidget(cbIgnoreSequences, 0, 0, 1, 2);
 
         cbFragment = new QCheckBox(groupBox);
         cbFragment->setObjectName(QStringLiteral("cbFragment"));
         sizePolicy4.setHeightForWidth(cbFragment->sizePolicy().hasHeightForWidth());
         cbFragment->setSizePolicy(sizePolicy4);
 
-        horizontalLayout_2->addWidget(cbFragment);
-
-
-        verticalLayout->addLayout(horizontalLayout_2);
+        gridLayout_5->addWidget(cbFragment, 0, 2, 1, 1);
 
         cbParseAsciiArt = new QCheckBox(groupBox);
         cbParseAsciiArt->setObjectName(QStringLiteral("cbParseAsciiArt"));
 
-        verticalLayout->addWidget(cbParseAsciiArt);
+        gridLayout_5->addWidget(cbParseAsciiArt, 1, 0, 1, 1);
+
+        cbOmitVersion = new QCheckBox(groupBox);
+        cbOmitVersion->setObjectName(QStringLiteral("cbOmitVersion"));
+
+        gridLayout_5->addWidget(cbOmitVersion, 1, 1, 1, 2);
+
+
+        verticalLayout->addLayout(gridLayout_5);
 
         gbAsciiArt = new QGroupBox(groupBox);
         gbAsciiArt->setObjectName(QStringLiteral("gbAsciiArt"));
@@ -349,7 +355,7 @@ public:
         comboFont = new QFontComboBox(groupBox);
         comboFont->setObjectName(QStringLiteral("comboFont"));
         QFont font;
-        font.setFamily(QStringLiteral("Courier New"));
+        font.setFamily(QStringLiteral("Liberation Mono"));
         comboFont->setCurrentFont(font);
 
         gridLayout_3->addWidget(comboFont, 3, 0, 1, 3);
@@ -423,7 +429,7 @@ public:
         verticalLayout->addLayout(horizontalLayout_5);
 
 
-        horizontalLayout_3->addWidget(groupBox);
+        horizontalLayout_2->addWidget(groupBox);
 
         gridLayout_2 = new QGridLayout();
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
@@ -435,7 +441,7 @@ public:
         sizePolicy9.setHeightForWidth(textEdit->sizePolicy().hasHeightForWidth());
         textEdit->setSizePolicy(sizePolicy9);
         QFont font2;
-        font2.setFamily(QStringLiteral("Courier New"));
+        font2.setFamily(QStringLiteral("Monospace"));
         font2.setPointSize(10);
         textEdit->setFont(font2);
         textEdit->setAcceptDrops(false);
@@ -455,7 +461,7 @@ public:
         gridLayout_2->addWidget(cbWatchFile, 2, 0, 1, 1);
 
 
-        horizontalLayout_3->addLayout(gridLayout_2);
+        horizontalLayout_2->addLayout(gridLayout_2);
 
 #ifndef QT_NO_SHORTCUT
         label_2->setBuddy(leTitle);
@@ -516,6 +522,10 @@ public:
         cbParseAsciiArt->setToolTip(QApplication::translate("Dialog", "Enable parsing of ANSI art files.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         cbParseAsciiArt->setText(QApplication::translate("Dialog", "Enable ANSI art", Q_NULLPTR));
+#ifndef QT_NO_TOOLTIP
+        cbOmitVersion->setToolTip(QApplication::translate("Dialog", "Do not include version info comment", Q_NULLPTR));
+#endif // QT_NO_TOOLTIP
+        cbOmitVersion->setText(QApplication::translate("Dialog", "Omit version info", Q_NULLPTR));
         gbAsciiArt->setTitle(QApplication::translate("Dialog", "ANSI art options", Q_NULLPTR));
         lblWidth->setText(QApplication::translate("Dialog", "Width", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
@@ -532,7 +542,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         rbAsciiBin->setToolTip(QApplication::translate("Dialog", "Enable support for ANSI BIN and XBIN files.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-        rbAsciiBin->setText(QApplication::translate("Dialog", "BIN/XBIN fo&rmat", Q_NULLPTR));
+        rbAsciiBin->setText(QApplication::translate("Dialog", "BIN/&XBIN format", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         rbAsciiTundra->setToolTip(QApplication::translate("Dialog", "Enable support for Tundra 24 bit ANSI art.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
@@ -541,7 +551,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         leTitle->setToolTip(QApplication::translate("Dialog", "Set the output document title.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-        lblEncoding->setText(QApplication::translate("Dialog", "En&coding:", Q_NULLPTR));
+        lblEncoding->setText(QApplication::translate("Dialog", "E&ncoding:", Q_NULLPTR));
         comboEncoding->clear();
         comboEncoding->insertItems(0, QStringList()
          << QApplication::translate("Dialog", "ISO-8859-1", Q_NULLPTR)
@@ -586,12 +596,12 @@ public:
 #endif // QT_NO_TOOLTIP
         pbExit->setText(QApplication::translate("Dialog", "Quit", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
-        textEdit->setToolTip(QString());
+        textEdit->setToolTip(QApplication::translate("Dialog", "Output preview", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         textEdit->setHtml(QApplication::translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Courier New'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:'Monospace'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Noto Sans,Courier New';\">Please open a file.</span></p></body></html>", Q_NULLPTR));
         lblInFilePath->setText(QApplication::translate("Dialog", "Input file:", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP

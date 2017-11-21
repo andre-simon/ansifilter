@@ -102,7 +102,11 @@ string LaTeXGenerator::getHeader()
 string LaTeXGenerator::getFooter()
 {
     string footer;
-    footer = "\\end{document}" + getGeneratorComment();
+    footer = "\\end{document}\n";
+    
+    if (!omitVersionInfo)
+        footer += getGeneratorComment();
+    
     return footer;
 }
 

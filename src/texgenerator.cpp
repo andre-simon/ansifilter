@@ -96,7 +96,13 @@ string TeXGenerator::getHeader()
 
 string TeXGenerator::getFooter()
 {
-    return "\n}\n\\bye\n" + getGeneratorComment();
+    string footer;
+    footer = "\n}\n\\bye\n";
+    
+    if (!omitVersionInfo)
+        footer += getGeneratorComment();
+    
+    return footer;
 }
 
 void TeXGenerator::printBody()

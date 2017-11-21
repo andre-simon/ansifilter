@@ -2,7 +2,7 @@
                           cmdlineoptions.h  -  description
                              -------------------
     begin                : Sun Oct 13 2007
-    copyright            : (C) 2007 by Andre Simon
+    copyright            : (C) 2007-2017 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -114,6 +114,9 @@ public:
    
      /** \return True if output should not be terminated with carriage return */
     bool omitTrailingCR() const;
+
+    /** \return True if output should not contain a version info comment */    
+    bool omitVersionInfo() const;
     
     /** \return Document title */
     string getDocumentTitle() const ;
@@ -145,6 +148,7 @@ private:
     bool opt_asciiTundra;
 
     bool opt_omit_trailing_cr;
+    bool opt_omit_version_info;
 
     // name of single output file
     string outFilename;

@@ -2,7 +2,7 @@
                           cmdlineoptions.cpp  -  description
                              -------------------
     begin                : Sun Oct 13 2007
-    copyright            : (C) 2007-2011 by Andre Simon
+    copyright            : (C) 2007-2017 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -33,46 +33,45 @@ along with ANSIFilter.  If not, see <http://www.gnu.org/licenses/>.
 #include "platform_fs.h"
 #include "stringtools.h"
 
-using namespace std;
-
-  
+using namespace std;  
     
-    const Arg_parser::Option options[] = {
-        { 'a', "anchors",   Arg_parser::no },
-        { 'd', "doc-title", Arg_parser::yes },
-        { 'e', "encoding",  Arg_parser::yes },
-        { 'f', "fragment",  Arg_parser::no  },
-        { 'F', "font",      Arg_parser::yes },
-        { 'h', "help",      Arg_parser::no  },
-        { 'H', "html",      Arg_parser::no  },
-        { 'M', "pango",      Arg_parser::no  },
-        { 'i', "input",     Arg_parser::yes },
-        { 'l', "line-numbers",     Arg_parser::no },
-        { 'L', "latex",     Arg_parser::no  },
-        { 'P', "tex",       Arg_parser::no  },
-        { 'B', "bbcode",    Arg_parser::no  },
-        { 'o', "output",    Arg_parser::yes },
-        { 'O', "outdir",    Arg_parser::yes },
-        { 'p', "plain",     Arg_parser::no  },
-        { 'r', "style-ref", Arg_parser::yes },
-        { 'R', "rtf",       Arg_parser::no  },
-        { 's', "font-size", Arg_parser::yes },
-        { 't', "tail",      Arg_parser::no  },
-        { 'T', "text",      Arg_parser::no  },
-        { 'w', "wrap",      Arg_parser::yes },
-        { 'v', "version",   Arg_parser::no  },
-        { 'V', "version",   Arg_parser::no  },
-        { 'W', "wrap-no-numbers",   Arg_parser::no  },
-        { 'X', "art-cp437", Arg_parser::no  },
-        { 'U', "art-bin",   Arg_parser::no  },
-        { 'D', "art-tundra",   Arg_parser::no  },
-        { 'Y', "art-width",     Arg_parser::yes  },
-        { 'Z', "art-height",    Arg_parser::yes  },
-	{ 'm', "map",       Arg_parser::yes },
-        { 'N', "no-trailing-nl",   Arg_parser::no  },
-        {  0,  0,           Arg_parser::no  }
-    };
-
+const Arg_parser::Option options[] = {
+    { 'a', "anchors",   Arg_parser::no },
+    { 'd', "doc-title", Arg_parser::yes },
+    { 'e', "encoding",  Arg_parser::yes },
+    { 'f', "fragment",  Arg_parser::no  },
+    { 'F', "font",      Arg_parser::yes },
+    { 'h', "help",      Arg_parser::no  },
+    { 'H', "html",      Arg_parser::no  },
+    { 'M', "pango",      Arg_parser::no  },
+    { 'i', "input",     Arg_parser::yes },
+    { 'l', "line-numbers", Arg_parser::no },
+    { 'L', "latex",     Arg_parser::no  },
+    { 'P', "tex",       Arg_parser::no  },
+    { 'B', "bbcode",    Arg_parser::no  },
+    { 'o', "output",    Arg_parser::yes },
+    { 'O', "outdir",    Arg_parser::yes },
+    { 'p', "plain",     Arg_parser::no  },
+    { 'r', "style-ref", Arg_parser::yes },
+    { 'R', "rtf",       Arg_parser::no  },
+    { 's', "font-size", Arg_parser::yes },
+    { 't', "tail",      Arg_parser::no  },
+    { 'T', "text",      Arg_parser::no  },
+    { 'w', "wrap",      Arg_parser::yes },
+    { 'v', "version",   Arg_parser::no  },
+    { 'V', "version",   Arg_parser::no  },
+    { 'W', "wrap-no-numbers", Arg_parser::no  },
+    { 'X', "art-cp437", Arg_parser::no  },
+    { 'U', "art-bin",   Arg_parser::no  },
+    { 'D', "art-tundra", Arg_parser::no  },
+    { 'Y', "art-width",  Arg_parser::yes  },
+    { 'Z', "art-height", Arg_parser::yes  },
+    { 'm', "map",       Arg_parser::yes },
+    { 'N', "no-trailing-nl", Arg_parser::no  },
+    { 'C', "no-version-info", Arg_parser::no  },
+    
+    {  0,  0,           Arg_parser::no  }
+};
 
 CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     outputType (ansifilter::TEXT),
@@ -88,6 +87,7 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     opt_asciiBin(false),
     opt_asciiTundra(false),
     opt_omit_trailing_cr(false),
+    opt_omit_version_info(false),
     encodingName("ISO-8859-1"),
     font("Courier New"),
     fontSize("10pt"),
@@ -95,7 +95,6 @@ CmdLineOptions::CmdLineOptions( const int argc, const char *argv[] ):
     asciiArtWidth(80),
     asciiArtHeight(100)
 {
-
     char* hlEnvOptions=getenv("ANSIFILTER_OPTIONS");
     if (hlEnvOptions!=NULL) {
         std::ostringstream envos;
@@ -188,9 +187,9 @@ void CmdLineOptions::parseRuntimeOptions( const int argc, const char *argv[], bo
         case 'L':
             outputType = ansifilter::LATEX;
             break;
-	case 'm':
-	    colorMapPath = arg;
-	    break;
+        case 'm':
+            colorMapPath = arg;
+            break;
         case 'M':
             outputType = ansifilter::PANGO;
             break;
@@ -248,6 +247,9 @@ void CmdLineOptions::parseRuntimeOptions( const int argc, const char *argv[], bo
             break;
         case 'N':
             opt_omit_trailing_cr=true;
+            break;
+        case 'C':
+            opt_omit_version_info=true;
             break;
         default:
             cerr << "ansifilter: option parsing failed" << endl;
@@ -413,7 +415,10 @@ bool CmdLineOptions::omitTrailingCR() const
 {
     return opt_omit_trailing_cr;
 }
-
+bool CmdLineOptions::omitVersionInfo() const
+{
+    return opt_omit_version_info;
+}
 string CmdLineOptions::getDocumentTitle() const
 {
     return docTitle;

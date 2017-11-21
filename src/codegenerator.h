@@ -1,7 +1,7 @@
 /***************************************************************************
                           codegenerator.h  -  description
                              -------------------
-    copyright            : (C) 2007-2016 by Andre Simon
+    copyright            : (C) 2007-2017 by Andre Simon
     email                : andre.simon1@gmx.de
  ***************************************************************************/
 
@@ -186,6 +186,12 @@ public:
         omitTrailingCR=b;
     }
     
+    /** \param b set to true if the output should not contain a version info comment*/
+    void setOmitVersionInfo(bool b)
+    {
+        omitVersionInfo=b;
+    }
+    
     /** \return plain outputting flag */
     bool getPlainOutput()
     {
@@ -279,7 +285,8 @@ protected:
          numberWrappedLines,  ///< also show number of wrapped lines
          numberCurrentLine,   ///< output number of current line
          addAnchors;          ///< add HTML anchor to line number
-
+    
+    bool omitVersionInfo;   ///< do not print version info comment
     bool parseCP437; ///< treat input as CP437 file
     bool parseAsciiBin; ///< treat input as BIN or XBIN file
     bool parseAsciiTundra; ///< treat input as Tundra file
@@ -360,6 +367,7 @@ private:
     bool ignoreFormatting; ///< ignore color and font face information
     bool readAfterEOF;     ///< continue reading after EOF occoured
     bool omitTrailingCR;   ///< do not print EOL at the end of output
+
     
     TDChar* termBuffer;
     int curX, curY, memX, memY, maxY; ///< cursor position for Codepage 437 sequences

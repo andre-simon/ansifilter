@@ -95,6 +95,7 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      numberWrappedLines ( true ), //TODO add option
      numberCurrentLine(false),
      addAnchors(false),
+     omitVersionInfo(false),
      parseCP437(false),
      parseAsciiBin(false),
      parseAsciiTundra(false),
@@ -102,6 +103,7 @@ CodeGenerator::CodeGenerator(ansifilter::OutputType type)
      outputType(type),
      ignoreFormatting(false),
      readAfterEOF(false),
+     omitTrailingCR(false),
      termBuffer(NULL),
      curX(0),
      curY(0),
@@ -544,7 +546,6 @@ bool CodeGenerator::parseSGRParameters(const string& line, size_t begin, size_t 
         case 107:
             elementStyle.setBgColour(rgb2html(workingPalette[ansiCode-100+8]));
             break;
-
         }
 
         // Set RTF color index
@@ -787,7 +788,6 @@ void CodeGenerator::parseXBinFile(){
       
       // decode image
       if( (flags & 4) == 4) {
-     //   std::cerr<<"DECODE--- starting at "<<in->tellg()<<"\n";
         int c=0;
         while( in && curY < asciiArtHeight)
         { 
@@ -857,7 +857,7 @@ void CodeGenerator::parseXBinFile(){
           }
         }
     } else {
-     // std::cerr<<"FLAT--- starting at "<<in->tellg()<<"\n";
+      //flat BIN
       parseBinFile();
     } 
   }
@@ -931,7 +931,6 @@ void CodeGenerator::parseTundraFile(){
             bg_blue=buffer[8];
             
             cur = buffer[0];
-            
         }
 
         if (cur !=1 && cur !=2 && cur !=4 && cur !=6)
@@ -1142,12 +1141,6 @@ void CodeGenerator::processInput()
               curX=0;
               if (line[i]=='\r') i=line.length();
             }
-            
-             /*if (line[i]=='\t'){
-                curX += 8;
-                std::cerr<<"tab\n";
-             }*/
-            
             ++i;
           }  
         } else {
@@ -1172,8 +1165,8 @@ void CodeGenerator::processInput()
                 }
               }
               
-              ++i;
-
+              if (i<line.size()) ++i;
+              
               if (line[i-1]==0x5b || (line[i-1]&0xff)==0x9b){
                 seqEnd=i;
                 //find sequence end
@@ -1200,8 +1193,7 @@ void CodeGenerator::processInput()
                     || (line[seqEnd]=='K' && !isGrepOutput) )
                     i=line.length();
                   else
-                    i =   // ((line[seqEnd]=='m' || line[seqEnd]=='C'|| isGrepOutput) ?  1 : 0 )
-                    1 + ((seqEnd!=line.length())?seqEnd:i);
+                    i = 1 + ((seqEnd!=line.length())?seqEnd:i);
               } else {
                 cur= line[i-1]&0xff;
                 next = line[i]&0xff;

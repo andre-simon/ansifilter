@@ -2,7 +2,7 @@
                           main.cpp  -  description
                              -------------------
 
-    copyright            : (C) 2007-2016 by Andre Simon
+    copyright            : (C) 2007-2017 by Andre Simon
     email                : andre.simon1@gmx.de
 
    Highlight is a universal source code to HTML converter. Syntax highlighting
@@ -78,6 +78,7 @@ void ANSIFilterApp::printHelp()
     cout << "  -p, --plain            Ignore ANSI formatting information\n";
     cout << "  -w, --wrap=<len>       Wrap long lines\n";
     cout << "      --no-trailing-nl   Omit trailing newline\n";
+    cout << "      --no-version-info  Omit version info comment\n";
     cout << "      --wrap-no-numbers  Omit line numbers of wrapped lines (assumes -l)\n";
     
     cout << "\nANSI art options:\n";
@@ -164,6 +165,7 @@ int ANSIFilterApp::run( const int argc, const char *argv[] )
 
         generator->setAsciiArtSize(options.getAsciiArtWidth(), options.getAsciiArtHeight());
         generator->setOmitTrailingCR(options.omitTrailingCR());
+        generator->setOmitVersionInfo(options.omitVersionInfo());
         
         ansifilter::ParseError error = generator->generateFile(inFileList[i], outFilePath);
 

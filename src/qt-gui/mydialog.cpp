@@ -56,6 +56,7 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
     dlg.cbFragment->setChecked(settings.value("fragment").toBool());
     dlg.cbIgnoreSequences->setChecked(settings.value("ignoreseq").toBool());
     dlg.cbParseAsciiArt->setChecked(settings.value("parseart").toBool());
+    dlg.cbOmitVersion->setChecked(settings.value("cbOmitVersion").toBool());
 
     dlg.rbAsciiCP437->setChecked(settings.value("cp437").toBool());
     dlg.rbAsciiBin->setChecked(settings.value("asciibin").toBool());
@@ -102,6 +103,7 @@ void MyDialog::closeEvent(QCloseEvent *event)
     settings.setValue("fragment", dlg.cbFragment->isChecked());
     settings.setValue("ignoreseq", dlg.cbIgnoreSequences->isChecked());
     settings.setValue("parseart", dlg.cbParseAsciiArt->isChecked());
+    settings.setValue("cbOmitVersion", dlg.cbOmitVersion->isChecked());
 
     settings.setValue("cp437", dlg.rbAsciiCP437->isChecked());
     settings.setValue("asciibin", dlg.rbAsciiBin->isChecked());
@@ -178,6 +180,7 @@ void MyDialog::plausibility()
     dlg.comboEncoding->setEnabled(selIdx==1 || selIdx==2 ||selIdx==3);
     dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
     dlg.comboFont->setEnabled(selIdx==1||selIdx==2||selIdx==6);
+    dlg.cbOmitVersion->setEnabled(selIdx==1|| selIdx==3 || selIdx==4);
     dlg.gbAsciiArt->setEnabled(dlg.cbParseAsciiArt->isEnabled() && dlg.cbParseAsciiArt->isChecked());
     dlg.artSizeFrame->setEnabled(dlg.cbParseAsciiArt->isEnabled() && dlg.cbParseAsciiArt->isChecked());
     dlg.lblHeight->setEnabled(dlg.gbAsciiArt->isEnabled());
@@ -250,6 +253,7 @@ void MyDialog::on_pbSaveAs_clicked()
     generator->setEncoding(dlg.comboEncoding->currentText().toStdString());
     generator->setFragmentCode(dlg.cbFragment->isChecked());
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
+    generator->setOmitVersionInfo(dlg.cbOmitVersion->isChecked());
 
     if (dlg.cbParseAsciiArt->isChecked()){
         generator->setParseCodePage437(dlg.rbAsciiCP437->isChecked());
