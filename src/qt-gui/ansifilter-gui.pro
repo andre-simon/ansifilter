@@ -23,7 +23,7 @@ win32 {
     DEFINES += _WIN32
     RC_FILE = icon.rc
     DESTDIR = ../../
-    QMAKE_POST_LINK = D:\Devel\upx391w\upx.exe --best ../../ansifilter-gui.exe
+    QMAKE_POST_LINK = E:\Devel\upx393w\upx.exe --best ../../ansifilter-gui.exe
 }
 
 macx-clang:ICON = $${PWD}/ansifilter.icns
