@@ -18,4 +18,4 @@ SOURCES += ../elementstyle.cpp ../plaintextgenerator.cpp ../codegenerator.cpp
 SOURCES += ../platform_fs.cpp ../rtfgenerator.cpp ../htmlgenerator.cpp ../texgenerator.cpp ../latexgenerator.cpp ../bbcodegenerator.cpp ../pangogenerator.cpp
 SOURCES += ../stringtools.cpp ../stylecolour.cpp  ../preformatter.cpp
 
-win32:QMAKE_POST_LINK = D:\Devel\upx391w\upx.exe --best ../../ansifilter.exe
+win32:QMAKE_POST_LINK = E:\Devel\upx393w\upx.exe --best ../../ansifilter.exe
