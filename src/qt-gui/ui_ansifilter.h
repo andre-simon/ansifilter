@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ansifilter.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.9.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -25,7 +25,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QTextEdit>
@@ -38,11 +37,12 @@ class Ui_Dialog
 public:
     QHBoxLayout *horizontalLayout_2;
     QGroupBox *groupBox;
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *verticalLayout_2;
+    QGridLayout *gridLayout_4;
     QPushButton *pbFileOpen;
+    QSpacerItem *horizontalSpacer_5;
     QPushButton *pbSaveAs;
     QPushButton *pbClipboard;
-    QFrame *line_2;
     QGridLayout *gridLayout;
     QSpacerItem *horizontalSpacer_4;
     QSpacerItem *verticalSpacer_3;
@@ -53,13 +53,16 @@ public:
     QLabel *label_4;
     QComboBox *comboFormat;
     QSpacerItem *verticalSpacer_4;
-    QGridLayout *gridLayout_5;
+    QGridLayout *gridLayout_2;
+    QCheckBox *cbOmitVersion;
     QCheckBox *cbIgnoreSequences;
     QCheckBox *cbFragment;
-    QCheckBox *cbParseAsciiArt;
-    QCheckBox *cbOmitVersion;
+    QSpacerItem *horizontalSpacer_3;
     QGroupBox *gbAsciiArt;
-    QGridLayout *gridLayout_4;
+    QGridLayout *gridLayout_5;
+    QHBoxLayout *horizontalLayout_3;
+    QCheckBox *cbParseAsciiArt;
+    QComboBox *comboAnsiFormat;
     QFrame *artSizeFrame;
     QHBoxLayout *horizontalLayout_7;
     QLabel *lblWidth;
@@ -67,9 +70,7 @@ public:
     QSpacerItem *horizontalSpacer;
     QLabel *lblHeight;
     QSpinBox *sbHeight;
-    QRadioButton *rbAsciiCP437;
-    QRadioButton *rbAsciiBin;
-    QRadioButton *rbAsciiTundra;
+    QSpacerItem *verticalSpacer_5;
     QGridLayout *gridLayout_3;
     QLabel *label_2;
     QLineEdit *leTitle;
@@ -78,7 +79,6 @@ public:
     QLabel *label_3;
     QSpinBox *spinBoxWrap;
     QFontComboBox *comboFont;
-    QFrame *line_3;
     QHBoxLayout *horizontalLayout;
     QLabel *label_5;
     QLineEdit *leColorMapPath;
@@ -87,9 +87,9 @@ public:
     QHBoxLayout *horizontalLayout_5;
     QPushButton *pbAbout;
     QPushButton *pbExit;
-    QGridLayout *gridLayout_2;
-    QTextEdit *textEdit;
+    QVBoxLayout *verticalLayout;
     QLabel *lblInFilePath;
+    QTextEdit *textEdit;
     QCheckBox *cbWatchFile;
 
     void setupUi(QDialog *Dialog)
@@ -117,8 +117,10 @@ public:
         sizePolicy1.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
         groupBox->setSizePolicy(sizePolicy1);
         groupBox->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
-        verticalLayout = new QVBoxLayout(groupBox);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout_2 = new QVBoxLayout(groupBox);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        gridLayout_4 = new QGridLayout();
+        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
         pbFileOpen = new QPushButton(groupBox);
         pbFileOpen->setObjectName(QStringLiteral("pbFileOpen"));
         QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -127,7 +129,11 @@ public:
         sizePolicy2.setHeightForWidth(pbFileOpen->sizePolicy().hasHeightForWidth());
         pbFileOpen->setSizePolicy(sizePolicy2);
 
-        verticalLayout->addWidget(pbFileOpen);
+        gridLayout_4->addWidget(pbFileOpen, 0, 0, 1, 1);
+
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_4->addItem(horizontalSpacer_5, 0, 1, 1, 1);
 
         pbSaveAs = new QPushButton(groupBox);
         pbSaveAs->setObjectName(QStringLiteral("pbSaveAs"));
@@ -137,21 +143,17 @@ public:
         sizePolicy3.setHeightForWidth(pbSaveAs->sizePolicy().hasHeightForWidth());
         pbSaveAs->setSizePolicy(sizePolicy3);
 
-        verticalLayout->addWidget(pbSaveAs);
+        gridLayout_4->addWidget(pbSaveAs, 1, 0, 1, 1);
 
         pbClipboard = new QPushButton(groupBox);
         pbClipboard->setObjectName(QStringLiteral("pbClipboard"));
         sizePolicy3.setHeightForWidth(pbClipboard->sizePolicy().hasHeightForWidth());
         pbClipboard->setSizePolicy(sizePolicy3);
 
-        verticalLayout->addWidget(pbClipboard);
+        gridLayout_4->addWidget(pbClipboard, 1, 1, 1, 1);
 
-        line_2 = new QFrame(groupBox);
-        line_2->setObjectName(QStringLiteral("line_2"));
-        line_2->setFrameShape(QFrame::HLine);
-        line_2->setFrameShadow(QFrame::Sunken);
 
-        verticalLayout->addWidget(line_2);
+        verticalLayout_2->addLayout(gridLayout_4);
 
         gridLayout = new QGridLayout();
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
@@ -159,11 +161,11 @@ public:
 
         gridLayout->addItem(horizontalSpacer_4, 1, 0, 1, 1);
 
-        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_3 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         gridLayout->addItem(verticalSpacer_3, 2, 1, 1, 1);
 
-        verticalSpacer_2 = new QSpacerItem(20, 18, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_2 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         gridLayout->addItem(verticalSpacer_2, 0, 1, 1, 1);
 
@@ -181,7 +183,7 @@ public:
         gridLayout->addWidget(lblDrop, 1, 1, 1, 1);
 
 
-        verticalLayout->addLayout(gridLayout);
+        verticalLayout_2->addLayout(gridLayout);
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
@@ -197,14 +199,19 @@ public:
         horizontalLayout_6->addWidget(comboFormat);
 
 
-        verticalLayout->addLayout(horizontalLayout_6);
+        verticalLayout_2->addLayout(horizontalLayout_6);
 
         verticalSpacer_4 = new QSpacerItem(20, 5, QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-        verticalLayout->addItem(verticalSpacer_4);
+        verticalLayout_2->addItem(verticalSpacer_4);
 
-        gridLayout_5 = new QGridLayout();
-        gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
+        gridLayout_2 = new QGridLayout();
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        cbOmitVersion = new QCheckBox(groupBox);
+        cbOmitVersion->setObjectName(QStringLiteral("cbOmitVersion"));
+
+        gridLayout_2->addWidget(cbOmitVersion, 1, 0, 1, 1);
+
         cbIgnoreSequences = new QCheckBox(groupBox);
         cbIgnoreSequences->setObjectName(QStringLiteral("cbIgnoreSequences"));
         QSizePolicy sizePolicy4(QSizePolicy::Maximum, QSizePolicy::Fixed);
@@ -213,33 +220,49 @@ public:
         sizePolicy4.setHeightForWidth(cbIgnoreSequences->sizePolicy().hasHeightForWidth());
         cbIgnoreSequences->setSizePolicy(sizePolicy4);
 
-        gridLayout_5->addWidget(cbIgnoreSequences, 0, 0, 1, 2);
+        gridLayout_2->addWidget(cbIgnoreSequences, 0, 0, 1, 1);
 
         cbFragment = new QCheckBox(groupBox);
         cbFragment->setObjectName(QStringLiteral("cbFragment"));
         sizePolicy4.setHeightForWidth(cbFragment->sizePolicy().hasHeightForWidth());
         cbFragment->setSizePolicy(sizePolicy4);
 
-        gridLayout_5->addWidget(cbFragment, 0, 2, 1, 1);
+        gridLayout_2->addWidget(cbFragment, 0, 1, 1, 1);
 
-        cbParseAsciiArt = new QCheckBox(groupBox);
-        cbParseAsciiArt->setObjectName(QStringLiteral("cbParseAsciiArt"));
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        gridLayout_5->addWidget(cbParseAsciiArt, 1, 0, 1, 1);
-
-        cbOmitVersion = new QCheckBox(groupBox);
-        cbOmitVersion->setObjectName(QStringLiteral("cbOmitVersion"));
-
-        gridLayout_5->addWidget(cbOmitVersion, 1, 1, 1, 2);
+        gridLayout_2->addItem(horizontalSpacer_3, 1, 1, 1, 1);
 
 
-        verticalLayout->addLayout(gridLayout_5);
+        verticalLayout_2->addLayout(gridLayout_2);
 
         gbAsciiArt = new QGroupBox(groupBox);
         gbAsciiArt->setObjectName(QStringLiteral("gbAsciiArt"));
-        gbAsciiArt->setEnabled(false);
-        gridLayout_4 = new QGridLayout(gbAsciiArt);
-        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
+        gbAsciiArt->setEnabled(true);
+        sizePolicy3.setHeightForWidth(gbAsciiArt->sizePolicy().hasHeightForWidth());
+        gbAsciiArt->setSizePolicy(sizePolicy3);
+        gbAsciiArt->setFlat(false);
+        gridLayout_5 = new QGridLayout(gbAsciiArt);
+        gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        cbParseAsciiArt = new QCheckBox(gbAsciiArt);
+        cbParseAsciiArt->setObjectName(QStringLiteral("cbParseAsciiArt"));
+
+        horizontalLayout_3->addWidget(cbParseAsciiArt);
+
+        comboAnsiFormat = new QComboBox(gbAsciiArt);
+        comboAnsiFormat->setObjectName(QStringLiteral("comboAnsiFormat"));
+        comboAnsiFormat->setEnabled(false);
+        comboAnsiFormat->setEditable(false);
+        comboAnsiFormat->setMaxVisibleItems(3);
+        comboAnsiFormat->setMaxCount(3);
+
+        horizontalLayout_3->addWidget(comboAnsiFormat);
+
+
+        gridLayout_5->addLayout(horizontalLayout_3, 0, 0, 1, 1);
+
         artSizeFrame = new QFrame(gbAsciiArt);
         artSizeFrame->setObjectName(QStringLiteral("artSizeFrame"));
         artSizeFrame->setEnabled(false);
@@ -284,26 +307,14 @@ public:
         horizontalLayout_7->addWidget(sbHeight);
 
 
-        gridLayout_4->addWidget(artSizeFrame, 2, 0, 1, 2);
-
-        rbAsciiCP437 = new QRadioButton(gbAsciiArt);
-        rbAsciiCP437->setObjectName(QStringLiteral("rbAsciiCP437"));
-
-        gridLayout_4->addWidget(rbAsciiCP437, 0, 0, 1, 1);
-
-        rbAsciiBin = new QRadioButton(gbAsciiArt);
-        rbAsciiBin->setObjectName(QStringLiteral("rbAsciiBin"));
-        rbAsciiBin->setToolTipDuration(-5);
-
-        gridLayout_4->addWidget(rbAsciiBin, 0, 1, 1, 1);
-
-        rbAsciiTundra = new QRadioButton(gbAsciiArt);
-        rbAsciiTundra->setObjectName(QStringLiteral("rbAsciiTundra"));
-
-        gridLayout_4->addWidget(rbAsciiTundra, 1, 0, 1, 1);
+        gridLayout_5->addWidget(artSizeFrame, 1, 0, 1, 1);
 
 
-        verticalLayout->addWidget(gbAsciiArt);
+        verticalLayout_2->addWidget(gbAsciiArt);
+
+        verticalSpacer_5 = new QSpacerItem(20, 5, QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+        verticalLayout_2->addItem(verticalSpacer_5);
 
         gridLayout_3 = new QGridLayout();
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
@@ -361,14 +372,7 @@ public:
         gridLayout_3->addWidget(comboFont, 3, 0, 1, 3);
 
 
-        verticalLayout->addLayout(gridLayout_3);
-
-        line_3 = new QFrame(groupBox);
-        line_3->setObjectName(QStringLiteral("line_3"));
-        line_3->setFrameShape(QFrame::HLine);
-        line_3->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout->addWidget(line_3);
+        verticalLayout_2->addLayout(gridLayout_3);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
@@ -399,11 +403,11 @@ public:
         horizontalLayout->addWidget(pbSelectMapFile);
 
 
-        verticalLayout->addLayout(horizontalLayout);
+        verticalLayout_2->addLayout(horizontalLayout);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout->addItem(verticalSpacer);
+        verticalLayout_2->addItem(verticalSpacer);
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
@@ -426,13 +430,18 @@ public:
         horizontalLayout_5->addWidget(pbExit);
 
 
-        verticalLayout->addLayout(horizontalLayout_5);
+        verticalLayout_2->addLayout(horizontalLayout_5);
 
 
         horizontalLayout_2->addWidget(groupBox);
 
-        gridLayout_2 = new QGridLayout();
-        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        lblInFilePath = new QLabel(Dialog);
+        lblInFilePath->setObjectName(QStringLiteral("lblInFilePath"));
+
+        verticalLayout->addWidget(lblInFilePath);
+
         textEdit = new QTextEdit(Dialog);
         textEdit->setObjectName(QStringLiteral("textEdit"));
         QSizePolicy sizePolicy9(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -447,21 +456,16 @@ public:
         textEdit->setAcceptDrops(false);
         textEdit->setReadOnly(true);
 
-        gridLayout_2->addWidget(textEdit, 1, 0, 1, 1);
-
-        lblInFilePath = new QLabel(Dialog);
-        lblInFilePath->setObjectName(QStringLiteral("lblInFilePath"));
-
-        gridLayout_2->addWidget(lblInFilePath, 0, 0, 1, 1);
+        verticalLayout->addWidget(textEdit);
 
         cbWatchFile = new QCheckBox(Dialog);
         cbWatchFile->setObjectName(QStringLiteral("cbWatchFile"));
         cbWatchFile->setEnabled(false);
 
-        gridLayout_2->addWidget(cbWatchFile, 2, 0, 1, 1);
+        verticalLayout->addWidget(cbWatchFile);
 
 
-        horizontalLayout_2->addLayout(gridLayout_2);
+        horizontalLayout_2->addLayout(verticalLayout);
 
 #ifndef QT_NO_SHORTCUT
         label_2->setBuddy(leTitle);
@@ -511,6 +515,10 @@ public:
          << QApplication::translate("Dialog", "Pango Markup", Q_NULLPTR)
         );
 #ifndef QT_NO_TOOLTIP
+        cbOmitVersion->setToolTip(QApplication::translate("Dialog", "Do not include version info comment", Q_NULLPTR));
+#endif // QT_NO_TOOLTIP
+        cbOmitVersion->setText(QApplication::translate("Dialog", "Omit version info", Q_NULLPTR));
+#ifndef QT_NO_TOOLTIP
         cbIgnoreSequences->setToolTip(QApplication::translate("Dialog", "Show and save files ignoring the contained ANSI formatting information.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         cbIgnoreSequences->setText(QApplication::translate("Dialog", "Omit styling in output", Q_NULLPTR));
@@ -518,15 +526,20 @@ public:
         cbFragment->setToolTip(QApplication::translate("Dialog", "Save HTML without header and footer to paste it into existing documents.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         cbFragment->setText(QApplication::translate("Dialog", "Omit header and footer", Q_NULLPTR));
+        gbAsciiArt->setTitle(QApplication::translate("Dialog", "ANSI art options", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         cbParseAsciiArt->setToolTip(QApplication::translate("Dialog", "Enable parsing of ANSI art files.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         cbParseAsciiArt->setText(QApplication::translate("Dialog", "Enable ANSI art", Q_NULLPTR));
+        comboAnsiFormat->clear();
+        comboAnsiFormat->insertItems(0, QStringList()
+         << QApplication::translate("Dialog", "Codepage 437", Q_NULLPTR)
+         << QApplication::translate("Dialog", "BIN/XBIN", Q_NULLPTR)
+         << QApplication::translate("Dialog", "Tundra", Q_NULLPTR)
+        );
 #ifndef QT_NO_TOOLTIP
-        cbOmitVersion->setToolTip(QApplication::translate("Dialog", "Do not include version info comment", Q_NULLPTR));
+        comboAnsiFormat->setToolTip(QApplication::translate("Dialog", "Select the ANSI art file format", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-        cbOmitVersion->setText(QApplication::translate("Dialog", "Omit version info", Q_NULLPTR));
-        gbAsciiArt->setTitle(QApplication::translate("Dialog", "ANSI art options", Q_NULLPTR));
         lblWidth->setText(QApplication::translate("Dialog", "Width", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         sbWidth->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image width (default: 80). This setting is ignored with XBIN input.", Q_NULLPTR));
@@ -535,18 +548,6 @@ public:
 #ifndef QT_NO_TOOLTIP
         sbHeight->setToolTip(QApplication::translate("Dialog", "Set the ASCII art image height (default: 150). This setting is ignored with XBIN input.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-#ifndef QT_NO_TOOLTIP
-        rbAsciiCP437->setToolTip(QApplication::translate("Dialog", "Enable support for codepage 437 symbols and ANSI.SYS sequences.", Q_NULLPTR));
-#endif // QT_NO_TOOLTIP
-        rbAsciiCP437->setText(QApplication::translate("Dialog", "Codepage &437", Q_NULLPTR));
-#ifndef QT_NO_TOOLTIP
-        rbAsciiBin->setToolTip(QApplication::translate("Dialog", "Enable support for ANSI BIN and XBIN files.", Q_NULLPTR));
-#endif // QT_NO_TOOLTIP
-        rbAsciiBin->setText(QApplication::translate("Dialog", "BIN/&XBIN format", Q_NULLPTR));
-#ifndef QT_NO_TOOLTIP
-        rbAsciiTundra->setToolTip(QApplication::translate("Dialog", "Enable support for Tundra 24 bit ANSI art.", Q_NULLPTR));
-#endif // QT_NO_TOOLTIP
-        rbAsciiTundra->setText(QApplication::translate("Dialog", "Tundra for&mat", Q_NULLPTR));
         label_2->setText(QApplication::translate("Dialog", "Tit&le:", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         leTitle->setToolTip(QApplication::translate("Dialog", "Set the output document title.", Q_NULLPTR));
@@ -595,6 +596,7 @@ public:
         pbExit->setToolTip(QApplication::translate("Dialog", "Quit this program.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         pbExit->setText(QApplication::translate("Dialog", "Quit", Q_NULLPTR));
+        lblInFilePath->setText(QApplication::translate("Dialog", "Input file:", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         textEdit->setToolTip(QApplication::translate("Dialog", "Output preview", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
@@ -603,7 +605,6 @@ public:
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Monospace'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Noto Sans,Courier New';\">Please open a file.</span></p></body></html>", Q_NULLPTR));
-        lblInFilePath->setText(QApplication::translate("Dialog", "Input file:", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         cbWatchFile->setToolTip(QApplication::translate("Dialog", "Update view if input file changes, Do not apply with big or fast growing input files.", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP

@@ -44,61 +44,71 @@
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QPushButton" name="pbFileOpen">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Open a text file.</string>
-        </property>
-        <property name="text">
-         <string>Open File</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pbSaveAs">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Save the opened file as text, HTML, LaTeX, Plain TeX, BBCode or RTF.</string>
-        </property>
-        <property name="text">
-         <string>Save as</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pbClipboard">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Copy opened file as plain text to clipboard</string>
-        </property>
-        <property name="text">
-         <string>Copy to clipboard</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pbFileOpen">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Open a text file.</string>
+          </property>
+          <property name="text">
+           <string>Open File</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="pbSaveAs">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Save the opened file as text, HTML, LaTeX, Plain TeX, BBCode or RTF.</string>
+          </property>
+          <property name="text">
+           <string>Save as</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="pbClipboard">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Copy opened file as plain text to clipboard</string>
+          </property>
+          <property name="text">
+           <string>Copy to clipboard</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout">
@@ -126,7 +136,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>20</height>
            </size>
           </property>
          </spacer>
@@ -139,7 +149,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>18</height>
+            <height>20</height>
            </size>
           </property>
          </spacer>
@@ -257,8 +267,18 @@
        </spacer>
       </item>
       <item>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0" colspan="2">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="cbOmitVersion">
+          <property name="toolTip">
+           <string>Do not include version info comment</string>
+          </property>
+          <property name="text">
+           <string>Omit version info</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
          <widget class="QCheckBox" name="cbIgnoreSequences">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -274,7 +294,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
+        <item row="0" column="1">
          <widget class="QCheckBox" name="cbFragment">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -290,38 +310,88 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="cbParseAsciiArt">
-          <property name="toolTip">
-           <string>Enable parsing of ANSI art files.</string>
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="text">
-           <string>Enable ANSI art</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-         </widget>
-        </item>
-        <item row="1" column="1" colspan="2">
-         <widget class="QCheckBox" name="cbOmitVersion">
-          <property name="toolTip">
-           <string>Do not include version info comment</string>
-          </property>
-          <property name="text">
-           <string>Omit version info</string>
-          </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </item>
       <item>
        <widget class="QGroupBox" name="gbAsciiArt">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
         <property name="title">
          <string>ANSI art options</string>
         </property>
-        <layout class="QGridLayout" name="gridLayout_4">
-         <item row="2" column="0" colspan="2">
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <item row="0" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QCheckBox" name="cbParseAsciiArt">
+             <property name="toolTip">
+              <string>Enable parsing of ANSI art files.</string>
+             </property>
+             <property name="text">
+              <string>Enable ANSI art</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboAnsiFormat">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="toolTip">
+              <string>Select the ANSI art file format</string>
+             </property>
+             <property name="editable">
+              <bool>false</bool>
+             </property>
+             <property name="maxVisibleItems">
+              <number>3</number>
+             </property>
+             <property name="maxCount">
+              <number>3</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>Codepage 437</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BIN/XBIN</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Tundra</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0">
           <widget class="QFrame" name="artSizeFrame">
            <property name="enabled">
             <bool>false</bool>
@@ -413,41 +483,24 @@
            </layout>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="rbAsciiCP437">
-           <property name="toolTip">
-            <string>Enable support for codepage 437 symbols and ANSI.SYS sequences.</string>
-           </property>
-           <property name="text">
-            <string>Codepage &amp;437</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="rbAsciiBin">
-           <property name="toolTip">
-            <string>Enable support for ANSI BIN and XBIN files.</string>
-           </property>
-           <property name="toolTipDuration">
-            <number>-5</number>
-           </property>
-           <property name="text">
-            <string>BIN/&amp;XBIN format</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QRadioButton" name="rbAsciiTundra">
-           <property name="toolTip">
-            <string>Enable support for Tundra 24 bit ANSI art.</string>
-           </property>
-           <property name="text">
-            <string>Tundra for&amp;mat</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Minimum</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>5</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
@@ -611,13 +664,6 @@
        </layout>
       </item>
       <item>
-       <widget class="Line" name="line_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label_5">
@@ -722,8 +768,15 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="1" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="lblInFilePath">
+       <property name="text">
+        <string>Input file:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QTextEdit" name="textEdit">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -755,14 +808,7 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="lblInFilePath">
-       <property name="text">
-        <string>Input file:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
+     <item>
       <widget class="QCheckBox" name="cbWatchFile">
        <property name="enabled">
         <bool>false</bool>

@@ -7,6 +7,7 @@ ansifilter 2.9
 
 -fixed parsing of "(B" reset sequence (https://github.com/andre-simon/ansifilter/issues/10)
 -CLI: added --no-version-info option
+-GUI: layout adjustments
 
 ---
 

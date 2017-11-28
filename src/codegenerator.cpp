@@ -1158,6 +1158,7 @@ void CodeGenerator::processInput()
               }
               
               // http://linuxcommand.org/lc3_adv_tput.php
+              // http://ascii-table.com/ansi-escape-sequences-vt-100.php
               if (next==0x28){ // ( -> maybe need to handle more codes here
                   if (line[i+2]==0x42) { // B
                       elementStyle.setReset(false);

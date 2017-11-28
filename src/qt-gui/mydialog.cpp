@@ -57,10 +57,7 @@ MyDialog::MyDialog(QWidget * parent, Qt::WindowFlags f):QDialog(parent, f)
     dlg.cbIgnoreSequences->setChecked(settings.value("ignoreseq").toBool());
     dlg.cbParseAsciiArt->setChecked(settings.value("parseart").toBool());
     dlg.cbOmitVersion->setChecked(settings.value("cbOmitVersion").toBool());
-
-    dlg.rbAsciiCP437->setChecked(settings.value("cp437").toBool());
-    dlg.rbAsciiBin->setChecked(settings.value("asciibin").toBool());
-    dlg.rbAsciiTundra->setChecked(settings.value("asciitnd").toBool());
+    dlg.comboAnsiFormat->setCurrentIndex(settings.value("ansiformat").toInt());
     dlg.comboEncoding->setCurrentIndex(settings.value("encoding").toInt());
     dlg.comboFont->setCurrentIndex(settings.value("font").toInt());
     dlg.comboFormat->setCurrentIndex(settings.value("format").toInt());
@@ -104,10 +101,7 @@ void MyDialog::closeEvent(QCloseEvent *event)
     settings.setValue("ignoreseq", dlg.cbIgnoreSequences->isChecked());
     settings.setValue("parseart", dlg.cbParseAsciiArt->isChecked());
     settings.setValue("cbOmitVersion", dlg.cbOmitVersion->isChecked());
-
-    settings.setValue("cp437", dlg.rbAsciiCP437->isChecked());
-    settings.setValue("asciibin", dlg.rbAsciiBin->isChecked());
-    settings.setValue("asciitnd", dlg.rbAsciiTundra->isChecked());
+    settings.setValue("ansiformat", dlg.comboAnsiFormat->currentIndex());
     settings.setValue("encoding", dlg.comboEncoding->currentIndex());
     settings.setValue("format", dlg.comboFormat->currentIndex());
     settings.setValue("font", dlg.comboFont->currentIndex());
@@ -181,7 +175,8 @@ void MyDialog::plausibility()
     dlg.leTitle->setEnabled(selIdx==1||selIdx==3||selIdx==4);
     dlg.comboFont->setEnabled(selIdx==1||selIdx==2||selIdx==6);
     dlg.cbOmitVersion->setEnabled(selIdx==1|| selIdx==3 || selIdx==4);
-    dlg.gbAsciiArt->setEnabled(dlg.cbParseAsciiArt->isEnabled() && dlg.cbParseAsciiArt->isChecked());
+   // dlg.gbAsciiArt->setEnabled(dlg.cbParseAsciiArt->isEnabled() && dlg.cbParseAsciiArt->isChecked());
+    dlg.comboAnsiFormat->setEnabled(dlg.cbParseAsciiArt->isEnabled() && dlg.cbParseAsciiArt->isChecked());
     dlg.artSizeFrame->setEnabled(dlg.cbParseAsciiArt->isEnabled() && dlg.cbParseAsciiArt->isChecked());
     dlg.lblHeight->setEnabled(dlg.gbAsciiArt->isEnabled());
     dlg.sbHeight->setEnabled(dlg.gbAsciiArt->isEnabled());
@@ -256,9 +251,17 @@ void MyDialog::on_pbSaveAs_clicked()
     generator->setOmitVersionInfo(dlg.cbOmitVersion->isChecked());
 
     if (dlg.cbParseAsciiArt->isChecked()){
-        generator->setParseCodePage437(dlg.rbAsciiCP437->isChecked());
-        generator->setParseAsciiBin(dlg.rbAsciiBin->isChecked());
-        generator->setParseAsciiTundra(dlg.rbAsciiTundra->isChecked());
+        switch (dlg.comboAnsiFormat->currentIndex()){
+            case 0:
+                generator->setParseCodePage437(true);
+                break;
+            case 1:
+                generator->setParseAsciiBin(true);
+                break;
+            case 2:
+                generator->setParseAsciiTundra(true);
+                break;
+        }
         generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
     }
 
@@ -330,9 +333,17 @@ void MyDialog::showFile()
     generator->setPlainOutput(dlg.cbIgnoreSequences->isChecked());
 
     if (dlg.cbParseAsciiArt->isChecked()){
-        generator->setParseCodePage437(dlg.rbAsciiCP437->isChecked());
-        generator->setParseAsciiBin(dlg.rbAsciiBin->isChecked());
-        generator->setParseAsciiTundra(dlg.rbAsciiTundra->isChecked());
+        switch (dlg.comboAnsiFormat->currentIndex()){
+            case 0:
+                generator->setParseCodePage437(true);
+                break;
+            case 1:
+                generator->setParseAsciiBin(true);
+                break;
+            case 2:
+                generator->setParseAsciiTundra(true);
+                break;
+        }
         generator->setAsciiArtSize(dlg.sbWidth->value(), dlg.sbHeight->value());
     }
 
@@ -379,25 +390,16 @@ void MyDialog::on_cbParseAsciiArt_clicked()
     showFile();
 }
 
-void MyDialog::on_rbAsciiCP437_toggled()
-{
-    showFile();
-}
 
-void MyDialog::on_rbAsciiBin_toggled()
-{
-    showFile();
-}
-
-void MyDialog::on_rbAsciiTundra_toggled()
-{
-    showFile();
-}
 void MyDialog::on_sbWidth_valueChanged(int i)
 {
     showFile();
 }
 void MyDialog::on_sbHeight_valueChanged(int i)
+{
+    showFile();
+}
+void MyDialog::on_comboAnsiFormat_currentIndexChanged(int idx)
 {
     showFile();
 }
