@@ -1145,6 +1145,9 @@ void CodeGenerator::processInput()
           }  
         } else {
           
+          if ( line.length() - i > 2 && (line[i+1]&0xff)==0x08) i++;  
+          if ( cur==0x07) *out<<"\n";  
+  
           if (cur==0x1b || cur==0x9b || cur==0xc2) {
             if (line.length() - i > 2){              
               next = line[i+1]&0xff;
@@ -1166,11 +1169,14 @@ void CodeGenerator::processInput()
                 }
               }
               
+
+              
               if (i<line.size()) ++i;
               
               if (line[i-1]==0x5b || (line[i-1]&0xff)==0x9b){
                 seqEnd=i;
                 //find sequence end
+                //TODO xterm2 133 .. 1337 ??
                 while (   seqEnd<line.length() 
                   && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
                     ++seqEnd;
@@ -1203,11 +1209,14 @@ void CodeGenerator::processInput()
                 if (cur==0x1b && (  next==0x50 || next==0x5d || next==0x58
                   ||next==0x5e||next==0x5f) )
                 {
+                    
                   seqEnd=i;
                   //find string end
-                  while ( seqEnd<line.length() && (line[seqEnd]&0xff)!=0x9e 
-                    && line[seqEnd]!=0x07 ) {
-                    ++seqEnd;
+                  while ( seqEnd<line.length() 
+                      && (line[seqEnd]&0xff)!=0x9e 
+                      && line[seqEnd]!=0x07 
+                      && line[seqEnd]!=0x3b /* 0x5d + 0; */ ) {
+                        ++seqEnd;
                     }
                     i=seqEnd+1;
                 }
