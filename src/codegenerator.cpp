@@ -1047,6 +1047,9 @@ void CodeGenerator::processInput()
   size_t i=0;
   bool tagOpen=false;
   bool isGrepOutput=false;
+  bool isKSeq=false;
+
+  bool omitNewLine=false;
     
   if (parseCP437){
     allocateTermBuffer();
@@ -1062,7 +1065,7 @@ void CodeGenerator::processInput()
         ++lineNumber;
         numberCurrentLine = true;
       } else {
-        if(numberWrappedLines)
+        if( !omitNewLine  && numberWrappedLines)
           ++lineNumber;
         numberCurrentLine = numberWrappedLines;
       }
@@ -1070,7 +1073,8 @@ void CodeGenerator::processInput()
       line = preFormatter.getNextLine();
     } else {
       eof=!getline(*in, line);
-      ++lineNumber;
+      if( !omitNewLine )
+        ++lineNumber;
       numberCurrentLine = true;
     }
     if (eof) {
@@ -1089,9 +1093,10 @@ void CodeGenerator::processInput()
       }
     } else {
         
-      if (!parseCP437 && lineNumber>1) *out << newLineTag;  
+      if (!omitNewLine && !parseCP437 && lineNumber>1) *out << newLineTag;  
      
-      insertLineNumber();
+      if (!omitNewLine ) insertLineNumber();
+      omitNewLine = false;
       
       i=0;
       size_t seqEnd=string::npos;
@@ -1146,9 +1151,14 @@ void CodeGenerator::processInput()
         } else {
           
           if ( line.length() - i > 2 && (line[i+1]&0xff)==0x08) i++;  
-          if ( cur==0x07) *out<<"\n";  
+          if ( cur==0x07) {
+              ++lineNumber;
+              *out << newLineTag;  
+              insertLineNumber();
+        }  
   
           if (cur==0x1b || cur==0x9b || cur==0xc2) {
+
             if (line.length() - i > 2){              
               next = line[i+1]&0xff;
               //move index behind CSI
@@ -1169,17 +1179,14 @@ void CodeGenerator::processInput()
                 }
               }
               
-
-              
               if (i<line.size()) ++i;
               
               if (line[i-1]==0x5b || (line[i-1]&0xff)==0x9b){
                 seqEnd=i;
                 //find sequence end
-                //TODO xterm2 133 .. 1337 ??
                 while (   seqEnd<line.length() 
                   && (line[seqEnd]<0x40 || line[seqEnd]>0x7e )) {
-                    ++seqEnd;
+                    ++seqEnd;                    
                   }
                   
                   if (   line[seqEnd]=='m' && !ignoreFormatting ) {
@@ -1194,13 +1201,18 @@ void CodeGenerator::processInput()
                     }
                   }
 
-                  isGrepOutput = line[seqEnd]=='K' && line[seqEnd-3] == 'm';
-                  // fix grep special K
+                  // fix K sequences (iterm2/grep)
+                  isKSeq =  line[seqEnd]=='K' ;
+                  isGrepOutput = isKSeq && isascii(line[seqEnd+1]) && line[seqEnd+1] !=13 && line[seqEnd+1] != 27;
+                  
                   if (   line[seqEnd]=='s' || line[seqEnd]=='u'
-                    || (line[seqEnd]=='K' && !isGrepOutput) )
-                    i=line.length();
-                  else
-                    i = 1 + ((seqEnd!=line.length())?seqEnd:i);
+                    || (isKSeq && !isGrepOutput)   ){
+                      i=line.length()+1;
+                      omitNewLine = isKSeq; // \n may follow K
+                  }
+                  else {
+                      i = 1 + ((seqEnd!=line.length())?seqEnd:i);
+                  }
               } else {
                 cur= line[i-1]&0xff;
                 next = line[i]&0xff;
@@ -1209,15 +1221,18 @@ void CodeGenerator::processInput()
                 if (cur==0x1b && (  next==0x50 || next==0x5d || next==0x58
                   ||next==0x5e||next==0x5f) )
                 {
-                    
                   seqEnd=i;
                   //find string end
                   while ( seqEnd<line.length() 
                       && (line[seqEnd]&0xff)!=0x9e 
                       && line[seqEnd]!=0x07 
-                      && line[seqEnd]!=0x3b /* 0x5d + 0; */ ) {
+                      && (line[seqEnd]&0xff)!=0x3b /* 0x5d + 0; */ ) {
                         ++seqEnd;
                     }
+                    
+                    if (line[seqEnd+1]=='A')
+                        seqEnd++;
+                 
                     i=seqEnd+1;
                 }
               }
