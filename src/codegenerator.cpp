@@ -706,7 +706,7 @@ void CodeGenerator::printTermBuffer() {
 
 
 void CodeGenerator::parseBinFile(){
-  char * buffer = new char [2];
+  char buffer [2] = {0};
   int cur=0;
   int next=0;
   int count=0;
